@@ -1,3 +1,5 @@
+'use client';
+
 import Link from "next/link";
 
 export default function Header() {
@@ -10,7 +12,7 @@ export default function Header() {
         <div>
           <Link className="mx-2" href="/login">Login</Link>
           <Link className="mx-2" href="/register">Register</Link>
-          <Link className="mx-2" href="/signout">Sign out</Link>
+          <Link className="mx-2" href="/logout">Sign out</Link>
         </div>
       </nav>
     </header>
