@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "preinstall": "npx only-allow pnpm", 
+    "preinstall": "npx only-allow pnpm",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server",
     "dev": "nodemon server"
@@ -16,6 +16,7 @@
     "express": "^4.21.1"
   },
   "devDependencies": {
+    "@types/node": "^22.13.10",
     "nodemon": "^3.1.7"
   }
 }
