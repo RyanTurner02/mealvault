@@ -110,11 +110,38 @@ const createInstructionTable = () => {
   });
 }
 
+const createCustomFieldTable = () => {
+  const fieldIdColumn = 'field_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY';
+  const recipeIdColumn = 'recipe_id	INT NOT NULL';
+  const fieldNameColumn = 'field_name	VARCHAR(255)';
+  const fieldTypeColumn = 'field_type	INT';
+  const fieldTextColumn = 'field_text	TEXT';
+
+  const query = `CREATE TABLE custom_field (
+    ${fieldIdColumn},
+    ${recipeIdColumn},
+    ${fieldNameColumn},
+    ${fieldTypeColumn},
+    ${fieldTextColumn}
+  )`;
+
+  connection.query(query, (error, result, fields) => {
+    if (error instanceof Error) {
+      console.log(error);
+      return;
+    }
+
+    console.log(result);
+    console.log(fields);
+  });
+}
+
 createDatabase();
 connection.query('USE mealvault;');
 createUserTable();
 createRecipeTable();
 createInstructionTable();
+createCustomFieldTable();
 
 connection.end(err => {
   if (err) {
