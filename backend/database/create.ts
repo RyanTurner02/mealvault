@@ -62,9 +62,36 @@ const createUserTable = () => {
     });
 }
 
+const createRecipeTable = () => {
+  const recipeIdColumn = 'recipe_id	INT NOT NULL AUTO_INCREMENT PRIMARY KEY';
+  const userIdColumn = 'user_id	INT NOT NULL';
+  const recipeNameColumn = 'recipe_name	VARCHAR(255) NOT NULL';
+  const dateCreatedColumn = 'date_created	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
+  const dateUpdatedColumn = 'date_updated	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
+
+  const query = `CREATE TABLE recipe(
+    ${recipeIdColumn},
+    ${userIdColumn},
+    ${recipeNameColumn},
+    ${dateCreatedColumn},
+    ${dateUpdatedColumn}
+  )`;
+
+  connection.query(query, (error, result, fields) => {
+    if (error instanceof Error) {
+      console.log(error);
+      return;
+    }
+
+    console.log(result);
+    console.log(fields);
+  });
+}
+
 createDatabase();
 connection.query('USE mealvault;');
 createUserTable();
+createRecipeTable();
 
 connection.end(err => {
   if (err) {
