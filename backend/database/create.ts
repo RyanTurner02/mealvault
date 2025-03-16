@@ -19,6 +19,23 @@ connection.connect(err => {
   console.log('Connected as id ' + connection.threadId);
 });
 
+const createDatabase = () => {
+  const databaseName = 'mealvault';
+  const query = `CREATE DATABASE IF NOT EXISTS ${databaseName};`;
+
+  connection.query(query, (err, result, fields) => {
+    if (err instanceof Error) {
+      console.log(err);
+      return;
+    }
+
+    console.log(result);
+    console.log(fields);
+  });
+}
+
+createDatabase();
+
 connection.end(err => {
   if (err) {
     console.log('Error closing connection ' + err.stack);
