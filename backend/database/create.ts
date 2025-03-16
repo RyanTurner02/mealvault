@@ -1,4 +1,4 @@
-import * as mysql2 from 'mysql2';
+import * as mysql from 'mysql2';
 import * as dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
@@ -8,9 +8,9 @@ const connectionUri = {
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD
 };
-const connection = mysql2.createConnection(connectionUri);
+const connection = mysql.createConnection(connectionUri);
 
-connection.connect(function (err) {
+connection.connect(err => {
   if (err) {
     console.log('Error connecting: ' + err.stack);
     return;
