@@ -88,10 +88,33 @@ const createRecipeTable = () => {
   });
 }
 
+const createInstructionTable = () => {
+  const instructionIdColumn = 'instruction_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY';
+  const recipeIdColumn = 'recipe_id INT NOT NULL';
+  const instructionTextColumn = 'instruction_text TEXT';
+
+  const query = `CREATE TABLE instruction(
+    ${instructionIdColumn},
+    ${recipeIdColumn},
+    ${instructionTextColumn}
+  )`;
+
+  connection.query(query, (error, result, fields) => {
+    if (error instanceof Error) {
+      console.log(error);
+      return;
+    }
+
+    console.log(result);
+    console.log(fields);
+  });
+}
+
 createDatabase();
 connection.query('USE mealvault;');
 createUserTable();
 createRecipeTable();
+createInstructionTable();
 
 connection.end(err => {
   if (err) {
