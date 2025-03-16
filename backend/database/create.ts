@@ -34,7 +34,37 @@ const createDatabase = () => {
   });
 }
 
+const createUserTable = () => {
+    const userIdColumn = 'user_id	INT NOT NULL AUTO_INCREMENT PRIMARY KEY';
+    const userNameColumn = 'user_name	VARCHAR(255) NOT NULL';
+    const userPasswordColumn = 'user_password	VARCHAR(255) NOT NULL';
+    const userEmailColumn = 'user_email	VARCHAR(255) UNIQUE';
+    const dateCreatedColumn = 'date_created	DATETIME DEFAULT CURRENT_TIMESTAMP';
+    const dateUpdatedColumn = 'date_updated	DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
+
+    const query = `CREATE TABLE user (
+      ${userIdColumn},
+      ${userNameColumn},
+      ${userPasswordColumn},
+      ${userEmailColumn},
+      ${dateCreatedColumn},
+      ${dateUpdatedColumn}
+    )`;
+
+    connection.query(query, (error, result, fields) => {
+      if (error instanceof Error) {
+        console.log(error);
+        return;
+      }
+
+      console.log(result);
+      console.log(fields);
+    });
+}
+
 createDatabase();
+connection.query('USE mealvault;');
+createUserTable();
 
 connection.end(err => {
   if (err) {
