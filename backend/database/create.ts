@@ -68,13 +68,15 @@ const createRecipeTable = () => {
   const recipeNameColumn = 'recipe_name	VARCHAR(255) NOT NULL';
   const dateCreatedColumn = 'date_created	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
   const dateUpdatedColumn = 'date_updated	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
+  const foreignKeyConstraint = 'FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE';
 
   const query = `CREATE TABLE recipe(
     ${recipeIdColumn},
     ${userIdColumn},
     ${recipeNameColumn},
     ${dateCreatedColumn},
-    ${dateUpdatedColumn}
+    ${dateUpdatedColumn},
+    ${foreignKeyConstraint}
   )`;
 
   connection.query(query, (error, result, fields) => {
@@ -92,11 +94,13 @@ const createInstructionTable = () => {
   const instructionIdColumn = 'instruction_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY';
   const recipeIdColumn = 'recipe_id INT NOT NULL';
   const instructionTextColumn = 'instruction_text TEXT';
+  const foreignKeyConstraint = 'FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE';
 
   const query = `CREATE TABLE instruction(
     ${instructionIdColumn},
     ${recipeIdColumn},
-    ${instructionTextColumn}
+    ${instructionTextColumn},
+    ${foreignKeyConstraint}
   )`;
 
   connection.query(query, (error, result, fields) => {
@@ -116,13 +120,15 @@ const createCustomFieldTable = () => {
   const fieldNameColumn = 'field_name	VARCHAR(255)';
   const fieldTypeColumn = 'field_type	INT';
   const fieldTextColumn = 'field_text	TEXT';
+  const foreignKeyConstraint = 'FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE';
 
   const query = `CREATE TABLE custom_field (
     ${fieldIdColumn},
     ${recipeIdColumn},
     ${fieldNameColumn},
     ${fieldTypeColumn},
-    ${fieldTextColumn}
+    ${fieldTextColumn},
+    ${foreignKeyConstraint}
   )`;
 
   connection.query(query, (error, result, fields) => {
