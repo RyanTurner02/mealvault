@@ -33,10 +33,13 @@ const closeDatabaseConnection = () => {
 
 const createDatabase = () => {
   const query = `CREATE DATABASE IF NOT EXISTS ${process.env.MYSQL_DATABASE};`;
+  runQuery(query);
+}
 
-  connection.query(query, (err, result, fields) => {
-    if (err instanceof Error) {
-      console.log(err);
+const runQuery = (query: string) => {
+  connection.query(query, (error, result, fields) => {
+    if (error instanceof Error) {
+      console.log(error);
       return;
     }
 
@@ -62,15 +65,7 @@ const createUserTable = () => {
       ${dateUpdatedColumn}
     )`;
 
-    connection.query(query, (error, result, fields) => {
-      if (error instanceof Error) {
-        console.log(error);
-        return;
-      }
-
-      console.log(result);
-      console.log(fields);
-    });
+    runQuery(query);
 }
 
 const createRecipeTable = () => {
@@ -90,15 +85,7 @@ const createRecipeTable = () => {
     ${foreignKeyConstraint}
   )`;
 
-  connection.query(query, (error, result, fields) => {
-    if (error instanceof Error) {
-      console.log(error);
-      return;
-    }
-
-    console.log(result);
-    console.log(fields);
-  });
+  runQuery(query);
 }
 
 const createInstructionTable = () => {
@@ -114,15 +101,7 @@ const createInstructionTable = () => {
     ${foreignKeyConstraint}
   )`;
 
-  connection.query(query, (error, result, fields) => {
-    if (error instanceof Error) {
-      console.log(error);
-      return;
-    }
-
-    console.log(result);
-    console.log(fields);
-  });
+  runQuery(query);
 }
 
 const createCustomFieldTable = () => {
@@ -142,15 +121,7 @@ const createCustomFieldTable = () => {
     ${foreignKeyConstraint}
   )`;
 
-  connection.query(query, (error, result, fields) => {
-    if (error instanceof Error) {
-      console.log(error);
-      return;
-    }
-
-    console.log(result);
-    console.log(fields);
-  });
+  runQuery(query);
 }
 
 connectToDatabase();
