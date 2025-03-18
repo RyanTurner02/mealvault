@@ -58,17 +58,17 @@ const createTable = (tableName: string, tableColumns: string[], foreignKeyConstr
 }
 
 const createUserTable = () => {
-    const userIdColumn = 'user_id	INT NOT NULL AUTO_INCREMENT PRIMARY KEY';
-    const userNameColumn = 'user_name	VARCHAR(255) NOT NULL';
-    const userPasswordColumn = 'user_password	VARCHAR(255) NOT NULL';
-    const userEmailColumn = 'user_email	VARCHAR(255) UNIQUE';
-    const dateCreatedColumn = 'date_created	DATETIME DEFAULT CURRENT_TIMESTAMP';
-    const dateUpdatedColumn = 'date_updated	DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
+  const userIdColumn = 'user_id	INT NOT NULL AUTO_INCREMENT PRIMARY KEY';
+  const userNameColumn = 'user_name	VARCHAR(255) NOT NULL';
+  const userPasswordColumn = 'user_password	VARCHAR(255) NOT NULL';
+  const userEmailColumn = 'user_email	VARCHAR(255) UNIQUE';
+  const dateCreatedColumn = 'date_created	DATETIME DEFAULT CURRENT_TIMESTAMP';
+  const dateUpdatedColumn = 'date_updated	DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
 
-    const tableName: string = 'user';
-    const tableColumns: string[] = [userIdColumn, userNameColumn, userPasswordColumn, userEmailColumn, dateCreatedColumn, dateUpdatedColumn];
-    
-    createTable(tableName, tableColumns);
+  const tableName: string = 'user';
+  const tableColumns: string[] = [userIdColumn, userNameColumn, userPasswordColumn, userEmailColumn, dateCreatedColumn, dateUpdatedColumn];
+  
+  createTable(tableName, tableColumns);
 }
 
 const createRecipeTable = () => {
