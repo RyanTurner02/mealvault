@@ -21,9 +21,9 @@ const connectToDatabase = () => {
 }
 
 const closeDatabaseConnection = () => {
-  connection.end(err => {
-    if (err) {
-      console.log('Error closing connection ' + err.stack);
+  connection.end(error => {
+    if (error) {
+      console.log('Error closing connection ' + error.stack);
       return;
     }
   
