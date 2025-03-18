@@ -32,8 +32,7 @@ const closeDatabaseConnection = () => {
 }
 
 const createDatabase = () => {
-  const databaseName = 'mealvault';
-  const query = `CREATE DATABASE IF NOT EXISTS ${databaseName};`;
+  const query = `CREATE DATABASE IF NOT EXISTS ${process.env.MYSQL_DATABASE};`;
 
   connection.query(query, (err, result, fields) => {
     if (err instanceof Error) {
