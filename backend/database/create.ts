@@ -81,7 +81,7 @@ const createRecipeTable = () => {
 
   const tableName = 'recipe';
   const tableColumns = [recipeIdColumn, userIdColumn, recipeNameColumn, dateCreatedColumn, dateUpdatedColumn];
-  
+
   createTable(tableName, tableColumns, foreignKeyConstraint);
 }
 
@@ -113,7 +113,7 @@ const createCustomFieldTable = () => {
 
 connectToDatabase();
 createDatabase();
-connection.query('USE mealvault;');
+connection.query(`USE ${process.env.MYSQL_DATABASE};`);
 createUserTable();
 createRecipeTable();
 createInstructionTable();
