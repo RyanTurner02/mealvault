@@ -48,6 +48,15 @@ const runQuery = (query: string) => {
   });
 }
 
+const createTable = (tableName: string, tableColumns: string[], foreignKeyConstraint: string = '') => {
+  const query = `CREATE TABLE IF NOT EXISTS ${tableName} (
+    ${tableColumns.join(', ')}${foreignKeyConstraint.length !== 0 ? ',' : ''}
+    ${foreignKeyConstraint}
+  )`;
+
+  runQuery(query);
+}
+
 const createUserTable = () => {
     const userIdColumn = 'user_id	INT NOT NULL AUTO_INCREMENT PRIMARY KEY';
     const userNameColumn = 'user_name	VARCHAR(255) NOT NULL';
@@ -56,16 +65,10 @@ const createUserTable = () => {
     const dateCreatedColumn = 'date_created	DATETIME DEFAULT CURRENT_TIMESTAMP';
     const dateUpdatedColumn = 'date_updated	DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
 
-    const query = `CREATE TABLE user (
-      ${userIdColumn},
-      ${userNameColumn},
-      ${userPasswordColumn},
-      ${userEmailColumn},
-      ${dateCreatedColumn},
-      ${dateUpdatedColumn}
-    )`;
-
-    runQuery(query);
+    const tableName: string = 'user';
+    const tableColumns: string[] = [userIdColumn, userNameColumn, userPasswordColumn, userEmailColumn, dateCreatedColumn, dateUpdatedColumn];
+    
+    createTable(tableName, tableColumns);
 }
 
 const createRecipeTable = () => {
@@ -76,16 +79,10 @@ const createRecipeTable = () => {
   const dateUpdatedColumn = 'date_updated	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
   const foreignKeyConstraint = 'FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE';
 
-  const query = `CREATE TABLE recipe(
-    ${recipeIdColumn},
-    ${userIdColumn},
-    ${recipeNameColumn},
-    ${dateCreatedColumn},
-    ${dateUpdatedColumn},
-    ${foreignKeyConstraint}
-  )`;
-
-  runQuery(query);
+  const tableName = 'recipe';
+  const tableColumns = [recipeIdColumn, userIdColumn, recipeNameColumn, dateCreatedColumn, dateUpdatedColumn];
+  
+  createTable(tableName, tableColumns, foreignKeyConstraint);
 }
 
 const createInstructionTable = () => {
@@ -94,14 +91,10 @@ const createInstructionTable = () => {
   const instructionTextColumn = 'instruction_text TEXT';
   const foreignKeyConstraint = 'FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE';
 
-  const query = `CREATE TABLE instruction(
-    ${instructionIdColumn},
-    ${recipeIdColumn},
-    ${instructionTextColumn},
-    ${foreignKeyConstraint}
-  )`;
+  const tableName = 'instruction';
+  const tableColumns = [instructionIdColumn, recipeIdColumn, instructionTextColumn];
 
-  runQuery(query);
+  createTable(tableName, tableColumns, foreignKeyConstraint);
 }
 
 const createCustomFieldTable = () => {
@@ -112,16 +105,10 @@ const createCustomFieldTable = () => {
   const fieldTextColumn = 'field_text	TEXT';
   const foreignKeyConstraint = 'FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE';
 
-  const query = `CREATE TABLE custom_field (
-    ${fieldIdColumn},
-    ${recipeIdColumn},
-    ${fieldNameColumn},
-    ${fieldTypeColumn},
-    ${fieldTextColumn},
-    ${foreignKeyConstraint}
-  )`;
+  const tableName: string = 'custom_field';
+  const tableColumns: string[] = [fieldIdColumn, recipeIdColumn, fieldNameColumn, fieldTypeColumn, fieldTextColumn];
 
-  runQuery(query);
+  createTable(tableName, tableColumns, foreignKeyConstraint);
 }
 
 connectToDatabase();
