@@ -3,12 +3,11 @@ import * as dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
 
-const connectionUri = {
+const connection = mysql.createConnection({
   host: process.env.HOST_URL,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD
-};
-const connection = mysql.createConnection(connectionUri);
+});
 
 const connectToDatabase = () => {
   connection.connect(error => {
