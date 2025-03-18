@@ -10,14 +10,27 @@ const connectionUri = {
 };
 const connection = mysql.createConnection(connectionUri);
 
-connection.connect(err => {
-  if (err) {
-    console.log('Error connecting: ' + err.stack);
-    return;
-  }
+const connectToDatabase = () => {
+  connection.connect(error => {
+    if (error) {
+      console.log(`Error connecting: ${error.stack}`);
+      return;
+    }
+  
+    console.log(`Connected as id ${connection.threadId}`);
+  });
+}
 
-  console.log('Connected as id ' + connection.threadId);
-});
+const closeDatabaseConnection = () => {
+  connection.end(err => {
+    if (err) {
+      console.log('Error closing connection ' + err.stack);
+      return;
+    }
+  
+    console.log('Closing connection');
+  });
+}
 
 const createDatabase = () => {
   const databaseName = 'mealvault';
@@ -142,18 +155,11 @@ const createCustomFieldTable = () => {
   });
 }
 
+connectToDatabase();
 createDatabase();
 connection.query('USE mealvault;');
 createUserTable();
 createRecipeTable();
 createInstructionTable();
 createCustomFieldTable();
-
-connection.end(err => {
-  if (err) {
-    console.log('Error closing connection ' + err.stack);
-    return;
-  }
-
-  console.log('Closing connection');
-});
+closeDatabaseConnection();
