@@ -14,4 +14,28 @@ export class User {
     this._creationDate = creationDate;
     this._updatedDate = updatedDate;
   }
+
+  public get id(): number {
+    return this._id;
+  }
+
+  public get name(): string {
+    return this._name;
+  }
+
+  public get password(): string {
+    return this._password;
+  }
+
+  public get email(): string {
+    return this._email;
+  }
+
+  public get creationDate(): Date {
+    return this._creationDate;
+  }
+
+  public get updatedDate(): Date {
+    return this._updatedDate;
+  }
 }
