@@ -60,51 +60,51 @@ const createCustomField = (fieldId: number, recipeId: number): CustomField => {
   return new CustomField(fieldId, recipeId, fieldName, fieldType, fieldText, creationDate, updatedDate);
 }
 
-const seedUser = (user: User): void => {
+const seedUser = async (user: User): Promise<void> => {
   const query = `INSERT INTO user (user_name, user_password, user_email, date_created, date_updated) VALUES(?, ?, ?, ?, ?)`;
   const values = [user.name, user.password, user.email, user.creationDate, user.updatedDate];
-  runQuery(query, values);
+  await runQuery(query, values);
 }
 
-const seedRecipe = (recipe: Recipe): void => {
+const seedRecipe = async (recipe: Recipe): Promise<void> => {
   const query: string = `INSERT INTO recipe(user_id, recipe_name, date_created, date_updated) VALUES(?, ?, ?, ?)`;
   const values: (string | number | Date)[] = [recipe.userId, recipe.recipeName, recipe.dateCreated, recipe.dateUpdated];
-  runQuery(query, values);
+  await runQuery(query, values);
 };
 
-const seedInstruction = (instruction: Instruction): void => {
+const seedInstruction = async (instruction: Instruction): Promise<void> => {
   const query: string = `INSERT INTO instruction(recipe_id, instruction_text, date_created, date_updated) VALUES(?, ?, ?, ?)`;
   const values: any = [instruction.recipeId, instruction.instructionText, instruction.creationDate, instruction.updatedDate];
-  runQuery(query, values);
+  await runQuery(query, values);
 };
 
-const seedCustomField = (customField: CustomField): void => {
+const seedCustomField = async (customField: CustomField): Promise<void> => {
   const query: string = `INSERT INTO custom_field(recipe_id, field_name, field_type, field_text, date_created, date_updated) VALUES(?, ?, ?, ?, ?, ?)`;
   const values: any = [customField.recipeId, customField.fieldName, customField.fieldType, customField.fieldText, customField.creationDate, customField.updatedDate];
-  runQuery(query, values);
+  await runQuery(query, values);
 };
 
-const seed = (numUsers: number) => {
+const seed = async (numUsers: number): Promise<void> => {
   let recipeId = 1;
   let instructionId = 1;
   let customFieldId = 1;
 
   for (let userId = 1; userId <= numUsers; userId++) {
-    seedUser(createUser(userId));
+    await seedUser(createUser(userId));
     const numRecipes = faker.number.int(5);
 
     for (let recipeIndex = 1; recipeIndex <= numRecipes; recipeIndex++) {
-      seedRecipe(createRecipe(recipeId, userId));
+      await seedRecipe(createRecipe(recipeId, userId));
       const numInstructions = faker.number.int(5);
       const numCustomFields = faker.number.int(5);
 
       for (let instructionIndex = 1; instructionIndex <= numInstructions; instructionIndex++) {
-        seedInstruction(createInstruction(instructionId, recipeId));
+        await seedInstruction(createInstruction(instructionId, recipeId));
         instructionId++;
       }
 
       for (let customFieldIndex = 1; customFieldIndex <= numCustomFields; customFieldIndex++) {
-        seedCustomField(createCustomField(customFieldId, recipeId));
+        await seedCustomField(createCustomField(customFieldId, recipeId));
         customFieldId++;
       }
 
@@ -113,5 +113,7 @@ const seed = (numUsers: number) => {
   }
 }
 
-const numUsers = 5;
-seed(numUsers);
+(async () => {
+  const numUsers = 5;
+  seed(numUsers);
+})();
