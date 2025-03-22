@@ -13,8 +13,11 @@ const createUser = (userId: number): void => {
     const user: User = new User(userId, name, password, email, creationDate, updatedDate);
 }
 
-const createRecipe = (): void => {
-
+const createRecipe = (recipeId: number, userId: number): void => {
+    const recipeName: string = faker.food.dish();
+    const dateCreated: Date = new Date();
+    const dateUpdated: Date = dateCreated;
+    const recipe: Recipe = new Recipe(recipeId, userId, recipeName, dateCreated, dateUpdated);
 }
 
 const createInstruction = (): void => {
@@ -26,3 +29,4 @@ const createCustomField = (): void => {
 }
 
 createUser(1);
+createRecipe(1, 1);
