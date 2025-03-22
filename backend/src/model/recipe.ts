@@ -2,15 +2,15 @@ export class Recipe {
   private _recipeId: number;
   private _userId: number;
   private _recipeName: string;
-  private _dateCreated: Date;
-  private _dateUpdated: Date;
+  private _creationDate: Date;
+  private _updatedDate: Date;
 
-  constructor(recipeId: number, userId: number, recipeName: string, dateCreated: Date, dateUpdated: Date) {
+  constructor(recipeId: number, userId: number, recipeName: string, creationDate: Date, _updatedDate: Date) {
     this._recipeId = recipeId;
     this._userId = userId;
     this._recipeName = recipeName;
-    this._dateCreated = dateCreated;
-    this._dateUpdated = dateUpdated;
+    this._creationDate = creationDate;
+    this._updatedDate = _updatedDate;
   }
 
   public get userId() {
@@ -22,10 +22,10 @@ export class Recipe {
   }
 
   public get dateCreated() {
-    return this._dateCreated;
+    return this._creationDate;
   }
 
   public get dateUpdated() {
-    return this._dateUpdated;
+    return this._updatedDate;
   }
 }

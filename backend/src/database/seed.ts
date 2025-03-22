@@ -39,9 +39,9 @@ const createUser = (userId: number): User => {
 
 const createRecipe = (recipeId: number, userId: number): Recipe => {
   const recipeName: string = faker.food.dish();
-  const dateCreated: Date = new Date();
-  const dateUpdated: Date = dateCreated;
-  return new Recipe(recipeId, userId, recipeName, dateCreated, dateUpdated);
+  const creationDate: Date = new Date();
+  const updatedDate: Date = creationDate;
+  return new Recipe(recipeId, userId, recipeName, creationDate, updatedDate);
 }
 
 const createInstruction = (instructionId: number, recipeId: number): Instruction => {
