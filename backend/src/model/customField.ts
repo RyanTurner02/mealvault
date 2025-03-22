@@ -12,4 +12,20 @@ export class CustomField {
     this._fieldType = fieldType;
     this._fieldText = fieldText;
   }
+
+  public get recipeId() {
+    return this._recipeId;
+  }
+
+  public get fieldName() {
+    return this._fieldName;
+  }
+
+  public get fieldType() {
+    return this._fieldType;
+  }
+
+  public get fieldText() {
+    return this._fieldText;
+  }
 }

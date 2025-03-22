@@ -63,15 +63,21 @@ const seedUser = (user: User): void => {
 }
 
 const seedRecipe = (recipe: Recipe): void => {
-  runQuery(``);
+  const query: string = `INSERT INTO recipe(user_id, recipe_name, date_created, date_updated) VALUES(?, ?, ?, ?)`;
+  const values: (string | number | Date)[] = [recipe.userId, recipe.recipeName, recipe.dateCreated, recipe.dateUpdated];
+  runQuery(query, values);
 };
 
 const seedInstruction = (instruction: Instruction): void => {
-  runQuery(``);
+  const query: string = `INSERT INTO instruction(recipe_id, instruction_text) VALUES(?, ?)`;
+  const values: any = [instruction.recipeId, instruction.instructionText];
+  runQuery(query, values);
 };
 
 const seedCustomField = (customField: CustomField): void => {
-  runQuery(``);
+  const query: string = `INSERT INTO custom_field(recipe_id, field_name, field_type, field_text) VALUES(?, ?, ?, ?)`;
+  const values: any = [customField.recipeId, customField.fieldName, customField.fieldType, customField.fieldText];
+  runQuery(query, values);
 };
 
 const seed = (numUsers: number) => {
@@ -81,20 +87,20 @@ const seed = (numUsers: number) => {
 
   for (let userId = 1; userId <= numUsers; userId++) {
     seedUser(createUser(userId));
-    const numRecipes = faker.number.int(100);
+    const numRecipes = faker.number.int(5);
 
     for (let recipeIndex = 1; recipeIndex <= numRecipes; recipeIndex++) {
-      createRecipe(recipeId, userId);
-      const numInstructions = faker.number.int(100);
-      const numCustomFields = faker.number.int(100);
+      seedRecipe(createRecipe(recipeId, userId));
+      const numInstructions = faker.number.int(5);
+      const numCustomFields = faker.number.int(5);
 
       for (let instructionIndex = 1; instructionIndex <= numInstructions; instructionIndex++) {
-        createInstruction(instructionId, recipeId);
+        seedInstruction(createInstruction(instructionId, recipeId));
         instructionId++;
       }
 
       for (let customFieldIndex = 1; customFieldIndex <= numCustomFields; customFieldIndex++) {
-        createCustomField(customFieldId, recipeId);
+        seedCustomField(createCustomField(customFieldId, recipeId));
         customFieldId++;
       }
 

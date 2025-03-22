@@ -12,4 +12,20 @@ export class Recipe {
     this._dateCreated = dateCreated;
     this._dateUpdated = dateUpdated;
   }
+
+  public get userId() {
+    return this._userId;
+  }
+
+  public get recipeName() {
+    return this._recipeName;
+  }
+
+  public get dateCreated() {
+    return this._dateCreated;
+  }
+
+  public get dateUpdated() {
+    return this._dateUpdated;
+  }
 }
