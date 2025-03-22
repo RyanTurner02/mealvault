@@ -3,34 +3,76 @@ import { User } from '@/model/user';
 import { Recipe } from '@/model/recipe';
 import { Instruction } from '@/model/instruction';
 import { CustomField } from '@/model/customField';
+import * as mysql from 'mysql2/promise';
+import * as dotenv from 'dotenv';
 
-const createUser = (userId: number): void => {
+dotenv.config({ path: '../../.env' });
+
+const pool = mysql.createPool({
+  host: process.env.HOST_URL,
+  user: process.env.MYSQL_USER,
+  database: process.env.MYSQL_DATABASE,
+  password: process.env.MYSQL_ROOT_PASSWORD,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
+
+const runQuery = async (query: string, values: any = null) => {
+  try {
+    const [result, fields]: any = await pool.query(query, values);
+    console.log(result);
+    console.log(fields);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const createUser = (userId: number): User => {
   const name: string = faker.internet.displayName();
   const password: string = faker.internet.password();
   const email: string = faker.internet.exampleEmail();
   const creationDate: Date = new Date();
   const updatedDate: Date = creationDate;
-  const user: User = new User(userId, name, password, email, creationDate, updatedDate);
+  return new User(userId, name, password, email, creationDate, updatedDate);
 }
 
-const createRecipe = (recipeId: number, userId: number): void => {
+const createRecipe = (recipeId: number, userId: number): Recipe => {
   const recipeName: string = faker.food.dish();
   const dateCreated: Date = new Date();
   const dateUpdated: Date = dateCreated;
-  const recipe: Recipe = new Recipe(recipeId, userId, recipeName, dateCreated, dateUpdated);
+  return new Recipe(recipeId, userId, recipeName, dateCreated, dateUpdated);
 }
 
-const createInstruction = (instructionId: number, recipeId: number): void => {
+const createInstruction = (instructionId: number, recipeId: number): Instruction => {
   const instructionText: string = faker.lorem.paragraphs({ min: 1, max: 5 });
-  const instruction: Instruction = new Instruction(instructionId, recipeId, instructionText);
+  return new Instruction(instructionId, recipeId, instructionText);
 }
 
-const createCustomField = (fieldId: number, recipeId: number): void => {
+const createCustomField = (fieldId: number, recipeId: number): CustomField => {
   const fieldName: string = faker.lorem.word();
   const fieldType: number = 1;
   const fieldText: string = faker.lorem.word();
-  const customField: CustomField = new CustomField(fieldId, recipeId, fieldName, fieldType, fieldText);
+  return new CustomField(fieldId, recipeId, fieldName, fieldType, fieldText);
 }
+
+const seedUser = (user: User): void => {
+  const query = `INSERT INTO user (user_name, user_password, user_email, date_created, date_updated) VALUES(?, ?, ?, ?, ?)`;
+  const values = [user.name, user.password, user.email, user.creationDate, user.updatedDate];
+  runQuery(query, values);
+}
+
+const seedRecipe = (recipe: Recipe): void => {
+  runQuery(``);
+};
+
+const seedInstruction = (instruction: Instruction): void => {
+  runQuery(``);
+};
+
+const seedCustomField = (customField: CustomField): void => {
+  runQuery(``);
+};
 
 const seed = (numUsers: number) => {
   let recipeId = 1;
@@ -38,7 +80,7 @@ const seed = (numUsers: number) => {
   let customFieldId = 1;
 
   for (let userId = 1; userId <= numUsers; userId++) {
-    createUser(userId);
+    seedUser(createUser(userId));
     const numRecipes = faker.number.int(100);
 
     for (let recipeIndex = 1; recipeIndex <= numRecipes; recipeIndex++) {
@@ -60,3 +102,6 @@ const seed = (numUsers: number) => {
     }
   }
 }
+
+const numUsers = 5;
+seed(numUsers);
