@@ -20,8 +20,9 @@ const createRecipe = (recipeId: number, userId: number): void => {
     const recipe: Recipe = new Recipe(recipeId, userId, recipeName, dateCreated, dateUpdated);
 }
 
-const createInstruction = (): void => {
-
+const createInstruction = (instructionId: number, recipeId: number): void => {
+    const instructionText: string = faker.lorem.paragraphs({ min: 1, max: 5 });
+    const instruction: Instruction = new Instruction(instructionId, recipeId, instructionText);
 }
 
 const createCustomField = (): void => {
@@ -30,3 +31,4 @@ const createCustomField = (): void => {
 
 createUser(1);
 createRecipe(1, 1);
+createInstruction(1, 1);
