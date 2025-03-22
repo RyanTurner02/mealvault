@@ -1,4 +1,4 @@
-class User {
+export class User {
   private _id: number;
   private _name: string;
   private _password: string;

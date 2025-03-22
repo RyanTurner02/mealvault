@@ -1,4 +1,4 @@
-class Recipe {
+export class Recipe {
   private _recipeId: number;
   private _userId: number;
   private _recipeName: string;

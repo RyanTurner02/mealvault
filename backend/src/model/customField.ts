@@ -1,4 +1,4 @@
-class CustomField {
+export class CustomField {
   private _fieldId: number;
   private _recipeId: number;
   private _fieldName: string;

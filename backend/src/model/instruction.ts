@@ -1,4 +1,4 @@
-class Instruction {
+export class Instruction {
   private _instructionId: number;
   private _recipeId: number;
   private _instructionText: string;
