@@ -1,7 +1,7 @@
 import * as mysql from 'mysql2';
 import * as dotenv from 'dotenv';
 
-dotenv.config({ path: '../.env' });
+dotenv.config({ path: '../../.env' });
 
 const connection = mysql.createConnection({
   host: process.env.HOST_URL,
