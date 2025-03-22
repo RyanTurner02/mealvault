@@ -25,10 +25,14 @@ const createInstruction = (instructionId: number, recipeId: number): void => {
     const instruction: Instruction = new Instruction(instructionId, recipeId, instructionText);
 }
 
-const createCustomField = (): void => {
-
+const createCustomField = (fieldId: number, recipeId: number): void => {
+    const fieldName: string = faker.lorem.word();
+    const fieldType: number = 1;
+    const fieldText: string = faker.lorem.word();
+    const customField: CustomField = new CustomField(fieldId, recipeId, fieldName, fieldType, fieldText);
 }
 
 createUser(1);
 createRecipe(1, 1);
 createInstruction(1, 1);
+createCustomField(1, 1);
