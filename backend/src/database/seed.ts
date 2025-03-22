@@ -32,7 +32,31 @@ const createCustomField = (fieldId: number, recipeId: number): void => {
     const customField: CustomField = new CustomField(fieldId, recipeId, fieldName, fieldType, fieldText);
 }
 
-createUser(1);
-createRecipe(1, 1);
-createInstruction(1, 1);
-createCustomField(1, 1);
+const seed = (numUsers: number) => {
+    let recipeId = 1;
+    let instructionId = 1;
+    let customFieldId = 1;
+
+    for (let userId = 1; userId <= numUsers; userId++) {
+        createUser(userId);
+        const numRecipes = faker.number.int(100);
+        
+        for (let recipeIndex = 1; recipeIndex <= numRecipes; recipeIndex++) {
+            createRecipe(recipeId, userId);
+            const numInstructions = faker.number.int(100);
+            const numCustomFields = faker.number.int(100);
+
+            for(let instructionIndex = 1; instructionIndex <= numInstructions; instructionIndex++) {
+                createInstruction(instructionId, recipeId);
+                instructionId++;
+            }
+
+            for(let customFieldIndex = 1; customFieldIndex <= numCustomFields; customFieldIndex++) {
+                createCustomField(customFieldId, recipeId);
+                customFieldId++;
+            }
+
+            recipeId++;
+        }
+    }
+}
