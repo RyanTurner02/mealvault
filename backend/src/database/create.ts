@@ -64,9 +64,10 @@ const createUserTable = () => {
   const userEmailColumn = 'user_email	VARCHAR(255) UNIQUE';
   const dateCreatedColumn = 'date_created	DATETIME DEFAULT CURRENT_TIMESTAMP';
   const dateUpdatedColumn = 'date_updated	DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
+  const dateDeletedColumn = 'date_deleted DATETIME DEFAULT NULL';
 
   const tableName: string = 'user';
-  const tableColumns: string[] = [userIdColumn, userNameColumn, userPasswordColumn, userEmailColumn, dateCreatedColumn, dateUpdatedColumn];
+  const tableColumns: string[] = [userIdColumn, userNameColumn, userPasswordColumn, userEmailColumn, dateCreatedColumn, dateUpdatedColumn, dateDeletedColumn];
   
   createTable(tableName, tableColumns);
 }
@@ -77,10 +78,11 @@ const createRecipeTable = () => {
   const recipeNameColumn = 'recipe_name	VARCHAR(255) NOT NULL';
   const dateCreatedColumn = 'date_created	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP';
   const dateUpdatedColumn = 'date_updated	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
+  const dateDeletedColumn = 'date_deleted DATETIME DEFAULT NULL';
   const foreignKeyConstraint = 'FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE';
 
   const tableName = 'recipe';
-  const tableColumns = [recipeIdColumn, userIdColumn, recipeNameColumn, dateCreatedColumn, dateUpdatedColumn];
+  const tableColumns = [recipeIdColumn, userIdColumn, recipeNameColumn, dateCreatedColumn, dateUpdatedColumn, dateDeletedColumn];
 
   createTable(tableName, tableColumns, foreignKeyConstraint);
 }
@@ -91,10 +93,11 @@ const createInstructionTable = () => {
   const instructionTextColumn = 'instruction_text TEXT';
   const dateCreatedColumn = 'date_created	DATETIME DEFAULT CURRENT_TIMESTAMP';
   const dateUpdatedColumn = 'date_updated	DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
+  const dateDeletedColumn = 'date_deleted DATETIME DEFAULT NULL';
   const foreignKeyConstraint = 'FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE';
 
   const tableName = 'instruction';
-  const tableColumns = [instructionIdColumn, recipeIdColumn, instructionTextColumn, dateCreatedColumn, dateUpdatedColumn];
+  const tableColumns = [instructionIdColumn, recipeIdColumn, instructionTextColumn, dateCreatedColumn, dateUpdatedColumn, dateDeletedColumn];
 
   createTable(tableName, tableColumns, foreignKeyConstraint);
 }
@@ -107,10 +110,11 @@ const createCustomFieldTable = () => {
   const fieldTextColumn = 'field_text	TEXT';
   const dateCreatedColumn = 'date_created	DATETIME DEFAULT CURRENT_TIMESTAMP';
   const dateUpdatedColumn = 'date_updated	DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
+  const dateDeletedColumn = 'date_deleted DATETIME DEFAULT NULL';
   const foreignKeyConstraint = 'FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE';
 
   const tableName: string = 'custom_field';
-  const tableColumns: string[] = [fieldIdColumn, recipeIdColumn, fieldNameColumn, fieldTypeColumn, fieldTextColumn, dateCreatedColumn, dateUpdatedColumn];
+  const tableColumns: string[] = [fieldIdColumn, recipeIdColumn, fieldNameColumn, fieldTypeColumn, fieldTextColumn, dateCreatedColumn, dateUpdatedColumn, dateDeletedColumn];
 
   createTable(tableName, tableColumns, foreignKeyConstraint);
 }
