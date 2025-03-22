@@ -89,10 +89,12 @@ const createInstructionTable = () => {
   const instructionIdColumn = 'instruction_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY';
   const recipeIdColumn = 'recipe_id INT NOT NULL';
   const instructionTextColumn = 'instruction_text TEXT';
+  const dateCreatedColumn = 'date_created	DATETIME DEFAULT CURRENT_TIMESTAMP';
+  const dateUpdatedColumn = 'date_updated	DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
   const foreignKeyConstraint = 'FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE';
 
   const tableName = 'instruction';
-  const tableColumns = [instructionIdColumn, recipeIdColumn, instructionTextColumn];
+  const tableColumns = [instructionIdColumn, recipeIdColumn, instructionTextColumn, dateCreatedColumn, dateUpdatedColumn];
 
   createTable(tableName, tableColumns, foreignKeyConstraint);
 }
@@ -103,10 +105,12 @@ const createCustomFieldTable = () => {
   const fieldNameColumn = 'field_name	VARCHAR(255)';
   const fieldTypeColumn = 'field_type	INT';
   const fieldTextColumn = 'field_text	TEXT';
+  const dateCreatedColumn = 'date_created	DATETIME DEFAULT CURRENT_TIMESTAMP';
+  const dateUpdatedColumn = 'date_updated	DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
   const foreignKeyConstraint = 'FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE';
 
   const tableName: string = 'custom_field';
-  const tableColumns: string[] = [fieldIdColumn, recipeIdColumn, fieldNameColumn, fieldTypeColumn, fieldTextColumn];
+  const tableColumns: string[] = [fieldIdColumn, recipeIdColumn, fieldNameColumn, fieldTypeColumn, fieldTextColumn, dateCreatedColumn, dateUpdatedColumn];
 
   createTable(tableName, tableColumns, foreignKeyConstraint);
 }

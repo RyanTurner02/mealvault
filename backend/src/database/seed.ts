@@ -46,14 +46,18 @@ const createRecipe = (recipeId: number, userId: number): Recipe => {
 
 const createInstruction = (instructionId: number, recipeId: number): Instruction => {
   const instructionText: string = faker.lorem.paragraphs({ min: 1, max: 5 });
-  return new Instruction(instructionId, recipeId, instructionText);
+  const creationDate: Date = new Date();
+  const updatedDate: Date = creationDate;
+  return new Instruction(instructionId, recipeId, instructionText, creationDate, updatedDate);
 }
 
 const createCustomField = (fieldId: number, recipeId: number): CustomField => {
   const fieldName: string = faker.lorem.word();
   const fieldType: number = 1;
   const fieldText: string = faker.lorem.word();
-  return new CustomField(fieldId, recipeId, fieldName, fieldType, fieldText);
+  const creationDate: Date = new Date();
+  const updatedDate: Date = creationDate;
+  return new CustomField(fieldId, recipeId, fieldName, fieldType, fieldText, creationDate, updatedDate);
 }
 
 const seedUser = (user: User): void => {
@@ -69,14 +73,14 @@ const seedRecipe = (recipe: Recipe): void => {
 };
 
 const seedInstruction = (instruction: Instruction): void => {
-  const query: string = `INSERT INTO instruction(recipe_id, instruction_text) VALUES(?, ?)`;
-  const values: any = [instruction.recipeId, instruction.instructionText];
+  const query: string = `INSERT INTO instruction(recipe_id, instruction_text, date_created, date_updated) VALUES(?, ?, ?, ?)`;
+  const values: any = [instruction.recipeId, instruction.instructionText, instruction.creationDate, instruction.updatedDate];
   runQuery(query, values);
 };
 
 const seedCustomField = (customField: CustomField): void => {
-  const query: string = `INSERT INTO custom_field(recipe_id, field_name, field_type, field_text) VALUES(?, ?, ?, ?)`;
-  const values: any = [customField.recipeId, customField.fieldName, customField.fieldType, customField.fieldText];
+  const query: string = `INSERT INTO custom_field(recipe_id, field_name, field_type, field_text, date_created, date_updated) VALUES(?, ?, ?, ?, ?, ?)`;
+  const values: any = [customField.recipeId, customField.fieldName, customField.fieldType, customField.fieldText, customField.creationDate, customField.updatedDate];
   runQuery(query, values);
 };
 
