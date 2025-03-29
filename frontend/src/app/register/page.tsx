@@ -11,15 +11,15 @@ export default function Register() {
             <form className="flex flex-col">
               <div className="flex flex-col mb-3">
                 <label htmlFor="name">Name</label>
-                <input className="border border-gray-400 rounded-sm p-1" id="name" type="text" required />
+                <input className="border border-gray-400 rounded-sm p-1" id="name" type="text" placeholder="Name" required />
               </div>
               <div className="flex flex-col mb-3">
                 <label htmlFor="email">Email Address</label>
-                <input className="border border-gray-400 rounded-sm p-1" id="email" type="text" required />
+                <input className="border border-gray-400 rounded-sm p-1" id="email" type="text" placeholder="Email Address" required />
               </div>
               <div className="flex flex-col mb-7">
                 <label htmlFor="password">Password</label>
-                <input className="border border-gray-400 rounded-sm p-1" id="password" type="password" required />
+                <input className="border border-gray-400 rounded-sm p-1" id="password" type="password" placeholder="Password" required />
               </div>
               <button className="rounded-full text-white bg-blue-500 hover:bg-blue-600 px-3 py-2">Create Account</button>
             </form>
