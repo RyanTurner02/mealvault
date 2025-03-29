@@ -12,6 +12,7 @@ export default function Header() {
         <div className="my-auto">
           <Link className="mx-2" href="/login">Login</Link>
           <Link className="mx-2" href="/register">Register</Link>
+          <Link className="mx-2" href="/settings">Settings</Link>
           <Link className="mx-2" href="/logout">Logout</Link>
         </div>
       </nav>
