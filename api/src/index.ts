@@ -1,9 +1,9 @@
-import express, { Request, Response } from "express";
+import express, { Express } from "express";
 
-const app = express();
+const app: Express = express();
+const port = process.env.PORT;
 
-app.get("/", (request: Request, response: Response): any => {
-    return response.json("Hello World!!!!");
-});
+const userRoute = require("./route/userRoute");
+app.use('/api/user/', userRoute);
 
-app.listen(8080, () => console.log("listening on port 8080"));
+app.listen(port, () => console.log(`Listening on port ${port}`));
