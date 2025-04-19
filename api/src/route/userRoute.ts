@@ -1,12 +1,11 @@
 import express, { Request, Response, Router } from "express";
-import { getUsers } from "../repository/db";
+import { getAllUsers, getUser } from "../repository/userRepository";
 
 const router: Router = express.Router();
 router.use(express.json());
 
 router.get("/", async (req: Request, res: Response): Promise<any> => {
-  await getUsers();
-  res.json("User");
+  res.json(await getAllUsers());
 });
 
 router.post("/create", (req: Request, res: Response): any => {
@@ -17,6 +16,10 @@ router.post("/create", (req: Request, res: Response): any => {
   };
 
   res.status(201).json({ message: "Account created", data: account });
+});
+
+router.get("/:userId", async (req: Request<{ userId: number }>, res: Response): Promise<any> => {
+  res.json(await getUser(req.params.userId));
 });
 
 module.exports = router;
