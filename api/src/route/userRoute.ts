@@ -1,9 +1,11 @@
 import express, { Request, Response, Router } from "express";
+import { getUsers } from "../repository/db";
 
 const router: Router = express.Router();
 router.use(express.json());
 
-router.get("/", (req: Request, res: Response): any => {
+router.get("/", async (req: Request, res: Response): Promise<any> => {
+  await getUsers();
   res.json("User");
 });
 
