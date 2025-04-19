@@ -1,25 +1,11 @@
-import express, { Request, Response, Router } from "express";
-import { getAllUsers, getUser } from "../repository/userRepository";
+import express, { Router } from "express";
 
 const router: Router = express.Router();
 router.use(express.json());
+const userController = require("../controller/userController");
 
-router.get("/", async (req: Request, res: Response): Promise<any> => {
-  res.json(await getAllUsers());
-});
-
-router.post("/create", (req: Request, res: Response): any => {
-  const account = {
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-  };
-
-  res.status(201).json({ message: "Account created", data: account });
-});
-
-router.get("/:userId", async (req: Request<{ userId: number }>, res: Response): Promise<any> => {
-  res.json(await getUser(req.params.userId));
-});
+router.get("/", userController.getAllUsers);
+router.post("/create", userController.createUser);
+router.get("/:userId", userController.getUserById);
 
 module.exports = router;

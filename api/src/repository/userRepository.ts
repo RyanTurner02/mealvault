@@ -2,7 +2,7 @@ import { getPool } from "./db";
 
 const pool = getPool();
 
-export const getAllUsers = async () => {
+const getAllUsers = async () => {
     try {
         const sql = "SELECT * FROM mealvault.user";
         const [rows, fields]: any = await pool.query(sql);
@@ -12,7 +12,7 @@ export const getAllUsers = async () => {
     }
 }
 
-export const getUser = async (userId: number) => {
+const getUser = async (userId: number) => {
     try {
         const sql = "SELECT * FROM mealvault.user WHERE user_id = ?";
         const values: number[] = [userId];
@@ -22,4 +22,9 @@ export const getUser = async (userId: number) => {
     } catch (err) {
         console.log(err);
     }
+}
+
+module.exports = {
+    getAllUsers,
+    getUser,
 }
