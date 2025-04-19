@@ -1,4 +1,4 @@
-export class Instruction {
+class Instruction {
   private _instructionId: number;
   private _recipeId: number;
   private _instructionText: string;
@@ -11,21 +11,5 @@ export class Instruction {
     this._instructionText = instructionText;
     this._creationDate = creationDate;
     this._updatedDate = updatedDate;
-  }
-
-  public get recipeId() {
-    return this._recipeId;
-  }
-
-  public get instructionText() {
-    return this._instructionText;
-  }
-
-  public get creationDate(): Date {
-    return this._creationDate;
-  }
-
-  public get updatedDate(): Date {
-    return this._updatedDate;
   }
 }
