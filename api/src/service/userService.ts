@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 const userRepository = require("../repository/userRepository");
 
 const getAllUsers = async () => {
@@ -5,6 +6,9 @@ const getAllUsers = async () => {
 }
 
 const createUser = async (user: any) => {
+    const saltRounds = 10;
+    user.password = bcrypt.hashSync(user.password, saltRounds);
+
     return await userRepository.createUser(user);
 }
 
