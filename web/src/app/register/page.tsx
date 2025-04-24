@@ -23,14 +23,14 @@ export default function Register() {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:8080/api/user/create", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/user/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ name, email, password })
     });
-    
+
     return await response.json();
   }
 

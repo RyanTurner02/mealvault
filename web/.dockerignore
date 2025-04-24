@@ -2,6 +2,7 @@ node_modules
 Dockerfile*
 docker-compose*.yaml
 README.md
+.env
 .git
 .gitignore
 .dockerignore
