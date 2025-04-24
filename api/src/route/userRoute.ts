@@ -1,7 +1,9 @@
 import express, { Router } from "express";
+import cors from "cors";
 
 const router: Router = express.Router();
 router.use(express.json());
+router.use(cors());
 const userController = require("../controller/userController");
 
 router.get("/", userController.getAllUsers);
