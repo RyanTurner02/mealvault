@@ -23,19 +23,14 @@ export default function Register() {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    try {
-      await fetch("http://localhost:8080/api/user/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, email, password })
-      }).then((res) => {
-        return res.json();
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    const response = await fetch("http://localhost:8080/api/user/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name, email, password })
+    });
+    return await response.json();
   }
 
   return (
