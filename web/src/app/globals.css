@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.text-field {
+    @apply border border-gray-400 rounded-sm p-1;
+}
