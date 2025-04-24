@@ -30,6 +30,7 @@ export default function Register() {
       },
       body: JSON.stringify({ name, email, password })
     });
+    
     return await response.json();
   }
 
