@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --poll ./src/index.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --poll ./src/index.ts",
     "build": "rimraf ./dist && tsc",
     "start": "npm run build && node ./dist/index.js",
     "test": "jest"
