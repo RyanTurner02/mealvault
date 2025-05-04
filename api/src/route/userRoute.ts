@@ -1,10 +1,10 @@
 import express, { Router } from "express";
 import cors from "cors";
+import * as userController from "@controller/userController";
 
 const router: Router = express.Router();
 router.use(express.json());
 router.use(cors());
-const userController = require("../controller/userController");
 
 router.get("/", userController.getAllUsers);
 router.post("/create", userController.createUser);
