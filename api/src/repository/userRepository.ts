@@ -1,4 +1,5 @@
 import { getPool } from "./db";
+import User from "@model/user";
 
 const pool = getPool();
 
@@ -12,12 +13,16 @@ export const getAllUsers = async () => {
     }
 }
 
-export const getPassword = async (email: string) => {
+export const getUserByEmail = async (email: string): Promise<any> => {
     try {
-        const sql = "SELECT user_password FROM mealvault.user WHERE user_email=?";
-        const value = [email];
-        const [rows, fields]: any = await pool.query(sql, value);
-        return rows[0].user_password;
+        const sql = "SELECT * FROM mealvault.user WHERE user_email=?";
+        const values = [email];
+        const [rows]: any = await pool.query(sql, values);
+
+        if (rows.length === 0) return null;
+
+        const user = rows[0];
+        return new User(user.user_id, user.user_name, user.user_password, user.user_email, user.date_created, user.date_updated);
     } catch (err) {
         console.log(err);
     }
