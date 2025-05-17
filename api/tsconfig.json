@@ -36,7 +36,8 @@
     "paths": {                                           /* Specify a set of entries that re-map imports to additional lookup locations. */
       "@controller/*": ["./src/controller/*"],
       "@service/*": ["./src/service/*"],
-      "@repository/*": ["./src/repository/*"]
+      "@repository/*": ["./src/repository/*"],
+      "@middleware/*": ["./src/middleware/*"]
     },
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
