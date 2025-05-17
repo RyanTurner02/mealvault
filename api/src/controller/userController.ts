@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import * as jwt from "jsonwebtoken";
 import * as userService from "@service/userService";
 
 export const getAllUsers = async (req: Request, res: Response): Promise<any> => {
@@ -27,7 +28,9 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
         res.status(500).send("Invalid login");
         return;
     }
-    res.status(200).send("Logged in");
+
+    const accessToken = jwt.sign(loginDetails.email, process.env.ACCESS_TOKEN_SECRET!);
+    res.status(200).json({accessToken: accessToken});
 }
 
 export const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<any> => {
