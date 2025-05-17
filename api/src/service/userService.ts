@@ -13,10 +13,12 @@ export const createUser = async (user: any) => {
 }
 
 export const loginUser = async (loginDetails: any) => {
-    const saltRounds = 10;
-    loginDetails.password = bcrypt.hashSync(loginDetails.password, saltRounds);
+    const hashedPassword = await userRepository.getPassword(loginDetails.email);
 
-    return await userRepository.userExistsAndIsNotDeleted(loginDetails.email, loginDetails.password);
+    if (bcrypt.compareSync(loginDetails.password, hashedPassword)) {
+        return true;
+    }
+    return false;
 }
 
 export const getUser = async (userId: number) => {

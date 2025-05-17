@@ -12,6 +12,17 @@ export const getAllUsers = async () => {
     }
 }
 
+export const getPassword = async (email: string) => {
+    try {
+        const sql = "SELECT user_password FROM mealvault.user WHERE user_email=?";
+        const value = [email];
+        const [rows, fields]: any = await pool.query(sql, value);
+        return rows[0].user_password;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export const createUser = async (user: any) => {
     try {
         const sql = `INSERT INTO mealvault.user (user_name, user_password, user_email) VALUES(?, ?, ?)`;
