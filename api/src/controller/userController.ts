@@ -30,8 +30,7 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
     }
 
     const accessToken = userAuthService.generateAccessToken(loginDetails.email);
-    const refreshToken = userAuthService.generateRefreshToken(loginDetails.email);
-    res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
+    res.status(200).json({ accessToken: accessToken });
 }
 
 export const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<any> => {
