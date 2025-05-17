@@ -1,7 +1,7 @@
 "use client";
 
 import Header from "@/app/components/header";
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, FormEventHandler, useState } from "react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,6 +15,20 @@ export default function Login() {
     setPassword(e.target.value);
   };
 
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/user/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name, email, password })
+    });
+
+    return await response.json;
+  };
+
   return (
     <>
       <Header />
@@ -22,7 +36,7 @@ export default function Login() {
         <div className="flex justify-center">
           <div className="border-2 border-blue-300 rounded-lg w-11/12 sm:w-8/12 md:w-8/12 lg:w-6/12 xl:w-4/12 mt-5 p-5">
             <h1 className="text-4xl font-bold text-center mb-3">Login</h1>
-            <form className="flex flex-col">
+            <form className="flex flex-col" onSubmit={handleSubmit}>
               <div className="flex flex-col mb-3">
                 <label htmlFor="email">Email Address</label>
                 <input className="text-field" id="email" type="text" placeholder="Email Address" value={email} onChange={updateEmail} required />
