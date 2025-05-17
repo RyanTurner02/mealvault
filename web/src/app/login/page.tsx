@@ -1,6 +1,20 @@
+"use client";
+
 import Header from "@/app/components/header";
+import { ChangeEventHandler, useState } from "react";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const updateEmail: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const updatePassword: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setPassword(e.target.value);
+  };
+
   return (
     <>
       <Header />
@@ -11,11 +25,11 @@ export default function Login() {
             <form className="flex flex-col">
               <div className="flex flex-col mb-3">
                 <label htmlFor="email">Email Address</label>
-                <input className="border border-gray-400 rounded-sm p-1" id="email" type="text" placeholder="Email Address" required />
+                <input className="border border-gray-400 rounded-sm p-1" id="email" type="text" placeholder="Email Address" value={email} onChange={updateEmail} required />
               </div>
               <div className="flex flex-col mb-7">
                 <label htmlFor="password">Password</label>
-                <input className="border border-gray-400 rounded-sm p-1" id="password" type="password" placeholder="Password" required />
+                <input className="border border-gray-400 rounded-sm p-1" id="password" type="password" placeholder="Password" value={password} onChange={updatePassword} required />
               </div>
               <button className="rounded-full text-white bg-blue-500 hover:bg-blue-600 px-3 py-2">Login</button>
             </form>
