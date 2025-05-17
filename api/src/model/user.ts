@@ -14,4 +14,10 @@ class User {
     this._creationDate = creationDate;
     this._updatedDate = updatedDate;
   }
+
+  public getPassword() {
+    return this._password;
+  }
 }
+
+export default User;
