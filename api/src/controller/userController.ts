@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import * as jwt from "jsonwebtoken";
 import * as userService from "@service/userService";
+import * as userAuthService from "@service/userAuthService";
 
 export const getAllUsers = async (req: Request, res: Response): Promise<any> => {
     res.json(await userService.getAllUsers());
@@ -29,8 +29,9 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
         return;
     }
 
-    const accessToken = jwt.sign(loginDetails.email, process.env.ACCESS_TOKEN_SECRET!);
-    res.status(200).json({accessToken: accessToken});
+    const accessToken = userAuthService.generateAccessToken(loginDetails.email);
+    const refreshToken = userAuthService.generateRefreshToken(loginDetails.email);
+    res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
 }
 
 export const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<any> => {
