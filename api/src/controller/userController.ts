@@ -21,7 +21,13 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
         password: req.body.password
     }
 
-    res.json(await userService.loginUser(loginDetails));
+    const loginSuccess = await userService.loginUser(loginDetails);
+
+    if(!loginSuccess) {
+        res.status(500).send("Invalid login");
+        return;
+    }
+    res.status(200).send("Logged in");
 }
 
 export const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<any> => {
