@@ -24,6 +24,18 @@ export const createUser = async (user: any) => {
     }
 }
 
+export const userExistsAndIsNotDeleted = async (email: string, password: string) => {
+    try {
+        const sql = `SELECT * FROM mealvault.user WHERE user_email=? AND user_password=? AND ISNULL(date_deleted)`;
+        const values = [email, password];
+        const [rows, fields]: any = await pool.query(sql, values);
+        console.log(rows);
+        return rows;
+    } catch (err) {
+        console.log(err);
+    }
+} 
+
 export const getUser = async (userId: number) => {
     try {
         const sql = "SELECT * FROM mealvault.user WHERE user_id = ?";

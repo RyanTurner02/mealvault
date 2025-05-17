@@ -15,6 +15,15 @@ export const createUser = async (req: Request, res: Response): Promise<any> => {
     res.json(await userService.createUser(user));
 }
 
+export const loginUser = async (req: Request, res: Response): Promise<any> => {
+    const loginDetails = {
+        email: req.body.email,
+        password: req.body.password
+    }
+
+    res.json(await userService.loginUser(loginDetails));
+}
+
 export const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<any> => {
     res.json(await userService.getUser(req.params.userId));
 }
