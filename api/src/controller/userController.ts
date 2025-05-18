@@ -25,12 +25,11 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
     const loginSuccess = await userService.loginUser(loginDetails);
 
     if(!loginSuccess) {
-        res.status(500).send("Invalid login");
-        return;
+        return res.status(401).send("Invalid email or password");
     }
 
     const accessToken = userAuthService.generateAccessToken(loginDetails.email);
-    res.status(200).json({ accessToken: accessToken });
+    return res.status(200).json({ accessToken: accessToken });
 }
 
 export const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<any> => {
