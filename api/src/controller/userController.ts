@@ -31,7 +31,7 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
     const accessToken = userAuthService.generateAccessToken(loginDetails.email);
     const cookieOptions: CookieOptions = {
         httpOnly: true,
-        secure: false,
+        secure: true,
         maxAge: 60 * 60 * 1000
     };
 
