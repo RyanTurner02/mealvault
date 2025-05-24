@@ -1,11 +1,13 @@
 "use client";
 
 import Header from "@/app/components/header";
+import { useRouter } from "next/navigation";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const updateEmail: ChangeEventHandler<HTMLInputElement> = (e) => {
     setEmail(e.target.value);
@@ -27,7 +29,11 @@ export default function Login() {
       body: JSON.stringify({ email, password })
     });
 
-    return await response.json;
+    if (response.ok) {
+      router.push("/");
+    } else {
+      console.log("Invalid login");
+    }
   };
 
   return (
