@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
 import * as userService from "@service/userService";
 import * as userAuthService from "@service/userAuthService";
 
@@ -29,6 +29,13 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
     }
 
     const accessToken = userAuthService.generateAccessToken(loginDetails.email);
+    const cookieOptions: CookieOptions = {
+        httpOnly: true,
+        secure: false,
+        maxAge: 60 * 60 * 1000
+    };
+
+    res.cookie('user_session', accessToken, cookieOptions);
     return res.status(200).json({ accessToken: accessToken });
 }
 
