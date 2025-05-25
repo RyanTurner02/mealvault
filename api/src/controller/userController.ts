@@ -44,7 +44,7 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
     res.cookie('access_token', accessToken, cookieOptions);
     res.cookie('refresh_token', refreshToken, cookieOptions);
 
-    return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
+    return res.sendStatus(200);
 }
 
 export const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<any> => {
