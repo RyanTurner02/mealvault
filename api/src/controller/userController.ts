@@ -17,12 +17,11 @@ export const createUser = async (req: Request, res: Response): Promise<any> => {
 }
 
 export const loginUser = async (req: Request, res: Response): Promise<any> => {
-    const loginDetails = {
-        email: req.body.email,
-        password: req.body.password
+    if (!req.body.email || !req.body.password) {
+        return res.status(400).send("Email and password are required");
     }
 
-    const user = await userService.loginUser(loginDetails);
+    const user = await userService.getUserByLogin(req.body.email, req.body.password);
 
     if(!user) {
         return res.status(401).send("Invalid email or password");

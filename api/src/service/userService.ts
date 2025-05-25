@@ -13,14 +13,14 @@ export const createUser = async (user: any) => {
     return await userRepository.createUser(user);
 }
 
-export const loginUser = async (loginDetails: any) => {
-    const user: User = await userRepository.getUserByEmail(loginDetails.email);
+export const getUserByLogin = async (email: string, password: string) => {
+    const user: User = await userRepository.getUserByEmail(email);
 
     if (!user) {
         return null;
     }
 
-    if (bcrypt.compareSync(loginDetails.password, user.getPassword())) {
+    if (bcrypt.compareSync(password, user.getPassword())) {
         return user;
     }
     return null;
