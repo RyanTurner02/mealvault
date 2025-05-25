@@ -22,21 +22,30 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
         password: req.body.password
     }
 
-    const loginSuccess = await userService.loginUser(loginDetails);
+    const user = await userService.loginUser(loginDetails);
 
-    if(!loginSuccess) {
+    if(!user) {
         return res.status(401).send("Invalid email or password");
     }
 
-    const accessToken = userAuthService.generateAccessToken(loginDetails.email);
+    const accessToken = userAuthService.generateAccessToken(user.getId(), user.getEmail());
+    const refreshToken = userAuthService.generateRefreshToken(user.getId(), user.getEmail());
+
+    if (!accessToken || !refreshToken) {
+        return res.status(500).send("Token generation failed");
+    }
+
     const cookieOptions: CookieOptions = {
         httpOnly: true,
         secure: true,
+        sameSite: 'strict',
         maxAge: 60 * 60 * 1000
     };
 
-    res.cookie('user_session', accessToken, cookieOptions);
-    return res.status(200).json({ accessToken: accessToken });
+    res.cookie('access_token', accessToken, cookieOptions);
+    res.cookie('refresh_token', refreshToken, cookieOptions);
+
+    return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
 }
 
 export const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<any> => {

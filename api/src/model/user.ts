@@ -15,8 +15,16 @@ class User {
     this._updatedDate = updatedDate;
   }
 
+  public getId() {
+    return this._id;
+  }
+
   public getPassword() {
     return this._password;
+  }
+
+  public getEmail() {
+    return this._email;
   }
 }
 
