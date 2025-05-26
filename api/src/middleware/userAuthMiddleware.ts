@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
 
 export const authenticateToken = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader?.split(' ')[1] || req.cookies?.access_token;
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.split(' ')[1];
 
     if (!token) return res.sendStatus(401);
 
