@@ -47,6 +47,10 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
     return res.sendStatus(200);
 }
 
+export const getCurrentUser = async (req: Request, res: Response): Promise<any> => {
+    return res.sendStatus(200);
+}
+
 export const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<any> => {
     res.json(await userService.getUser(req.params.userId));
 }
