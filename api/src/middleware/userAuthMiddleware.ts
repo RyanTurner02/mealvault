@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
+import { UserRequest } from "@typings/express/index";
 import * as jwt from "jsonwebtoken";
 
-export const authenticateToken = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+export const authenticateToken = async (req: UserRequest, res: Response, next: NextFunction): Promise<any> => {
     const authHeader = req.headers.authorization;
     const token = authHeader?.split(' ')[1];
 
@@ -13,7 +14,7 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
             return res.sendStatus(403);
         }
 
-        (req as Request & { user?: any }).user = user;
+        req.user = user;
         next();
     });
 }

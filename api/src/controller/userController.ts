@@ -1,4 +1,5 @@
 import { CookieOptions, Request, Response } from "express";
+import { UserRequest } from "@typings/express/index";
 import * as userService from "@service/userService";
 import * as userAuthService from "@service/userAuthService";
 
@@ -47,7 +48,11 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
     return res.sendStatus(200);
 }
 
-export const getCurrentUser = async (req: Request, res: Response): Promise<any> => {
+export const getCurrentUser = async (req: UserRequest, res: Response): Promise<any> => {
+    if (!req.user) {
+        return res.status(401).send("Unauthorized");
+    }
+
     return res.sendStatus(200);
 }
 
