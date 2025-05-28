@@ -53,7 +53,13 @@ export const getCurrentUser = async (req: UserRequest, res: Response): Promise<a
         return res.status(401).send("Unauthorized");
     }
 
-    return res.sendStatus(200);
+    const user = await userService.getUser(req.user.id);
+
+    if (!user) {
+        return res.status(404).send("User not found");
+    }
+
+    return res.status(200).json({ user: user });
 }
 
 export const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<any> => {

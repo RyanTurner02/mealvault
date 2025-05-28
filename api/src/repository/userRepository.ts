@@ -44,9 +44,8 @@ export const getUser = async (userId: number) => {
     try {
         const sql = "SELECT * FROM mealvault.user WHERE user_id = ?";
         const values: number[] = [userId];
-        const [rows, fields]: any = await pool.query(sql, [userId]);
-        console.log(rows);
-        return rows;
+        const [rows]: any = await pool.query(sql, values);
+        return new User(rows[0].user_id, rows[0].user_name, rows[0].user_password, rows[0].user_email, rows[0].date_created, rows[0].date_updated);
     } catch (err) {
         console.log(err);
     }
