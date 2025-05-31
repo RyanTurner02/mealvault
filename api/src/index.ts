@@ -10,6 +10,9 @@ const corsOptions: CorsOptions = {
 };
 app.use(cors(corsOptions));
 
+const authRoute = require("./route/AuthRoute");
+app.use('/api/auth/', authRoute);
+
 const userRoute = require("./route/userRoute");
 app.use('/api/user/', userRoute);
 
