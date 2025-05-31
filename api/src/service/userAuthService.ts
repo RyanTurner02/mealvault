@@ -1,4 +1,4 @@
-import { JwtPayload } from "@typings/express/auth";
+import { JwtPayload } from "@typings/auth";
 import * as jwt from "jsonwebtoken";
 
 export const generateAccessToken = (id: number, email: string) => {
