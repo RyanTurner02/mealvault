@@ -39,10 +39,10 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        maxAge: 60 * 60 * 1000
+        maxAge: 900000
     };
-
     res.cookie('access_token', accessToken, cookieOptions);
+    cookieOptions.maxAge = 604800000;
     res.cookie('refresh_token', refreshToken, cookieOptions);
 
     return res.sendStatus(200);

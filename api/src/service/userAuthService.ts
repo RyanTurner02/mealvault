@@ -11,7 +11,7 @@ export const generateAccessToken = (id: number, email: string) => {
     }
 
     const payload: JwtPayload = { id, email };
-    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '7d' });
+    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '15m' });
 }
 
 export const generateRefreshToken = (id: number, email: string) => {
@@ -20,5 +20,5 @@ export const generateRefreshToken = (id: number, email: string) => {
     }
 
     const payload: JwtPayload = { id, email };
-    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: '30d' });
+    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: '7d' });
 }
