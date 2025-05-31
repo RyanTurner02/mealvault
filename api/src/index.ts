@@ -1,5 +1,6 @@
 import express, { Express } from "express";
 import cors, { CorsOptions } from "cors";
+import cookieParser from "cookie-parser";
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -9,6 +10,7 @@ const corsOptions: CorsOptions = {
     optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
 const authRoute = require("./route/AuthRoute");
 app.use('/api/auth/', authRoute);

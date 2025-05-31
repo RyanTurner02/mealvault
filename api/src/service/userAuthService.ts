@@ -1,9 +1,5 @@
+import { JwtPayload } from "@typings/express/auth";
 import * as jwt from "jsonwebtoken";
-
-interface JwtPayload {
-    id: number;
-    email: string;
-}
 
 export const generateAccessToken = (id: number, email: string) => {
     if (!process.env.ACCESS_TOKEN_SECRET) {
