@@ -11,7 +11,7 @@ export const refreshAccessToken = (req: Request, res: Response): any => {
     
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!, (err: any, user: any) => {
         if (err) {
-            return res.status(406).json({ message: 'Unauthorized' });
+            return res.status(401);
         }
 
         const accessToken = generateAccessToken(user.id, user.email);
