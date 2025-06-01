@@ -23,7 +23,6 @@ const UnauthLinks = () => {
 
 export default function Header() {
   const user = useUserContext();
-  console.log(user);
 
   return (
     <header className="border-b bg-blue-700 text-white p-2">
