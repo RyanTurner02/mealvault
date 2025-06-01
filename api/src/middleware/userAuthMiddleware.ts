@@ -3,8 +3,7 @@ import { UserRequest } from "@typings/express/index";
 import * as jwt from "jsonwebtoken";
 
 export const authenticateToken = async (req: UserRequest, res: Response, next: NextFunction): Promise<any> => {
-    const authHeader = req.headers.authorization;
-    const token = authHeader?.split(' ')[1];
+    const token = req.cookies.access_token;
 
     if (!token) return res.sendStatus(401);
 
