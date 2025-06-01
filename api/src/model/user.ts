@@ -19,6 +19,10 @@ class User {
     return this._id;
   }
 
+  public getName() {
+    return this._name;
+  }
+
   public getPassword() {
     return this._password;
   }

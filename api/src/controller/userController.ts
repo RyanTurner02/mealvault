@@ -45,7 +45,7 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
     cookieOptions.maxAge = 604800000;
     res.cookie('refresh_token', refreshToken, cookieOptions);
 
-    return res.sendStatus(200);
+    return res.status(200).json({ id: user.getId(), name: user.getName(), email: user.getEmail() });
 }
 
 export const getCurrentUser = async (req: UserRequest, res: Response): Promise<any> => {

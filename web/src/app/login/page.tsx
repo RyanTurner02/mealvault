@@ -3,10 +3,12 @@
 import Header from "@/app/components/header";
 import { useRouter } from "next/navigation";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import { useUserContext } from "@/app/hooks/UserHook";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const user = useUserContext();
   const router = useRouter();
 
   const updateEmail: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -29,11 +31,17 @@ export default function Login() {
       body: JSON.stringify({ email, password })
     });
 
-    if (response.ok) {
+    response.json().then(data => {
+      if (!response.ok) {
+        console.log("Invalid login");
+        return;
+      }
+
+      user.id = data.id;
+      user.name = data.name;
+      user.email = data.email;
       router.push("/");
-    } else {
-      console.log("Invalid login");
-    }
+    });
   };
 
   return (
