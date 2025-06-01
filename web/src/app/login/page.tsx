@@ -2,7 +2,7 @@
 
 import Header from "@/app/components/header";
 import { useRouter } from "next/navigation";
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import { ChangeEventHandler, useState } from "react";
 import { useUserContext } from "@/app/hooks/UserHook";
 
 export default function Login() {
