@@ -1,6 +1,12 @@
+"use client";
+
 import Header from "@/app/components/header";
+import { useUser } from "@/app/hooks/User";
+import { useUserContext } from "@/app/hooks/UserHook";
 
 export default function Settings() {
+  const userContext = useUserContext() ?? useUser();
+
   return (
     <>
       <Header />
