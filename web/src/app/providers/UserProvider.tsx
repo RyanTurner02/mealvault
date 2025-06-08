@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { UserContext } from "@/app/contexts/UserContext";
 import { User } from "@/app/types/user";
-import { FetchUser } from "@/app/utils/FetchAuth";
+import { FetchUser } from "@/app/utils/FetchUser";
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
@@ -12,7 +12,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     
     const refreshUser = async() => {
         setIsLoading(true);
-
         const res = await FetchUser();
 
         if (res && res.ok) {
@@ -29,7 +28,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     useEffect(() => {
-        console.log("refreshing user...");
         refreshUser();
     }, []);
 
