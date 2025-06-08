@@ -1,11 +1,15 @@
 "use client";
 
 import Header from "@/app/components/header";
-import { useUser } from "@/app/hooks/User";
 import { useUserContext } from "@/app/hooks/UserHook";
+import { redirect } from "next/navigation";
 
 export default function Settings() {
-  const userContext = useUserContext() ?? useUser();
+  const userContext = useUserContext();
+
+  if (!userContext) {
+    redirect("/login");
+  }
 
   return (
     <>
@@ -20,7 +24,7 @@ export default function Settings() {
                   Name
                 </div>
                 <div className="text-gray-500">
-                  lorem ipsum
+                  {userContext.user?.name}
                 </div>
                </button>
               </div>
@@ -30,7 +34,7 @@ export default function Settings() {
                     Email Address
                   </div>
                   <div className="text-gray-500">
-                    lorem ipsum
+                    {userContext.user?.email}
                   </div>
                 </button>
               </div>

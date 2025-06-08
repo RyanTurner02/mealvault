@@ -22,7 +22,7 @@ const UnauthLinks = () => {
 }
 
 export default function Header() {
-  const user = useUserContext();
+  const userContext = useUserContext();
 
   return (
     <header className="border-b bg-blue-700 text-white p-2">
@@ -31,7 +31,7 @@ export default function Header() {
           <Link className="mx-2 text-2xl font-bold" href="/">Mealvault</Link>
         </div>
         <div className="my-auto">
-          { Object.keys(user).length === 0 ? <UnauthLinks /> : <AuthLinks /> }
+          { userContext?.user ? <AuthLinks /> : <UnauthLinks /> }
         </div>
       </nav>
     </header>

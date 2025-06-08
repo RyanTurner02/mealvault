@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import { User } from "@/app/types/user";
+import { UserContextType } from "@/app/types/UserContextType";
 
-export const UserContext = createContext<User | undefined>(undefined);
+export const UserContext = createContext<UserContextType | null>(null);
