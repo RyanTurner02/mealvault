@@ -33,7 +33,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         fetchUser();
-    }, []);
+    }, [url]);
 
     return (
         <UserContext.Provider value={contextValue}>
