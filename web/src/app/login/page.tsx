@@ -4,11 +4,13 @@ import Header from "@/app/components/header";
 import { redirect } from "next/navigation";
 import { ChangeEventHandler, useState } from "react";
 import { useUserContext } from "@/app/hooks/UserHook";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const userContext = useUserContext();
+  const router = useRouter();
 
   if (userContext?.user) {
     redirect("/");
@@ -39,7 +41,7 @@ export default function Login() {
       return;
     }
 
-    redirect("/");
+    router.push("/")
   };
 
   return (
