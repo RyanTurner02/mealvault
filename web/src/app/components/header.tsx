@@ -23,15 +23,17 @@ const UnauthLinks = () => {
 
 export default function Header() {
   const userContext = useUserContext();
+  const navigationLinks = userContext?.user ? <AuthLinks/> : <UnauthLinks />;
+  const linksToRender = userContext?.isLoading ? <></> : navigationLinks;
 
   return (
-    <header className="border-b bg-blue-700 text-white p-2">
+    <header className="p-2 text-white bg-blue-700 border-b">
       <nav className="flex flex-wrap justify-between">
         <div>
           <Link className="mx-2 text-2xl font-bold" href="/">Mealvault</Link>
         </div>
         <div className="my-auto">
-          { userContext?.user ? <AuthLinks /> : <UnauthLinks /> }
+          { linksToRender }
         </div>
       </nav>
     </header>
