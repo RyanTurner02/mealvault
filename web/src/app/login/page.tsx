@@ -43,7 +43,10 @@ export default function Login() {
     }
 
     await userContext?.refreshUser();
-    router.push("/");
+
+    if (!userContext?.isLoading && userContext?.user) {
+      router.push("/");
+    }
   };
 
   return (
