@@ -1,8 +1,7 @@
 "use client";
 
 import Header from "@/app/components/header";
-import { redirect } from "next/navigation";
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import { useUserContext } from "@/app/hooks/UserHook";
 import { useRouter } from "next/navigation";
 
@@ -12,9 +11,11 @@ export default function Login() {
   const userContext = useUserContext();
   const router = useRouter();
 
-  if (userContext?.user) {
-    redirect("/");
-  }
+  useEffect(() => {
+    if (userContext?.user) {
+      router.push("/");
+    }
+  }, [router, userContext?.user]);
 
   const updateEmail: ChangeEventHandler<HTMLInputElement> = (e) => {
     setEmail(e.target.value);
@@ -47,7 +48,8 @@ export default function Login() {
   return (
     <>
       <Header /> 
-      {!userContext?.isLoading && (
+      { !userContext?.isLoading &&
+        !userContext?.user && (
         <main>
           <div className="flex justify-center">
             <div className="w-11/12 p-5 mt-5 border-2 border-blue-300 rounded-lg sm:w-8/12 md:w-8/12 lg:w-6/12 xl:w-4/12">
