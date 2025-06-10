@@ -25,3 +25,13 @@ export const refreshAccessToken = (req: Request, res: Response): any => {
         return res.sendStatus(200);
     });
 }
+
+export const logout = (req: Request, res: Response): any => {
+    const cookieOptions: CookieOptions = {
+        maxAge: 0
+    };
+
+    res.cookie("access_token", "", cookieOptions);
+    res.cookie("refresh_token", "", cookieOptions);
+    res.status(200).json({ message: "Logged out" });
+}
