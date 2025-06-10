@@ -1,13 +1,15 @@
 "use client"
 
 import Header from "@/app/components/header";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Logout() {
+  const router = useRouter();
+
   useEffect(() => {
     logout();
-    redirect("/");
+    router.push("/");
   }, []);
 
   return (
@@ -22,14 +24,8 @@ export default function Logout() {
 
 const logout = async() => {
   const logoutUrl = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/auth/logout`;
-
-  try {
-    const response = await fetch(logoutUrl, {
-      method: "POST",
-      credentials: "include"
-    });
-    console.log(response);
-  } catch(err) {
-    console.log(err);
-  }
+  await fetch(logoutUrl, {
+    method: "POST",
+    credentials: "include"
+  });
 }
