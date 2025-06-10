@@ -42,6 +42,7 @@ export default function Login() {
       return;
     }
 
+    await userContext?.refreshUser();
     router.push("/");
   };
 
