@@ -8,9 +8,8 @@ import { FetchUser } from "@/app/utils/FetchUser";
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const contextValue = useMemo(() => ({ user, isLoading }), [user, isLoading]);
     
-    const refreshUser = async() => {
+    const refreshUser = async(): Promise<void> => {
         setIsLoading(true);
         const res = await FetchUser();
 
@@ -30,6 +29,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         refreshUser();
     }, []);
+
+    const contextValue = useMemo(() => ({ user, isLoading, refreshUser }), [user, isLoading]);
 
     return (
         <UserContext.Provider value={contextValue}>
