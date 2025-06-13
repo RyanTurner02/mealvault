@@ -23,7 +23,6 @@ export const FetchUser = async() => {
             });
 
             if (!refreshResponse.ok) {
-                console.log("Could not refresh access token");
                 return null;
             }
 
@@ -36,9 +35,10 @@ export const FetchUser = async() => {
             });
 
             return meResponse;
+        } else {
+            return null;
         }
     } catch(err) {
-        console.log(err);
         return null;
     }
 }
