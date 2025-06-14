@@ -10,6 +10,7 @@ module.exports = {
     '@service/(.*)': '<rootDir>/src/service/$1',
     '@repository/(.*)': '<rootDir>/src/repository/$1',
     '@middleware/(.*)': '<rootDir>/src/middleware/$1',
-    '@typing/(.*)': '<rootDir>/src/typing/$1',
+    '@typings/(.*)': '<rootDir>/src/typings/$1',
+    '@dtos/(.*)': '<rootDir>/src/dtos/$1',
   }
 };
