@@ -1,9 +1,39 @@
 export const FetchUser = async() => {
     const baseUrl = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}`;
+    const hasAccessTokenUrl = `${baseUrl}/api/auth/has-access-token`;
+    const hasRefreshTokenurl = `${baseUrl}/api/auth/has-refresh-token`;
     const meUrl = `${baseUrl}/api/user/me`;
     const refreshUrl = `${baseUrl}/api/auth/refresh`;
 
-    try {
+    const hasAccessToken = async() => {
+        const response = await fetch(hasAccessTokenUrl, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        
+        if (!response.ok) return false;
+        const data = await response.json();
+        return data.hasAccessToken;
+    }
+
+        const hasRefreshToken = async() => {
+        const response = await fetch(hasRefreshTokenurl, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        
+        if (!response.ok) return false;
+        const data = await response.json();
+        return data.hasRefreshToken;
+    }
+
+    const fetchUserData = async() => {
         const response = await fetch(meUrl, {
             method: "GET",
             credentials: "include",
@@ -11,33 +41,33 @@ export const FetchUser = async() => {
                 "Content-Type": "application/json"
             }
         });
+        return response.ok ? await response.json() : null;
+    }
 
-        if (response.ok) {
-            return response;
-        }
+    try {
+        const access = await hasAccessToken();
+        const refresh = await hasRefreshToken();
 
-        if (response.status === 401) {
+        if (!access && !refresh) return null;
+
+        let user = await fetchUserData();
+        if (user !== null) return user;
+
+        if (!access && refresh) {
             const refreshResponse = await fetch(refreshUrl, {
                 method: "GET",
                 credentials: "include",
-            });
+            })
 
             if (!refreshResponse.ok) {
                 return null;
             }
 
-            const meResponse = await fetch(meUrl, {
-                method: "GET",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-
-            return meResponse;
-        } else {
-            return null;
+            user = await fetchUserData();
+            return user;
         }
+
+        return null;
     } catch(err) {
         return null;
     }

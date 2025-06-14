@@ -11,15 +11,14 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     
     const refreshUser = async(): Promise<void> => {
         setIsLoading(true);
-        const res = await FetchUser();
+        const response = await FetchUser();
 
-        if (res && res.ok) {
-            const data = await res.json();
+        if (response) {
             setUser({
-                id: data.user._id,
-                name: data.user._name,
-                email: data.user._email
-            });
+                id: response.user._id,
+                name: response.user._name,
+                email: response.user._email
+            })
         } else {
             setUser(null);
         }

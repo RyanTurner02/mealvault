@@ -2,6 +2,36 @@ import { generateAccessToken } from "@service/userAuthService";
 import { CookieOptions, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 
+export const hasAccessToken = (req: Request, res: Response): any => {
+    const accessToken = req.cookies?.access_token;
+
+    if (!accessToken) {
+        return res.status(200).json({ hasAccessToken: false });
+    }
+
+    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!, (err: any) => {
+        if (err) {
+            return res.status(200).json({hasAccessToken: false});
+        }
+        return res.status(200).json({ hasAccessToken: true });
+    });
+}
+
+export const hasRefreshToken = (req: Request, res: Response): any => {
+    const refreshToken = req.cookies?.refresh_token;
+
+    if(!refreshToken) {
+        return res.status(200).json({ hasRefreshToken: false });
+    }
+
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!, (err: any) => {
+        if (err) {
+            return res.status(200).json({ hasRefreshToken: false });
+        }
+        return res.status(200).json({ hasRefreshToken: true });
+    });
+}
+
 export const refreshAccessToken = (req: Request, res: Response): any => {
     const refreshToken = req.cookies?.refresh_token;
 
@@ -11,7 +41,7 @@ export const refreshAccessToken = (req: Request, res: Response): any => {
     
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!, (err: any, user: any) => {
         if (err) {
-            return res.status(401);
+            return res.sendStatus(401);
         }
 
         const accessToken = generateAccessToken(user.id);
