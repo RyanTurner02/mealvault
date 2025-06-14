@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 const app: Express = express();
 const port = process.env.PORT;
 const corsOptions: CorsOptions = {
-    origin: 'http://localhost:3000',
+    origin: `${process.env.FRONTEND_URL}:${process.env.FRONTEND_PORT}`,
     credentials: true,
     optionsSuccessStatus: 200,
 };
