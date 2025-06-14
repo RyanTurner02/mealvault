@@ -14,7 +14,7 @@ export const refreshAccessToken = (req: Request, res: Response): any => {
             return res.status(401);
         }
 
-        const accessToken = generateAccessToken(user.id, user.email);
+        const accessToken = generateAccessToken(user.id);
         const cookieOptions: CookieOptions = {
             httpOnly: true,
             secure: true,
