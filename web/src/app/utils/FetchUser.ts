@@ -49,10 +49,6 @@ export const FetchUser = async() => {
         const refresh = await hasRefreshToken();
 
         if (!access && !refresh) return null;
-
-        let user = await fetchUserData();
-        if (user !== null) return user;
-
         if (!access && refresh) {
             const refreshResponse = await fetch(refreshUrl, {
                 method: "GET",
@@ -62,12 +58,8 @@ export const FetchUser = async() => {
             if (!refreshResponse.ok) {
                 return null;
             }
-
-            user = await fetchUserData();
-            return user;
         }
-
-        return null;
+        return await fetchUserData();
     } catch(err) {
         return null;
     }
