@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import * as AuthController from "@controller/AuthController";
+import * as AuthController from "@controller/authController";
 
 const router: Router = express.Router();
 router.use(express.json());

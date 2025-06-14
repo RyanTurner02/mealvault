@@ -2,7 +2,7 @@ import { CookieOptions, Request, Response } from "express";
 import { UserRequest } from "@typings/express/index";
 import * as userService from "@service/userService";
 import * as userAuthService from "@service/userAuthService";
-import { UserDto } from "@dtos/users/user.dto";
+import { UserDto } from "@dtos/user.dto";
 
 export const getAllUsers = async (req: Request, res: Response): Promise<any> => {
     res.json(await userService.getAllUsers());

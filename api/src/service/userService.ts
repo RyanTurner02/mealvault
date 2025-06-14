@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import * as userRepository from "@repository/userRepository";
 import User from "@model/user";
-import { UserDto } from "@dtos/users/user.dto";
+import { UserDto } from "@dtos/user.dto";
 
 export const getAllUsers = async () => {
     return await userRepository.getAllUsers();

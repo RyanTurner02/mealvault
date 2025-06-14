@@ -1,4 +1,4 @@
-import { UserDto } from "@dtos/users/user.dto";
+import { UserDto } from "@dtos/user.dto";
 import { getPool } from "./db";
 import User from "@model/user";
 
