@@ -5,7 +5,6 @@ import * as userAuthMiddleware from "@middleware/userAuthMiddleware";
 const router: Router = express.Router();
 router.use(express.json());
 
-router.get("/", userAuthMiddleware.authenticateToken, userController.getAllUsers);
 router.post("/create", userController.createUser);
 router.post("/login", userController.loginUser);
 router.get("/me", userAuthMiddleware.authenticateToken, userController.getCurrentUser);
