@@ -1,3 +1,4 @@
+import { UserDto } from "@dtos/users/user.dto";
 import { getPool } from "./db";
 import User from "@model/user";
 
@@ -28,13 +29,19 @@ export const getUserByEmail = async (email: string): Promise<any> => {
     }
 }
 
-export const createUser = async (user: any) => {
+export const createUser = async (user: UserDto) => {
     try {
         const sql = `INSERT INTO mealvault.user (user_name, user_password, user_email) VALUES(?, ?, ?)`;
         const values = [user.name, user.password, user.email];
-        const [rows, fields]: any = await pool.query(sql, values);
-        console.log(rows);
-        return rows;
+        const [rows]: any = await pool.query(sql, values);
+        
+        if (rows.affectedRows !== 1) {
+            return null;
+        }
+
+        var x = rows;
+
+        return getUser(rows.insertId);
     } catch (err) {
         console.log(err);
     }

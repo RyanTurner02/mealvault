@@ -1,14 +1,22 @@
 "use client";
 
 import Header from "@/app/components/header";
+import { ChangeEventHandler, useEffect, useState } from "react";
+import { useUserContext } from "@/app/hooks/UserHook";
 import { useRouter } from "next/navigation";
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
 
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const userContext = useUserContext();
   const router = useRouter();
+
+  useEffect(() => {
+    if (!userContext?.isLoading && userContext?.user) {
+      router.push("/");
+    }
+  }, [router, userContext?.isLoading, userContext?.user]);
 
   const updateName: ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
@@ -22,7 +30,7 @@ export default function Register() {
     setPassword(e.target.value);
   }
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/user/create`, {
@@ -33,11 +41,16 @@ export default function Register() {
       },
       body: JSON.stringify({ name, email, password })
     });
-    
-    if (response.ok) {
+
+    if (!response.ok) {
+      console.log("Could not create account");
+      return;
+    }
+
+    await userContext?.refreshUser();
+
+    if (!userContext?.isLoading && userContext?.user) {
       router.push("/");
-    } else {
-      console.log("Invlalid account creation");
     }
   }
 

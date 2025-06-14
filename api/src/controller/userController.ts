@@ -2,19 +2,43 @@ import { CookieOptions, Request, Response } from "express";
 import { UserRequest } from "@typings/express/index";
 import * as userService from "@service/userService";
 import * as userAuthService from "@service/userAuthService";
+import { UserDto } from "@dtos/users/user.dto";
 
 export const getAllUsers = async (req: Request, res: Response): Promise<any> => {
     res.json(await userService.getAllUsers());
 }
 
 export const createUser = async (req: Request, res: Response): Promise<any> => {
-    const user = {
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    };
+    const userDto: UserDto = req.body as UserDto;
 
-    res.json(await userService.createUser(user));
+    if (!userDto) {
+        return res.status(400).send("User data is required");
+    }
+
+    const user = await userService.createUser(req.body);
+
+    if (!user) {
+        return res.status(500).send("User creation failed");
+    }
+
+    const accessToken = userAuthService.generateAccessToken(user.getId(), user.getEmail());
+    const refreshToken = userAuthService.generateRefreshToken(user.getId(), user.getEmail());
+
+    if (!accessToken || !refreshToken) {
+        return res.status(500).send("Token generation failed");
+    }
+
+    const cookieOptions: CookieOptions = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        maxAge: 900000
+    };
+    res.cookie('access_token', accessToken, cookieOptions);
+    cookieOptions.maxAge = 604800000;
+    res.cookie('refresh_token', refreshToken, cookieOptions);
+
+    return res.status(200).json({ id: user.getId(), name: user.getName(), email: user.getEmail() });
 }
 
 export const loginUser = async (req: Request, res: Response): Promise<any> => {
