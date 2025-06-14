@@ -39,8 +39,6 @@ export const createUser = async (user: UserDto) => {
             return null;
         }
 
-        var x = rows;
-
         return getUser(rows.insertId);
     } catch (err) {
         console.log(err);
