@@ -4,10 +4,6 @@ import * as userService from "@service/userService";
 import * as userAuthService from "@service/userAuthService";
 import { UserDto } from "@dtos/user.dto";
 
-export const getAllUsers = async (req: Request, res: Response): Promise<any> => {
-    res.json(await userService.getAllUsers());
-}
-
 export const createUser = async (req: Request, res: Response): Promise<any> => {
     const userDto: UserDto = req.body as UserDto;
 

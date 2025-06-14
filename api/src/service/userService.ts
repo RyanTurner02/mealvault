@@ -3,10 +3,6 @@ import * as userRepository from "@repository/userRepository";
 import User from "@model/user";
 import { UserDto } from "@dtos/user.dto";
 
-export const getAllUsers = async () => {
-    return await userRepository.getAllUsers();
-}
-
 export const createUser = async (user: UserDto) => {
     const saltRounds = 10;
     user.password = bcrypt.hashSync(user.password, saltRounds);

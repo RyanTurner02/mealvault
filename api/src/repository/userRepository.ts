@@ -4,16 +4,6 @@ import User from "@model/user";
 
 const pool = getPool();
 
-export const getAllUsers = async () => {
-    try {
-        const sql = "SELECT * FROM mealvault.user";
-        const [rows, fields]: any = await pool.query(sql);
-        return rows;
-    } catch (err) {
-        console.log(err);
-    }
-}
-
 export const getUserByEmail = async (email: string): Promise<any> => {
     try {
         const sql = "SELECT * FROM mealvault.user WHERE user_email=?";
