@@ -1,18 +1,85 @@
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
+import { UserRequest } from "@typings/express/index";
 import * as userService from "@service/userService";
-
-export const getAllUsers = async (req: Request, res: Response): Promise<any> => {
-    res.json(await userService.getAllUsers());
-}
+import * as userAuthService from "@service/userAuthService";
+import { UserDto } from "@dtos/user.dto";
 
 export const createUser = async (req: Request, res: Response): Promise<any> => {
-    const user = {
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    };
+    const userDto: UserDto = req.body as UserDto;
 
-    res.json(await userService.createUser(user));
+    if (!userDto) {
+        return res.status(400).send("User data is required");
+    }
+
+    const userId: (number | null) = await userService.createUser(req.body);
+
+    if (!userId) {
+        return res.status(500).send("User creation failed");
+    }
+
+    const accessToken = userAuthService.generateAccessToken(userId);
+    const refreshToken = userAuthService.generateRefreshToken(userId);
+
+    if (!accessToken || !refreshToken) {
+        return res.status(500).send("Token generation failed");
+    }
+
+    const cookieOptions: CookieOptions = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        maxAge: 900000
+    };
+    res.cookie('access_token', accessToken, cookieOptions);
+    cookieOptions.maxAge = 604800000;
+    res.cookie('refresh_token', refreshToken, cookieOptions);
+
+    return res.status(200).json({ id: userId });
+}
+
+export const loginUser = async (req: Request, res: Response): Promise<any> => {
+    if (!req.body.email || !req.body.password) {
+        return res.status(400).send("Email and password are required");
+    }
+
+    const user = await userService.getUserByLogin(req.body.email, req.body.password);
+
+    if(!user) {
+        return res.status(401).send("Invalid email or password");
+    }
+
+    const accessToken = userAuthService.generateAccessToken(user.getId());
+    const refreshToken = userAuthService.generateRefreshToken(user.getId());
+
+    if (!accessToken || !refreshToken) {
+        return res.status(500).send("Token generation failed");
+    }
+
+    const cookieOptions: CookieOptions = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        maxAge: 900000
+    };
+    res.cookie('access_token', accessToken, cookieOptions);
+    cookieOptions.maxAge = 604800000;
+    res.cookie('refresh_token', refreshToken, cookieOptions);
+
+    return res.status(200).json({ id: user.getId(), name: user.getName(), email: user.getEmail() });
+}
+
+export const getCurrentUser = async (req: UserRequest, res: Response): Promise<any> => {
+    if (!req.user) {
+        return res.status(401).send("Unauthorized");
+    }
+
+    const user = await userService.getUser(req.user.id);
+
+    if (!user) {
+        return res.status(404).send("User not found");
+    }
+
+    return res.status(200).json({ user: user });
 }
 
 export const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<any> => {

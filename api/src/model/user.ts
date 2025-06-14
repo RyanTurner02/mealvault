@@ -14,4 +14,22 @@ class User {
     this._creationDate = creationDate;
     this._updatedDate = updatedDate;
   }
+
+  public getId() {
+    return this._id;
+  }
+
+  public getName() {
+    return this._name;
+  }
+
+  public getPassword() {
+    return this._password;
+  }
+
+  public getEmail() {
+    return this._email;
+  }
 }
+
+export default User;
