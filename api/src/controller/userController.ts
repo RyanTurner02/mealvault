@@ -15,14 +15,14 @@ export const createUser = async (req: Request, res: Response): Promise<any> => {
         return res.status(400).send("User data is required");
     }
 
-    const user = await userService.createUser(req.body);
+    const userId: (number | null) = await userService.createUser(req.body);
 
-    if (!user) {
+    if (!userId) {
         return res.status(500).send("User creation failed");
     }
 
-    const accessToken = userAuthService.generateAccessToken(user.getId(), user.getEmail());
-    const refreshToken = userAuthService.generateRefreshToken(user.getId(), user.getEmail());
+    const accessToken = userAuthService.generateAccessToken(userId);
+    const refreshToken = userAuthService.generateRefreshToken(userId);
 
     if (!accessToken || !refreshToken) {
         return res.status(500).send("Token generation failed");
@@ -38,7 +38,7 @@ export const createUser = async (req: Request, res: Response): Promise<any> => {
     cookieOptions.maxAge = 604800000;
     res.cookie('refresh_token', refreshToken, cookieOptions);
 
-    return res.status(200).json({ id: user.getId(), name: user.getName(), email: user.getEmail() });
+    return res.status(200).json({ id: userId });
 }
 
 export const loginUser = async (req: Request, res: Response): Promise<any> => {
@@ -52,8 +52,8 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
         return res.status(401).send("Invalid email or password");
     }
 
-    const accessToken = userAuthService.generateAccessToken(user.getId(), user.getEmail());
-    const refreshToken = userAuthService.generateRefreshToken(user.getId(), user.getEmail());
+    const accessToken = userAuthService.generateAccessToken(user.getId());
+    const refreshToken = userAuthService.generateRefreshToken(user.getId());
 
     if (!accessToken || !refreshToken) {
         return res.status(500).send("Token generation failed");
