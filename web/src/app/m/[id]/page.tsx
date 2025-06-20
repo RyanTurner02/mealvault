@@ -1,6 +1,6 @@
 import Header from "@/app/components/header";
 
-export default function Meal() {
+export default function Page() {
   return (
     <div className="min-h-svh">
       <Header />
