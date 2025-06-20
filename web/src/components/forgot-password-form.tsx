@@ -5,6 +5,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
+import { 
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 import {
     Form,
     FormControl,
@@ -15,6 +22,7 @@ import {
     FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const formSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
@@ -33,26 +41,36 @@ export const ForgotPasswordForm = () => {
     }
 
     return (
-        <Form { ... form }>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                                <Input placeholder="shadcn" { ... field } />
-                            </FormControl>
-                            <FormDescription>
-                                This is your email I guess...
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit">Reset Password</Button>
-            </form>
-        </Form>
+        <Card>
+            <CardHeader>
+                <CardTitle className="text-2xl">Forgot Password</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <Form { ... form }>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="someone@example.com" { ... field } />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Enter your email address to receive a password reset link.
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button type="submit" className="w-full">Reset Password</Button>
+                        <div className="flex justify-center text-sm text-center">
+                            <Link href="/login" className="underline underline-offset-4">Back to login</Link>
+                        </div>
+                    </form>
+                </Form>
+            </CardContent>
+        </Card>
     );
 }
