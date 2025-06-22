@@ -1,0 +1,31 @@
+"use client";
+
+import { UpdateEmailCard } from "@/components/cards/update-email-card";
+import { UpdatePasswordCard } from "@/components/cards/update-password-card";
+import { UpdateProfileCard } from "@/components/cards/update-profile-card";
+import { User } from "@/app/types/user";
+
+interface SettingsFormProps {
+  user: User;
+}
+
+export const SettingsForm = ({ user }: SettingsFormProps) => {
+  const name = user?.name || "";
+  const email = user?.email || "";
+
+  console.log(name);
+
+  return (
+    <>
+      <div className="mb-5">
+        <UpdateProfileCard displayName={name} />
+      </div>
+      <div className="mb-5">
+        <UpdateEmailCard email={email} />
+      </div>
+      <div className="mb-5">
+        <UpdatePasswordCard />
+      </div>
+    </>
+  );
+};
