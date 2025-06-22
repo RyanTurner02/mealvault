@@ -40,7 +40,7 @@ export default async function Home() {
   return (
     <div>
       <Header />
-      <main>
+      <main className="w-6/12 mx-auto">
         <h1 className="mt-2 mb-5 text-4xl font-bold text-center">My Recipes</h1>
         <DataTable columns={columns} data={data} />
       </main>
