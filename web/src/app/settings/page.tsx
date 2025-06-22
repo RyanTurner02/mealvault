@@ -20,6 +20,7 @@ export default function Settings() {
         <main>
           <div className="flex items-center justify-center w-full p-6 md:p-10">
             <div className="w-full max-w-sm">
+              <h1 className="mb-5 text-4xl font-bold text-center">Settings</h1>
               <SettingsForm user={userContext?.user} />
             </div>
           </div>
