@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -9,11 +11,57 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import { ChangeEventHandler, useEffect, useState } from "react"
+import { useUserContext } from "@/app/hooks/UserHook"
+import { useRouter } from "next/navigation"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const userContext = useUserContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (userContext?.user) {
+      router.push("/");
+    }
+  }, [router, userContext?.user]);
+
+  const updateEmail: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const updatePassword: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/user/login`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    if (!response.ok) {
+      console.log("Invalid login");
+      return;
+    }
+
+    await userContext?.refreshUser();
+
+    if (!userContext?.isLoading && userContext?.user) {
+      router.push("/");
+    }
+  };
+  
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -21,7 +69,7 @@ export function LoginForm({
           <CardTitle className="text-2xl">Login</CardTitle>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -29,6 +77,8 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="someone@example.com"
+                  value={email}
+                  onChange={updateEmail}
                   required
                 />
               </div>
@@ -42,7 +92,14 @@ export function LoginForm({
                     Forgot your password?
                   </Link>
                 </div>
-                <Input id="password" type="password" placeholder="Password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={updatePassword}
+                  required
+                />
               </div>
               <Button type="submit" className="w-full">
                 Login
