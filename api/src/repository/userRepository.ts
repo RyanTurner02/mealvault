@@ -24,16 +24,20 @@ export const getUserByEmail = async (email: string): Promise<any> => {
     }
 }
 
-export const createUser = async (user: UserDto): Promise<number | null> => {
-    const sql = `INSERT INTO mealvault.user (user_name, user_password, user_email) VALUES(?, ?, ?)`;
-    const values = [user.name, user.password, user.email];
-    const [rows]: any = await pool.query(sql, values);
+export const createUser = async (userDto: UserDto): Promise<any> => {
+    try {
+        const result = await db.insert(user).values({
+            userName: userDto.name,
+            userPassword: userDto.password,
+            userEmail: userDto.email,
+        });
         
-    if (rows.affectedRows !== 1) {
-        return null;
-    }
+        if (!result?.length) return null;
 
-    return rows.insertId;
+        return result[0].insertId;
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 export const getUser = async (userId: number) => {
