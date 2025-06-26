@@ -4,7 +4,7 @@ import { db } from "@db/index";
 import { user } from "@db/schema";
 import { eq } from "drizzle-orm";
 
-export const getUserByEmail = async (email: string): Promise<any> => {
+export const getUserByEmail = async (email: string): Promise<User | null> => {
     try {
         const result = await db.select().from(user).where(eq(user.userEmail, email));
 
@@ -17,11 +17,11 @@ export const getUserByEmail = async (email: string): Promise<any> => {
             result[0].userEmail,
         );
     } catch (err) {
-        console.log(err);
+        return null;
     }
 }
 
-export const createUser = async (userDto: UserDto): Promise<any> => {
+export const createUser = async (userDto: UserDto): Promise<number | null> => {
     try {
         const result = await db.insert(user).values({
             userName: userDto.name,
@@ -33,11 +33,11 @@ export const createUser = async (userDto: UserDto): Promise<any> => {
 
         return result[0].insertId;
     } catch (err) {
-        console.log(err);
+        return null;
     }
 }
 
-export const getUser = async (userId: number) => {
+export const getUser = async (userId: number): Promise<User | null> => {
     try {
         const result = await db.select().from(user).where(eq(user.userId, userId));
 
@@ -50,6 +50,6 @@ export const getUser = async (userId: number) => {
             result[0].userEmail
         );
     } catch (err) {
-        console.log(err);
+        return null;
     }
 }
