@@ -1,11 +1,8 @@
 import { UserDto } from "@dtos/user.dto";
-import { getPool } from "./db";
 import User from "@model/user";
 import { db } from "@db/index";
 import { user } from "@db/schema";
 import { eq } from "drizzle-orm";
-
-const pool = getPool();
 
 export const getUserByEmail = async (email: string): Promise<any> => {
     try {
