@@ -1,43 +1,55 @@
 import { UserDto } from "@dtos/user.dto";
-import { getPool } from "./db";
 import User from "@model/user";
+import { db } from "@db/index";
+import { user } from "@db/schema";
+import { eq } from "drizzle-orm";
 
-const pool = getPool();
-
-export const getUserByEmail = async (email: string): Promise<any> => {
+export const getUserByEmail = async (email: string): Promise<User | null> => {
     try {
-        const sql = "SELECT * FROM mealvault.user WHERE user_email=?";
-        const values = [email];
-        const [rows]: any = await pool.query(sql, values);
+        const result = await db.select().from(user).where(eq(user.userEmail, email));
 
-        if (rows.length === 0) return null;
+        if (!result?.length) return null;
 
-        const user = rows[0];
-        return new User(user.user_id, user.user_name, user.user_password, user.user_email, user.date_created, user.date_updated);
+        return new User(
+            result[0].userId,
+            result[0].userName,
+            result[0].userPassword,
+            result[0].userEmail,
+        );
     } catch (err) {
-        console.log(err);
-    }
-}
-
-export const createUser = async (user: UserDto): Promise<number | null> => {
-    const sql = `INSERT INTO mealvault.user (user_name, user_password, user_email) VALUES(?, ?, ?)`;
-    const values = [user.name, user.password, user.email];
-    const [rows]: any = await pool.query(sql, values);
-        
-    if (rows.affectedRows !== 1) {
         return null;
     }
-
-    return rows.insertId;
 }
 
-export const getUser = async (userId: number) => {
+export const createUser = async (userDto: UserDto): Promise<number | null> => {
     try {
-        const sql = "SELECT * FROM mealvault.user WHERE user_id = ?";
-        const values: number[] = [userId];
-        const [rows]: any = await pool.query(sql, values);
-        return new User(rows[0].user_id, rows[0].user_name, rows[0].user_password, rows[0].user_email, rows[0].date_created, rows[0].date_updated);
+        const result = await db.insert(user).values({
+            userName: userDto.name,
+            userPassword: userDto.password,
+            userEmail: userDto.email,
+        });
+        
+        if (!result?.length) return null;
+
+        return result[0].insertId;
     } catch (err) {
-        console.log(err);
+        return null;
+    }
+}
+
+export const getUser = async (userId: number): Promise<User | null> => {
+    try {
+        const result = await db.select().from(user).where(eq(user.userId, userId));
+
+        if (!result?.length) return null;
+
+        return new User(
+            result[0].userId,
+            result[0].userName,
+            result[0].userPassword,
+            result[0].userEmail
+        );
+    } catch (err) {
+        return null;
     }
 }

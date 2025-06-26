@@ -11,7 +11,7 @@ export const createUser = async (user: UserDto) => {
 }
 
 export const getUserByLogin = async (email: string, password: string) => {
-    const user: User = await userRepository.getUserByEmail(email);
+    const user: User | null = await userRepository.getUserByEmail(email);
 
     if (!user) {
         return null;
