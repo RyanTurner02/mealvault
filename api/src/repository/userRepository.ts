@@ -38,10 +38,16 @@ export const createUser = async (user: UserDto): Promise<number | null> => {
 
 export const getUser = async (userId: number) => {
     try {
-        const sql = "SELECT * FROM mealvault.user WHERE user_id = ?";
-        const values: number[] = [userId];
-        const [rows]: any = await pool.query(sql, values);
-        return new User(rows[0].user_id, rows[0].user_name, rows[0].user_password, rows[0].user_email);
+        const result = await db.select().from(user).where(eq(user.userId, userId));
+
+        if (!result?.length) return null;
+
+        return new User(
+            result[0].userId,
+            result[0].userName,
+            result[0].userPassword,
+            result[0].userEmail
+        );
     } catch (err) {
         console.log(err);
     }
