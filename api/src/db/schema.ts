@@ -46,9 +46,9 @@ export const user = mysqlTable("user", {
 	userId: int("user_id").autoincrement().notNull(),
 	userName: varchar("user_name", { length: 255 }).notNull(),
 	userPassword: varchar("user_password", { length: 255 }).notNull(),
-	userEmail: varchar("user_email", { length: 255 }),
-	dateCreated: datetime("date_created", { mode: 'string'}).default(sql`(CURRENT_TIMESTAMP)`),
-	dateUpdated: datetime("date_updated", { mode: 'string'}).default(sql`(CURRENT_TIMESTAMP)`),
+	userEmail: varchar("user_email", { length: 255 }).notNull(),
+	dateCreated: datetime("date_created", { mode: 'string'}).default(sql`(CURRENT_TIMESTAMP)`).notNull(),
+	dateUpdated: datetime("date_updated", { mode: 'string'}).default(sql`(CURRENT_TIMESTAMP)`).notNull(),
 	dateDeleted: datetime("date_deleted", { mode: 'string'}),
 },
 (table) => [

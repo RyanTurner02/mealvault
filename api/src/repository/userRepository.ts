@@ -1,19 +1,24 @@
 import { UserDto } from "@dtos/user.dto";
 import { getPool } from "./db";
 import User from "@model/user";
+import { db } from "@db/index";
+import { user } from "@db/schema";
+import { eq } from "drizzle-orm";
 
 const pool = getPool();
 
 export const getUserByEmail = async (email: string): Promise<any> => {
     try {
-        const sql = "SELECT * FROM mealvault.user WHERE user_email=?";
-        const values = [email];
-        const [rows]: any = await pool.query(sql, values);
+        const result = await db.select().from(user).where(eq(user.userEmail, email));
 
-        if (rows.length === 0) return null;
+        if (!result?.length) return null;
 
-        const user = rows[0];
-        return new User(user.user_id, user.user_name, user.user_password, user.user_email, user.date_created, user.date_updated);
+        return new User(
+            result[0].userId,
+            result[0].userName,
+            result[0].userPassword,
+            result[0].userEmail,
+        );
     } catch (err) {
         console.log(err);
     }
@@ -36,7 +41,7 @@ export const getUser = async (userId: number) => {
         const sql = "SELECT * FROM mealvault.user WHERE user_id = ?";
         const values: number[] = [userId];
         const [rows]: any = await pool.query(sql, values);
-        return new User(rows[0].user_id, rows[0].user_name, rows[0].user_password, rows[0].user_email, rows[0].date_created, rows[0].date_updated);
+        return new User(rows[0].user_id, rows[0].user_name, rows[0].user_password, rows[0].user_email);
     } catch (err) {
         console.log(err);
     }
