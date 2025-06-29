@@ -70,4 +70,15 @@ describe("MySQL Testcontainers", () => {
     expect(actual?.getEmail()).toBe(sampleUser.getEmail());
     expect(actual?.getPassword()).toBe(sampleUser.getPassword());
   });
+
+  it("will get a user by an id", async () => {
+    const actual: User | null = await userRepository.getUser(sampleUser.getId());
+
+    expect(actual).not.toBeNull();
+
+    expect(actual?.getId()).toBe(sampleUser.getId());
+    expect(actual?.getName()).toBe(sampleUser.getName());
+    expect(actual?.getEmail()).toBe(sampleUser.getEmail());
+    expect(actual?.getPassword()).toBe(sampleUser.getPassword());
+  });
 });
