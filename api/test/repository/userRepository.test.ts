@@ -63,7 +63,7 @@ describe("UserRepository", () => {
     }
   });
 
-  it("creates a user with a name, email, and password", async () => {
+  it("creates user with name, email, and password", async () => {
     const newUser: UserDto = {
       name: faker.internet.displayName(),
       email: faker.internet.exampleEmail(),
