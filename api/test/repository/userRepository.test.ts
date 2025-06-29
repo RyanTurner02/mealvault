@@ -25,9 +25,9 @@ describe("MySQL Testcontainers", () => {
   beforeAll(async () => {
     container = await new MySqlContainer("mysql:9.3.0")
       .withName("user-repository-test-container")
-      .withUsername(process.env.MYSQL_USER!)
-      .withUserPassword(process.env.MYSQL_PASSWORD!)
-      .withDatabase(process.env.MYSQL_DATABASE!)
+      .withUsername("test")
+      .withUserPassword("test")
+      .withDatabase("test_db")
       .withExposedPorts(3306)
       .start();
 
