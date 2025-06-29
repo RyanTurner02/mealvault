@@ -7,6 +7,8 @@ import { user } from "@db/schema";
 import * as UserRepository from "@repository/userRepository";
 import User from "@model/user";
 import { faker } from "@faker-js/faker";
+import { UserDto } from "@dtos/user.dto";
+import { count } from "drizzle-orm";
 
 describe("UserRepository", () => {
   jest.setTimeout(30000);
@@ -61,11 +63,27 @@ describe("UserRepository", () => {
     }
   });
 
+  it("creates a user with a name, email, and password", async () => {
+    const newUser: UserDto = {
+      name: faker.internet.displayName(),
+      email: faker.internet.exampleEmail(),
+      password: faker.internet.password(),
+    };
+
+    const expected: number = (await db
+      .select({ count: count() })
+      .from(user))
+      .length;
+    const actual: number = await userRepository.createUser(newUser);
+
+    expect(actual).toEqual(expected + 1);
+  });
+
   it("gets a user by email", async () => {
     const actual: User | null = await userRepository.getUserByEmail(sampleUser.getEmail());
 
     expect(actual).not.toBeNull();
-    
+
     expect(actual?.getId()).toBe(sampleUser.getId());
     expect(actual?.getName()).toBe(sampleUser.getName());
     expect(actual?.getEmail()).toBe(sampleUser.getEmail());
