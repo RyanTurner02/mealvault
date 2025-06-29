@@ -8,7 +8,7 @@ import * as UserRepository from "@repository/userRepository";
 import User from "@model/user";
 import { faker } from "@faker-js/faker";
 
-describe("MySQL Testcontainers", () => {
+describe("UserRepository", () => {
   jest.setTimeout(30000);
 
   let container: StartedMySqlContainer;
@@ -61,17 +61,18 @@ describe("MySQL Testcontainers", () => {
     }
   });
 
-  it("will get a user by an email address", async () => {
+  it("gets a user by email", async () => {
     const actual: User | null = await userRepository.getUserByEmail(sampleUser.getEmail());
 
     expect(actual).not.toBeNull();
+    
     expect(actual?.getId()).toBe(sampleUser.getId());
     expect(actual?.getName()).toBe(sampleUser.getName());
     expect(actual?.getEmail()).toBe(sampleUser.getEmail());
     expect(actual?.getPassword()).toBe(sampleUser.getPassword());
   });
 
-  it("will get a user by an id", async () => {
+  it("gets a user by id", async () => {
     const actual: User | null = await userRepository.getUser(sampleUser.getId());
 
     expect(actual).not.toBeNull();
