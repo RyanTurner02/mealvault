@@ -1,12 +1,25 @@
 import { MySqlContainer, StartedMySqlContainer } from "@testcontainers/mysql";
 import mysql, { Pool } from "mysql2/promise";
 import "dotenv/config";
+import { migrate } from "drizzle-orm/mysql2/migrator";
+import { drizzle } from "drizzle-orm/mysql2";
+import { user } from "@db/schema";
+import * as userRepository from "@repository/userRepository";
+import User from "@model/user";
+import { faker } from "@faker-js/faker";
 
 describe("MySQL Testcontainers", () => {
   jest.setTimeout(30000);
 
   let container: StartedMySqlContainer;
   let pool: Pool;
+  let db : any;
+
+  const sampleUser: User = new User(1,
+    faker.internet.displayName(),
+    faker.internet.password(),
+    faker.internet.exampleEmail()
+  );
 
   beforeAll(async () => {
     container = await new MySqlContainer("mysql:8.0")
@@ -23,6 +36,15 @@ describe("MySQL Testcontainers", () => {
       user: container.getUsername(),
       password: container.getUserPassword(),
     });
+
+    db = drizzle(pool);
+    await migrate(db, { migrationsFolder: "drizzle" });
+
+    const seedResult = await db.insert(user).values({
+      userName: sampleUser.getName(),
+      userPassword: sampleUser.getPassword(),
+      userEmail: sampleUser.getEmail(),
+    });
   });
 
   afterAll(async () => {
@@ -35,8 +57,10 @@ describe("MySQL Testcontainers", () => {
     }
   });
 
-  it("runs a query", async () => {
-    const [rows] = await pool.execute("SELECT 1 as res");
-    expect(rows).toEqual([{ res: 1 }]);
+  it("will get a user by an email address", async () => {
+    const actual: User | null = await userRepository.getUserByEmail(sampleUser.getEmail());
+
+    expect(actual).not.toBeNull();
+    expect(sampleUser).toMatchObject({ actual });
   });
 });
