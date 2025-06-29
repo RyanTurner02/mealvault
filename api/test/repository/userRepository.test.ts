@@ -23,7 +23,8 @@ describe("MySQL Testcontainers", () => {
   );
 
   beforeAll(async () => {
-    container = await new MySqlContainer("mysql:8.0")
+    container = await new MySqlContainer("mysql:9.3.0")
+      .withName("user-repository-test-container")
       .withUsername(process.env.MYSQL_USER!)
       .withUserPassword(process.env.MYSQL_PASSWORD!)
       .withDatabase(process.env.MYSQL_DATABASE!)
