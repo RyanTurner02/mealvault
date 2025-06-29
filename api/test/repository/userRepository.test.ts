@@ -2,9 +2,9 @@ import { MySqlContainer, StartedMySqlContainer } from "@testcontainers/mysql";
 import mysql, { Pool } from "mysql2/promise";
 import "dotenv/config";
 import { migrate } from "drizzle-orm/mysql2/migrator";
-import { drizzle } from "drizzle-orm/mysql2";
+import { drizzle, MySql2Database } from "drizzle-orm/mysql2";
 import { user } from "@db/schema";
-import * as userRepository from "@repository/userRepository";
+import * as UserRepository from "@repository/userRepository";
 import User from "@model/user";
 import { faker } from "@faker-js/faker";
 
@@ -13,7 +13,8 @@ describe("MySQL Testcontainers", () => {
 
   let container: StartedMySqlContainer;
   let pool: Pool;
-  let db : any;
+  let db: MySql2Database<Record<string, never>>;
+  let userRepository: any;
 
   const sampleUser: User = new User(1,
     faker.internet.displayName(),
@@ -45,6 +46,8 @@ describe("MySQL Testcontainers", () => {
       userPassword: sampleUser.getPassword(),
       userEmail: sampleUser.getEmail(),
     });
+
+    userRepository = UserRepository.createUserRepository(db);
   });
 
   afterAll(async () => {
@@ -61,6 +64,9 @@ describe("MySQL Testcontainers", () => {
     const actual: User | null = await userRepository.getUserByEmail(sampleUser.getEmail());
 
     expect(actual).not.toBeNull();
-    expect(sampleUser).toMatchObject({ actual });
+    expect(actual?.getId()).toBe(sampleUser.getId());
+    expect(actual?.getName()).toBe(sampleUser.getName());
+    expect(actual?.getEmail()).toBe(sampleUser.getEmail());
+    expect(actual?.getPassword()).toBe(sampleUser.getPassword());
   });
 });

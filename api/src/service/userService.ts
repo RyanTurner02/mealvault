@@ -1,7 +1,10 @@
 import bcrypt from "bcrypt";
-import * as userRepository from "@repository/userRepository";
+import * as UserRepository from "@repository/userRepository";
 import User from "@model/user";
 import { UserDto } from "@dtos/user.dto";
+import { db } from "@db/index";
+
+const userRepository = UserRepository.createUserRepository(db);
 
 export const createUser = async (user: UserDto) => {
     const saltRounds = 10;
