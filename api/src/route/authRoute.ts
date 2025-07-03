@@ -9,4 +9,4 @@ router.get("/has-refresh-token", AuthController.hasRefreshToken);
 router.get("/refresh", AuthController.refreshAccessToken);
 router.post("/logout", AuthController.logout);
 
-module.exports = router;
+export default router;
