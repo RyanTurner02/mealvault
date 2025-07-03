@@ -2,30 +2,45 @@ import bcrypt from "bcrypt";
 import * as UserRepository from "@repository/userRepository";
 import User from "@model/user";
 import { UserDto } from "@dtos/user.dto";
-import { db } from "@db/index";
 
-const userRepository = UserRepository.createUserRepository(db);
+interface UserServiceDependencies {
+    userRepository: ReturnType<typeof UserRepository.createUserRepository>
+};
 
-export const createUser = async (user: UserDto) => {
-    const saltRounds = 10;
-    user.password = bcrypt.hashSync(user.password, saltRounds);
+export interface IUserService {
+    createUser(user: UserDto): Promise<number | null>;
+    getUserByLogin(email: string, password: string): Promise<User | null>;
+    getUser(userId: number): Promise<User | null>;
+};
 
-    return await userRepository.createUser(user);
-}
+export const createUserService = ({ userRepository } : UserServiceDependencies): IUserService => {
+    const createUser = async (user: UserDto) => {
+        const saltRounds = 10;
+        user.password = await bcrypt.hash(user.password, saltRounds);
 
-export const getUserByLogin = async (email: string, password: string) => {
-    const user: User | null = await userRepository.getUserByEmail(email);
+        return await userRepository.createUser(user);
+    }
 
-    if (!user) {
+    const getUserByLogin = async (email: string, password: string) => {
+        const user: User | null = await userRepository.getUserByEmail(email);
+
+        if (!user) {
+            return null;
+        }
+
+        if (bcrypt.compareSync(password, user.getPassword())) {
+            return user;
+        }
         return null;
     }
 
-    if (bcrypt.compareSync(password, user.getPassword())) {
-        return user;
+    const getUser = async (userId: number) => {
+        return await userRepository.getUser(userId);
     }
-    return null;
-}
 
-export const getUser = async (userId: number) => {
-    return await userRepository.getUser(userId);
+    return {
+        createUser,
+        getUserByLogin,
+        getUser
+    };
 }

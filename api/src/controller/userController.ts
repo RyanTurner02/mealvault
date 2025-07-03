@@ -1,8 +1,13 @@
 import { CookieOptions, Request, Response } from "express";
 import { UserRequest } from "@typings/express/index";
-import * as userService from "@service/userService";
+import { createUserService } from "@service/userService";
+import * as UserRepository from "@repository/userRepository";
 import * as userAuthService from "@service/userAuthService";
 import { UserDto } from "@dtos/user.dto";
+import { db } from "@db/index";
+
+const userRepository = UserRepository.createUserRepository(db);
+const userService = createUserService({ userRepository });
 
 export const createUser = async (req: Request, res: Response): Promise<any> => {
     const userDto: UserDto = req.body as UserDto;
