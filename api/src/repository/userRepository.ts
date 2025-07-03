@@ -63,5 +63,9 @@ export const createUserRepository = (db: MySql2Database<Record<string, never>>) 
         }
     }
 
-    return { getUserByEmail, createUser, getUser };
+    return {
+        getUserByEmail,
+        createUser,
+        getUser
+    };
 }
