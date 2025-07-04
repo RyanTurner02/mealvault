@@ -4,7 +4,17 @@ import { user } from "@db/schema";
 import { eq } from "drizzle-orm";
 import { MySql2Database } from "drizzle-orm/mysql2";
 
-export const createUserRepository = (db: MySql2Database<Record<string, never>>) => {
+interface UserRepositoryDependencies {
+    db: MySql2Database<Record<string, never>>;
+}
+
+export interface IUserRepository {
+    getUserByEmail(email: string): Promise<User | null>;
+    createUser(userDto: UserDto): Promise<number | null>;
+    getUser(userId: number): Promise<User | null>;
+};
+
+export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserRepository => {
     const getUserByEmail = async (email: string): Promise<User | null> => {
         try {
             const result = await db

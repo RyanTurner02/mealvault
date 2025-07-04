@@ -50,7 +50,7 @@ describe("UserRepository", () => {
       userEmail: sampleUser.getEmail(),
     });
 
-    userRepository = UserRepository.createUserRepository(db);
+    userRepository = UserRepository.createUserRepository({ db });
   });
 
   afterAll(async () => {
