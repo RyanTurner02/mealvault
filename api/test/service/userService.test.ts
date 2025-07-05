@@ -60,23 +60,23 @@ describe("UserService", () => {
     });
 
     it("gets user by email and password", async () => {
-        const password = faker.internet.password();
+        const rawPassword = faker.internet.password();
         const expected: User = new User(
             1,
             faker.internet.displayName(),
-            password,
+            rawPassword,
             faker.internet.exampleEmail(),
         );
 
         mockUserRepository.getUserByEmail.mockResolvedValue(expected);
 
-        const actual: User | null = await userService.getUserByLogin(expected.getEmail(), password);
+        const actual: User | null = await userService.getUserByLogin(expected.getEmail(), rawPassword);
 
         expect(mockUserRepository.getUserByEmail).toHaveBeenCalledTimes(1);
         expect(mockUserRepository.getUserByEmail).toHaveBeenCalledWith(expected.getEmail());
 
         expect(bcrypt.compareSync).toHaveBeenCalledTimes(1);
-        expect(bcrypt.compareSync).toHaveBeenCalledWith(password, expected.getPassword());
+        expect(bcrypt.compareSync).toHaveBeenCalledWith(rawPassword, expected.getPassword());
 
         expect(actual).not.toBeNull();
         expect(actual).toEqual(expected);
