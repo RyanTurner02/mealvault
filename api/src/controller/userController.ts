@@ -1,13 +1,13 @@
 import { CookieOptions, Request, Response } from "express";
 import { UserRequest } from "@typings/express/index";
-import { createUserService } from "@service/userService";
-import * as UserRepository from "@repository/userRepository";
+import { createUserService, IUserService } from "@service/userService";
+import { createUserRepository, IUserRepository } from "@repository/userRepository";
 import * as userAuthService from "@service/userAuthService";
 import { UserDto } from "@dtos/user.dto";
 import { db } from "@db/index";
 
-const userRepository = UserRepository.createUserRepository(db);
-const userService = createUserService({ userRepository });
+const userRepository: IUserRepository = createUserRepository({ db });
+const userService: IUserService = createUserService({ userRepository });
 
 export interface IUserController {
     createUser(req: Request, res: Response): Promise<any>;
