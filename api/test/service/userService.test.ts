@@ -3,6 +3,7 @@ import { createUserService, IUserService } from "@service/userService";
 import { faker } from "@faker-js/faker";
 import User from "@model/user";
 import * as bcrypt from "bcrypt";
+import { UserDto } from "@dtos/user.dto";
 
 const mockUserRepository: jest.Mocked<IUserRepository> = {
     getUserByEmail: jest.fn(),
@@ -10,8 +11,10 @@ const mockUserRepository: jest.Mocked<IUserRepository> = {
     getUser: jest.fn(),
 };
 
+const hashedPassword = faker.internet.password();
+
 jest.mock("bcrypt", () => ({
-    hash: jest.fn((password: string, salt: number) => Promise.resolve("hashedPassword")),
+    hash: jest.fn((password: string, salt: number) => Promise.resolve(hashedPassword)),
     compareSync: jest.fn((password: string, hashedPassword: string) => password === hashedPassword),
 }));
 
@@ -29,7 +32,31 @@ describe("UserService", () => {
     });
 
     it("creates user with name, email, and password", async () => {
+        const rawPassword = faker.internet.password();
+        const userDto: UserDto = {
+            name: faker.internet.displayName(),
+            email: faker.internet.exampleEmail(),
+            password: rawPassword,
+        };
 
+        mockUserRepository.createUser.mockResolvedValue(1);
+
+        const expected: number = 1;
+        const actual: number | null = await userService.createUser(userDto);
+
+        expect(bcrypt.hash).toHaveBeenCalledWith(rawPassword, 10);
+        expect(bcrypt.hash).toHaveBeenCalledTimes(1);
+
+        expect(mockUserRepository.createUser).toHaveBeenCalledTimes(1);
+        expect(mockUserRepository.createUser).toHaveBeenCalledWith(
+            expect.objectContaining({
+                name: userDto.name,
+                email: userDto.email,
+                password: hashedPassword,
+            }
+        ));
+
+        expect(actual).toBe(expected);
     });
 
     it("gets user by email and password", async () => {
