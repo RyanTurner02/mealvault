@@ -1,9 +1,11 @@
 import express, { Router } from "express";
 import { createUserController, IUserController } from "@controller/userController";
 import * as userAuthMiddleware from "@middleware/userAuthMiddleware";
+import { createUserAuthService, IUserAuthService } from "@service/userAuthService";
 
 const router: Router = express.Router();
-const userController: IUserController = createUserController();
+const userAuthService: IUserAuthService = createUserAuthService();
+const userController: IUserController = createUserController({ userAuthService });
 
 router.use(express.json());
 router.post("/create", userController.createUser);

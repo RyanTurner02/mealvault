@@ -1,20 +1,32 @@
 import { JwtPayload } from "@typings/auth";
 import * as jwt from "jsonwebtoken";
 
-export const generateAccessToken = (id: number) => {
-    if (!process.env.ACCESS_TOKEN_SECRET) {
-        return null;
-    }
-
-    const payload: JwtPayload = { id };
-    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+export interface IUserAuthService {
+    generateAccessToken(id: number): string | null;
+    generateRefreshToken(id: number): string | null;
 }
 
-export const generateRefreshToken = (id: number) => {
-    if (!process.env.REFRESH_TOKEN_SECRET) {
-        return null;
+export const createUserAuthService = (): IUserAuthService => {
+    const generateAccessToken = (id: number): string | null => {
+        if (!process.env.ACCESS_TOKEN_SECRET) {
+            return null;
+        }
+
+        const payload: JwtPayload = { id };
+        return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
     }
 
-    const payload: JwtPayload = { id };
-    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    const generateRefreshToken = (id: number): string | null => {
+        if (!process.env.REFRESH_TOKEN_SECRET) {
+            return null;
+        }
+
+        const payload: JwtPayload = { id };
+        return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    }
+
+    return {
+        generateAccessToken,
+        generateRefreshToken
+    };
 }

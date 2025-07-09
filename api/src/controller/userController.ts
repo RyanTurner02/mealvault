@@ -9,6 +9,10 @@ import { db } from "@db/index";
 const userRepository: IUserRepository = createUserRepository({ db });
 const userService: IUserService = createUserService({ userRepository });
 
+interface UserControllerDependencies {
+    userAuthService: ReturnType<typeof userAuthService.createUserAuthService>
+};
+
 export interface IUserController {
     createUser(req: Request, res: Response): Promise<any>;
     loginUser(req: Request, res: Response): Promise<any>;
@@ -16,7 +20,7 @@ export interface IUserController {
     getUserById(req: Request<{ userId: number }>, res: Response): Promise<any>;
 };
 
-export const createUserController = (): IUserController => {
+export const createUserController = ({ userAuthService }: UserControllerDependencies): IUserController => {
     const createUser = async (req: Request, res: Response): Promise<any> => {
         const userDto: UserDto = req.body as UserDto;
 
