@@ -1,13 +1,8 @@
 import { CookieOptions, Request, Response } from "express";
 import { UserRequest } from "@typings/express/index";
-import { createUserService, IUserService } from "@service/userService";
-import { createUserRepository, IUserRepository } from "@repository/userRepository";
+import { IUserService } from "@service/userService";
 import { IUserAuthService } from "@service/userAuthService";
 import { UserDto } from "@dtos/user.dto";
-import { db } from "@db/index";
-
-const userRepository: IUserRepository = createUserRepository({ db });
-const userService: IUserService = createUserService({ userRepository });
 
 interface UserControllerDependencies {
     userService: IUserService;
