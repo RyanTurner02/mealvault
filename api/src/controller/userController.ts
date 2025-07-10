@@ -2,7 +2,7 @@ import { CookieOptions, Request, Response } from "express";
 import { UserRequest } from "@typings/express/index";
 import { createUserService, IUserService } from "@service/userService";
 import { createUserRepository, IUserRepository } from "@repository/userRepository";
-import * as userAuthService from "@service/userAuthService";
+import { IUserAuthService } from "@service/userAuthService";
 import { UserDto } from "@dtos/user.dto";
 import { db } from "@db/index";
 
@@ -10,7 +10,8 @@ const userRepository: IUserRepository = createUserRepository({ db });
 const userService: IUserService = createUserService({ userRepository });
 
 interface UserControllerDependencies {
-    userAuthService: ReturnType<typeof userAuthService.createUserAuthService>
+    userService: IUserService;
+    userAuthService: IUserAuthService;
 };
 
 export interface IUserController {
@@ -20,7 +21,10 @@ export interface IUserController {
     getUserById(req: Request<{ userId: number }>, res: Response): Promise<any>;
 };
 
-export const createUserController = ({ userAuthService }: UserControllerDependencies): IUserController => {
+export const createUserController = ({
+    userService,
+    userAuthService
+}: UserControllerDependencies): IUserController => {
     const createUser = async (req: Request, res: Response): Promise<any> => {
         const userDto: UserDto = req.body as UserDto;
 
