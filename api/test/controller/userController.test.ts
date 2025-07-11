@@ -63,4 +63,30 @@ describe("UserController", () => {
             user: expectedUser
         });
     });
+
+    it("gets user by ID", async () => {
+        const id: number = 1;
+        const expectedUser: User = new User(
+            id,
+            faker.internet.displayName(),
+            faker.internet.password(),
+            faker.internet.exampleEmail()
+        );
+
+        const request: MockRequest<Request<{ userId: number }>> = createRequest({
+            method: "GET",
+            url: `/api/user/${id}`,
+            params: {
+                userId: id,
+            },
+        });
+
+        mockUserService.getUser.mockResolvedValue(expectedUser);
+        await userController.getUserById(request, response);
+
+        expect(mockUserService.getUser).toHaveBeenCalledWith(id);
+        expect(mockUserService.getUser).toHaveBeenCalledTimes(1);
+        expect(response.statusCode).toBe(200);
+        expect(response._getJSONData()).toEqual(expectedUser);
+    });
 });
