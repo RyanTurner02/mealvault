@@ -3,6 +3,7 @@ import cors, { CorsOptions } from "cors";
 import cookieParser from "cookie-parser";
 import userRoute from "./route/userRoute";
 import authRoute from "./route/authRoute";
+import tokenRoute from "./route/tokenRoute";
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -17,5 +18,6 @@ app.use(cookieParser());
 
 app.use('/api/auth/', authRoute);
 app.use('/api/user/', userRoute);
+app.use('/api/token/', tokenRoute);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

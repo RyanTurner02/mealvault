@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from "node-mocks-http";
 import { faker } from "@faker-js/faker";
 import User from "@model/user";
+import { ITokenService } from "@service/tokenService";
 
 describe("UserController", () => {
     let userController: IUserController;
@@ -18,14 +19,19 @@ describe("UserController", () => {
     };
 
     const mockAuthService: jest.Mocked<IAuthService> = {
+        logout: jest.fn(),
+    };
+
+    const mockTokenService: jest.Mocked<ITokenService> = {
         generateAccessToken: jest.fn(),
         generateRefreshToken: jest.fn(),
-    };
+    }
 
     beforeAll(async () => {
         userController = createUserController({
             userService: mockUserService,
-            authService: mockAuthService
+            authService: mockAuthService,
+            tokenService: mockTokenService,
         });
     });
 

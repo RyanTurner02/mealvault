@@ -1,9 +1,9 @@
 export const FetchUser = async () => {
     const baseUrl = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}`;
-    const hasAccessTokenUrl = `${baseUrl}/api/auth/has-access-token`;
-    const hasRefreshTokenurl = `${baseUrl}/api/auth/has-refresh-token`;
+    const hasAccessTokenUrl = `${baseUrl}/api/token/has-access-token`;
+    const hasRefreshTokenurl = `${baseUrl}/api/token/has-refresh-token`;
     const meUrl = `${baseUrl}/api/user/me`;
-    const refreshUrl = `${baseUrl}/api/auth/refresh`;
+    const refreshUrl = `${baseUrl}/api/token/refresh`;
 
     const hasAccessToken = async () => {
         const response = await fetch(hasAccessTokenUrl, {

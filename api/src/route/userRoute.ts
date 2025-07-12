@@ -5,12 +5,18 @@ import { createAuthService, IAuthService } from "@service/authService";
 import { createUserService, IUserService } from "@service/userService";
 import { createUserRepository, IUserRepository } from "@repository/userRepository";
 import { db } from "@db/index";
+import { createTokenService, ITokenService } from "@service/tokenService";
 
 const router: Router = express.Router();
 const userRepository: IUserRepository = createUserRepository({ db });
 const userService: IUserService = createUserService({ userRepository });
+const tokenService: ITokenService = createTokenService();
 const authService: IAuthService = createAuthService();
-const userController: IUserController = createUserController({ userService, authService });
+const userController: IUserController = createUserController({
+    userService,
+    tokenService,
+    authService,
+});
 
 router.use(express.json());
 router.post("/create", userController.createUser);

@@ -1,32 +1,13 @@
-import { JwtPayload } from "@typings/auth";
-import * as jwt from "jsonwebtoken";
-
 export interface IAuthService {
-    generateAccessToken(id: number): string | null;
-    generateRefreshToken(id: number): string | null;
+    logout(): boolean;
 }
 
 export const createAuthService = (): IAuthService => {
-    const generateAccessToken = (id: number): string | null => {
-        if (!process.env.ACCESS_TOKEN_SECRET) {
-            return null;
-        }
-
-        const payload: JwtPayload = { id };
-        return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
-    }
-
-    const generateRefreshToken = (id: number): string | null => {
-        if (!process.env.REFRESH_TOKEN_SECRET) {
-            return null;
-        }
-
-        const payload: JwtPayload = { id };
-        return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    const logout = (): boolean => {
+        return true;
     }
 
     return {
-        generateAccessToken,
-        generateRefreshToken
+        logout,
     };
 }
