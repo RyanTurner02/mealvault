@@ -12,10 +12,10 @@ interface UserControllerDependencies {
 };
 
 export interface IUserController {
-    createUser(req: Request, res: Response): Promise<any>;
-    loginUser(req: Request, res: Response): Promise<any>;
-    getCurrentUser(req: UserRequest, res: Response): Promise<any>;
-    getUserById(req: Request<{ userId: number }>, res: Response): Promise<any>;
+    createUser(req: Request, res: Response): Promise<void>;
+    loginUser(req: Request, res: Response): Promise<void>;
+    getCurrentUser(req: UserRequest, res: Response): Promise<void>;
+    getUserById(req: Request<{ userId: number }>, res: Response): Promise<void>;
 };
 
 export const createUserController = ({
@@ -23,78 +23,84 @@ export const createUserController = ({
     tokenService,
     cookieUtils,
 }: UserControllerDependencies): IUserController => {
-    const createUser = async (req: Request, res: Response): Promise<any> => {
+    const createUser = async (req: Request, res: Response): Promise<void> => {
         const userDto: UserDto = req.body as UserDto;
 
         if (!userDto) {
-            return res.status(400).send("User data is required");
+            res.status(400).send("User data is required");
+            return;
         }
 
-        const userId: (number | null) = await userService.createUser(req.body);
+        const userId: (number | null) = await userService.createUser(userDto);
 
         if (!userId) {
-            return res.status(500).send("User creation failed");
+            res.status(500).send("User creation failed");
+            return;
         }
 
         const accessToken = tokenService.generateAccessToken(userId);
         const refreshToken = tokenService.generateRefreshToken(userId);
 
         if (!accessToken || !refreshToken) {
-            return res.status(500).send("Token generation failed");
+            res.status(500).send("Token generation failed");
+            return;
         }
 
         const cookies: ICookiePayload[] = cookieUtils.createAuthCookies(accessToken, refreshToken);
-
         cookies.forEach((cookie: ICookiePayload) => {
             res.cookie(cookie.name, cookie.value, cookie.options);
         });
 
-        return res.status(200).json({ id: userId });
+        res.status(200).json({ id: userId });
     }
 
-    const loginUser = async (req: Request, res: Response): Promise<any> => {
+    const loginUser = async (req: Request, res: Response): Promise<void> => {
         if (!req.body.email || !req.body.password) {
-            return res.status(400).send("Email and password are required");
+            res.status(400).send("Email and password are required");
+            return;
         }
 
         const user = await userService.getUserByLogin(req.body.email, req.body.password);
 
         if (!user) {
-            return res.status(401).send("Invalid email or password");
+            res.status(401).send("Invalid email or password");
+            return;
         }
 
         const accessToken = tokenService.generateAccessToken(user.getId());
         const refreshToken = tokenService.generateRefreshToken(user.getId());
 
         if (!accessToken || !refreshToken) {
-            return res.status(500).send("Token generation failed");
+            res.status(500).send("Token generation failed");
+            return;
         }
 
         const cookies: ICookiePayload[] = cookieUtils.createAuthCookies(accessToken, refreshToken);
-
         cookies.forEach((cookie: ICookiePayload) => {
             res.cookie(cookie.name, cookie.value, cookie.options);
         });
 
-        return res.status(200).json({ id: user.getId(), name: user.getName(), email: user.getEmail() });
+        res.status(200).json({ id: user.getId(), name: user.getName(), email: user.getEmail() });
     }
 
-    const getCurrentUser = async (req: UserRequest, res: Response): Promise<any> => {
+    const getCurrentUser = async (req: UserRequest, res: Response): Promise<void> => {
         if (!req.user) {
-            return res.status(401).send("Unauthorized");
+            res.status(401).send("Unauthorized");
+            return;
         }
 
         const user = await userService.getUser(req.user.id);
 
         if (!user) {
-            return res.status(404).send("User not found");
+            res.status(404).send("User not found");
+            return;
         }
 
-        return res.status(200).json({ user: user });
+        res.status(200).json({ user: user });
     }
 
-    const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<any> => {
-        return res.json(await userService.getUser(req.params.userId));
+    const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<void> => {
+        res.json(await userService.getUser(req.params.userId));
     }
 
     return {
