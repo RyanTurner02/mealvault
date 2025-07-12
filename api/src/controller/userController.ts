@@ -4,6 +4,7 @@ import { IUserService } from "@service/userService";
 import { UserDto } from "@dtos/user.dto";
 import { ITokenService } from "@service/tokenService";
 import { ICookiePayload, ICookieUtils } from "@utils/cookieUtils";
+import User from "@model/user";
 
 interface UserControllerDependencies {
     userService: IUserService;
@@ -60,7 +61,7 @@ export const createUserController = ({
             return;
         }
 
-        const user = await userService.getUserByLogin(req.body.email, req.body.password);
+        const user: User | null = await userService.getUserByLogin(req.body.email, req.body.password);
 
         if (!user) {
             res.status(401).send("Invalid email or password");
@@ -89,7 +90,7 @@ export const createUserController = ({
             return;
         }
 
-        const user = await userService.getUser(req.user.id);
+        const user: User | null = await userService.getUser(req.user.id);
 
         if (!user) {
             res.status(404).send("User not found");
