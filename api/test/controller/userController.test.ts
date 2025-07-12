@@ -1,5 +1,5 @@
 import { createUserController, IUserController } from "@controller/userController";
-import { IUserAuthService } from "@service/userAuthService";
+import { IAuthService } from "@service/authService";
 import { IUserService } from "@service/userService";
 import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from "node-mocks-http";
@@ -17,7 +17,7 @@ describe("UserController", () => {
         getUser: jest.fn(),
     };
 
-    const mockUserAuthService: jest.Mocked<IUserAuthService> = {
+    const mockAuthService: jest.Mocked<IAuthService> = {
         generateAccessToken: jest.fn(),
         generateRefreshToken: jest.fn(),
     };
@@ -25,7 +25,7 @@ describe("UserController", () => {
     beforeAll(async () => {
         userController = createUserController({
             userService: mockUserService,
-            userAuthService: mockUserAuthService
+            authService: mockAuthService
         });
     });
 

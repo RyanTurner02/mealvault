@@ -1,12 +1,12 @@
 import { CookieOptions, Request, Response } from "express";
 import { UserRequest } from "@typings/express/index";
 import { IUserService } from "@service/userService";
-import { IUserAuthService } from "@service/userAuthService";
+import { IAuthService } from "@service/authService";
 import { UserDto } from "@dtos/user.dto";
 
 interface UserControllerDependencies {
     userService: IUserService;
-    userAuthService: IUserAuthService;
+    authService: IAuthService;
 };
 
 export interface IUserController {
@@ -18,7 +18,7 @@ export interface IUserController {
 
 export const createUserController = ({
     userService,
-    userAuthService
+    authService,
 }: UserControllerDependencies): IUserController => {
     const createUser = async (req: Request, res: Response): Promise<any> => {
         const userDto: UserDto = req.body as UserDto;
@@ -33,8 +33,8 @@ export const createUserController = ({
             return res.status(500).send("User creation failed");
         }
 
-        const accessToken = userAuthService.generateAccessToken(userId);
-        const refreshToken = userAuthService.generateRefreshToken(userId);
+        const accessToken = authService.generateAccessToken(userId);
+        const refreshToken = authService.generateRefreshToken(userId);
 
         if (!accessToken || !refreshToken) {
             return res.status(500).send("Token generation failed");
@@ -64,8 +64,8 @@ export const createUserController = ({
             return res.status(401).send("Invalid email or password");
         }
 
-        const accessToken = userAuthService.generateAccessToken(user.getId());
-        const refreshToken = userAuthService.generateRefreshToken(user.getId());
+        const accessToken = authService.generateAccessToken(user.getId());
+        const refreshToken = authService.generateRefreshToken(user.getId());
 
         if (!accessToken || !refreshToken) {
             return res.status(500).send("Token generation failed");

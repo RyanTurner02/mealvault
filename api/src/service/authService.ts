@@ -1,12 +1,12 @@
 import { JwtPayload } from "@typings/auth";
 import * as jwt from "jsonwebtoken";
 
-export interface IUserAuthService {
+export interface IAuthService {
     generateAccessToken(id: number): string | null;
     generateRefreshToken(id: number): string | null;
 }
 
-export const createUserAuthService = (): IUserAuthService => {
+export const createAuthService = (): IAuthService => {
     const generateAccessToken = (id: number): string | null => {
         if (!process.env.ACCESS_TOKEN_SECRET) {
             return null;

@@ -1,8 +1,8 @@
-import { createUserAuthService, IUserAuthService } from "@service/userAuthService";
+import { createAuthService, IAuthService } from "@service/authService";
 import { CookieOptions, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 
-const userAuthService: IUserAuthService = createUserAuthService();
+const authService: IAuthService = createAuthService();
 
 export interface IAuthController {
     hasAccessToken(req: Request, res: Response): any;
@@ -54,7 +54,7 @@ export const createAuthController = () => {
                 return res.sendStatus(401);
             }
 
-            const accessToken = userAuthService.generateAccessToken(user.id);
+            const accessToken = authService.generateAccessToken(user.id);
             const cookieOptions: CookieOptions = {
                 httpOnly: true,
                 secure: true,
