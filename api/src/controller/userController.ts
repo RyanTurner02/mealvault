@@ -81,7 +81,11 @@ export const createUserController = ({
             res.cookie(cookie.name, cookie.value, cookie.options);
         });
 
-        res.status(200).json({ id: user.getId(), name: user.getName(), email: user.getEmail() });
+        res.status(200).json({
+            id: user.getId(),
+            name: user.getName(),
+            email: user.getEmail()
+        });
     }
 
     const getCurrentUser = async (req: UserRequest, res: Response): Promise<void> => {
