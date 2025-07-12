@@ -20,7 +20,7 @@ export const createCookieUtils = (): ICookieUtils => {
             maxAge: 900000
         };
 
-        const authCookie: ICookiePayload = {
+        const accessTokenCookie: ICookiePayload = {
             name: "access_token",
             value: accessToken,
             options: cookieOptions,
@@ -28,13 +28,13 @@ export const createCookieUtils = (): ICookieUtils => {
 
         cookieOptions.maxAge = 604800000;
 
-        const refreshCookie: ICookiePayload = {
+        const refreshTokenCookie: ICookiePayload = {
             name: "refresh_token",
             value: refreshToken,
             options: cookieOptions,
         };
 
-        return [authCookie, refreshCookie];
+        return [accessTokenCookie, refreshTokenCookie];
     };
 
     const clearAuthCookies = (): ICookiePayload[] => {
