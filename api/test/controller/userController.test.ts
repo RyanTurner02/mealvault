@@ -1,5 +1,4 @@
 import { createUserController, IUserController } from "@controller/userController";
-import { IAuthService } from "@service/authService";
 import { IUserService } from "@service/userService";
 import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from "node-mocks-http";
@@ -21,6 +20,7 @@ describe("UserController", () => {
 
     const mockCookieUtils: jest.Mocked<ICookieUtils> = {
         createAuthCookies: jest.fn(),
+        clearAuthCookies: jest.fn(),
     };
 
     const mockTokenService: jest.Mocked<ITokenService> = {
