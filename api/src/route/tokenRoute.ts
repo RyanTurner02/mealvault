@@ -1,14 +1,16 @@
 import express, { Router } from "express";
-import { createTokenController, ITokenController } from "@controller/tokenController";
-import { createTokenService, ITokenService } from "@service/tokenService";
+import { ITokenController } from "@controller/tokenController";
 
-const router: Router = express.Router();
-const tokenService: ITokenService = createTokenService();
-const tokenController: ITokenController = createTokenController({ tokenService });
+interface ITokenRouteDependencies {
+    tokenController: ITokenController;
+};
 
-router.use(express.json());
-router.get("/has-access-token", tokenController.hasAccessToken);
-router.get("/has-refresh-token", tokenController.hasRefreshToken);
-router.get("/refresh", tokenController.refreshAccessToken);
+export const createTokenRoute = ({ tokenController }: ITokenRouteDependencies) => {
+    const router: Router = express.Router();
 
-export default router;
+    router.get("/has-access-token", tokenController.hasAccessToken);
+    router.get("/has-refresh-token", tokenController.hasRefreshToken);
+    router.get("/refresh", tokenController.refreshAccessToken);
+
+    return router;
+}
