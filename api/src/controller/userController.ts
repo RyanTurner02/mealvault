@@ -1,14 +1,14 @@
-import { CookieOptions, Request, Response } from "express";
+import { Request, Response } from "express";
 import { UserRequest } from "@typings/express/index";
 import { IUserService } from "@service/userService";
-import { IAuthService } from "@service/authService";
 import { UserDto } from "@dtos/user.dto";
 import { ITokenService } from "@service/tokenService";
+import { ICookiePayload, ICookieUtils } from "@utils/cookieUtils";
 
 interface UserControllerDependencies {
     userService: IUserService;
-    authService: IAuthService;
     tokenService: ITokenService;
+    cookieUtils: ICookieUtils,
 };
 
 export interface IUserController {
@@ -20,8 +20,8 @@ export interface IUserController {
 
 export const createUserController = ({
     userService,
-    authService,
     tokenService,
+    cookieUtils,
 }: UserControllerDependencies): IUserController => {
     const createUser = async (req: Request, res: Response): Promise<any> => {
         const userDto: UserDto = req.body as UserDto;
@@ -43,15 +43,11 @@ export const createUserController = ({
             return res.status(500).send("Token generation failed");
         }
 
-        const cookieOptions: CookieOptions = {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            maxAge: 900000
-        };
-        res.cookie('access_token', accessToken, cookieOptions);
-        cookieOptions.maxAge = 604800000;
-        res.cookie('refresh_token', refreshToken, cookieOptions);
+        const cookies: ICookiePayload[] = cookieUtils.createAuthCookies(accessToken, refreshToken);
+
+        cookies.forEach((cookie: ICookiePayload) => {
+            res.cookie(cookie.name, cookie.value, cookie.options);
+        });
 
         return res.status(200).json({ id: userId });
     }
@@ -74,15 +70,11 @@ export const createUserController = ({
             return res.status(500).send("Token generation failed");
         }
 
-        const cookieOptions: CookieOptions = {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            maxAge: 900000
-        };
-        res.cookie('access_token', accessToken, cookieOptions);
-        cookieOptions.maxAge = 604800000;
-        res.cookie('refresh_token', refreshToken, cookieOptions);
+        const cookies: ICookiePayload[] = cookieUtils.createAuthCookies(accessToken, refreshToken);
+
+        cookies.forEach((cookie: ICookiePayload) => {
+            res.cookie(cookie.name, cookie.value, cookie.options);
+        });
 
         return res.status(200).json({ id: user.getId(), name: user.getName(), email: user.getEmail() });
     }

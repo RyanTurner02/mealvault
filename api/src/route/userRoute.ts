@@ -1,21 +1,21 @@
 import express, { Router } from "express";
 import { createUserController, IUserController } from "@controller/userController";
 import * as authMiddleware from "@middleware/authMiddleware";
-import { createAuthService, IAuthService } from "@service/authService";
 import { createUserService, IUserService } from "@service/userService";
 import { createUserRepository, IUserRepository } from "@repository/userRepository";
 import { db } from "@db/index";
 import { createTokenService, ITokenService } from "@service/tokenService";
+import { createCookieUtils, ICookieUtils } from "@utils/cookieUtils";
 
 const router: Router = express.Router();
 const userRepository: IUserRepository = createUserRepository({ db });
 const userService: IUserService = createUserService({ userRepository });
 const tokenService: ITokenService = createTokenService();
-const authService: IAuthService = createAuthService();
+const cookieUtils: ICookieUtils = createCookieUtils();
 const userController: IUserController = createUserController({
     userService,
     tokenService,
-    authService,
+    cookieUtils,
 });
 
 router.use(express.json());

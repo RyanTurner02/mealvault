@@ -6,6 +6,7 @@ import { createRequest, createResponse, MockRequest, MockResponse } from "node-m
 import { faker } from "@faker-js/faker";
 import User from "@model/user";
 import { ITokenService } from "@service/tokenService";
+import { ICookieUtils } from "@utils/cookieUtils";
 
 describe("UserController", () => {
     let userController: IUserController;
@@ -18,8 +19,8 @@ describe("UserController", () => {
         getUser: jest.fn(),
     };
 
-    const mockAuthService: jest.Mocked<IAuthService> = {
-        logout: jest.fn(),
+    const mockCookieUtils: jest.Mocked<ICookieUtils> = {
+        createAuthCookies: jest.fn(),
     };
 
     const mockTokenService: jest.Mocked<ITokenService> = {
@@ -30,7 +31,7 @@ describe("UserController", () => {
     beforeAll(async () => {
         userController = createUserController({
             userService: mockUserService,
-            authService: mockAuthService,
+            cookieUtils: mockCookieUtils,
             tokenService: mockTokenService,
         });
     });
