@@ -90,12 +90,11 @@ export const createUserController = ({
     }
 
     const logoutUser = (req: Request, res: Response): void => {
-        const cookieOptions: CookieOptions = {
-            maxAge: 0
-        };
+        const cookies: ICookiePayload[] = cookieUtils.clearAuthCookies();
+        cookies.forEach((cookie: ICookiePayload) => {
+            res.cookie(cookie.name, cookie.value, cookie.options);
+        });
 
-        res.cookie("access_token", "", cookieOptions);
-        res.cookie("refresh_token", "", cookieOptions);
         res.status(200).json({ message: "Logged out" });
     }
 

@@ -8,6 +8,7 @@ export interface ICookiePayload {
 
 export interface ICookieUtils {
     createAuthCookies(accessToken: string, refreshToken: string): ICookiePayload[];
+    clearAuthCookies(): ICookiePayload[];
 };
 
 export const createCookieUtils = (): ICookieUtils => {
@@ -36,7 +37,28 @@ export const createCookieUtils = (): ICookieUtils => {
         return [authCookie, refreshCookie];
     };
 
+    const clearAuthCookies = (): ICookiePayload[] => {
+        const cookieOptions: CookieOptions = {
+            maxAge: 0,
+        };
+
+        const accessTokenCookie: ICookiePayload = {
+            name: "access_token",
+            value: "",
+            options: cookieOptions,
+        };
+
+        const refreshTokenCookie: ICookiePayload = {
+            name: "access_token",
+            value: "",
+            options: cookieOptions,
+        };
+
+        return [accessTokenCookie, refreshTokenCookie];
+    }
+
     return {
         createAuthCookies,
+        clearAuthCookies,
     };
 }
