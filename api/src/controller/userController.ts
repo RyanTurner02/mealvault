@@ -39,18 +39,10 @@ export const createUserController = ({
             return;
         }
 
-        const accessToken = tokenService.generateAccessToken(userId);
-        const refreshToken = tokenService.generateRefreshToken(userId);
-
-        if (!accessToken || !refreshToken) {
+        if (!setAuthCookies(res, userId)) {
             res.status(500).send("Token generation failed");
             return;
         }
-
-        const cookies: ICookiePayload[] = cookieUtils.createAuthCookies(accessToken, refreshToken);
-        cookies.forEach((cookie: ICookiePayload) => {
-            res.cookie(cookie.name, cookie.value, cookie.options);
-        });
 
         res.status(200).json({ id: userId });
     }
@@ -68,12 +60,24 @@ export const createUserController = ({
             return;
         }
 
-        const accessToken = tokenService.generateAccessToken(user.getId());
-        const refreshToken = tokenService.generateRefreshToken(user.getId());
-
-        if (!accessToken || !refreshToken) {
+        if (!setAuthCookies(res, user.getId())) {
             res.status(500).send("Token generation failed");
             return;
+        }
+
+        res.status(200).json({
+            id: user.getId(),
+            name: user.getName(),
+            email: user.getEmail()
+        });
+    }
+
+    const setAuthCookies = (res: Response, userId: number): boolean => {
+        const accessToken = tokenService.generateAccessToken(userId);
+        const refreshToken = tokenService.generateRefreshToken(userId);
+
+        if (!accessToken || !refreshToken) {
+            return false;
         }
 
         const cookies: ICookiePayload[] = cookieUtils.createAuthCookies(accessToken, refreshToken);
@@ -81,11 +85,7 @@ export const createUserController = ({
             res.cookie(cookie.name, cookie.value, cookie.options);
         });
 
-        res.status(200).json({
-            id: user.getId(),
-            name: user.getName(),
-            email: user.getEmail()
-        });
+        return true;
     }
 
     const getCurrentUser = async (req: UserRequest, res: Response): Promise<void> => {
