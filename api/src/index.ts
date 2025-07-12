@@ -1,8 +1,8 @@
-import express, { Express } from "express";
+import express, { Express, Router } from "express";
 import cors, { CorsOptions } from "cors";
 import cookieParser from "cookie-parser";
-import * as userRoute from "@route/userRoute";
-import * as tokenRoute from "@route/tokenRoute";
+import { createUserRoute } from "@route/userRoute";
+import { createTokenRoute } from "@route/tokenRoute";
 import { createUserController, IUserController } from "@controller/userController";
 import { createUserService, IUserService } from "@service/userService";
 import { createUserRepository, IUserRepository } from "@repository/userRepository";
@@ -32,7 +32,10 @@ const userRepository: IUserRepository = createUserRepository({ db });
 const userService: IUserService = createUserService({ userRepository });
 const userController: IUserController = createUserController({ userService, tokenService, cookieUtils });
 
-app.use('/api/user/', userRoute.createUserRoute({ userController }));
-app.use('/api/token/', tokenRoute.createTokenRoute({ tokenController }));
+const userRoute: Router = createUserRoute({ userController });
+const tokenRoute: Router = createTokenRoute({ tokenController });
+
+app.use('/api/user/', userRoute);
+app.use('/api/token/', tokenRoute);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

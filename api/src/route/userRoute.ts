@@ -6,7 +6,7 @@ interface IUserRouteDependencies {
     userController: IUserController;
 };
 
-export const createUserRoute = ({ userController }: IUserRouteDependencies): express.Router => {
+export const createUserRoute = ({ userController }: IUserRouteDependencies): Router => {
     const router: Router = express.Router();
 
     router.use(express.json());

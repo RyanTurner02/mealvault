@@ -5,7 +5,7 @@ interface ITokenRouteDependencies {
     tokenController: ITokenController;
 };
 
-export const createTokenRoute = ({ tokenController }: ITokenRouteDependencies) => {
+export const createTokenRoute = ({ tokenController }: ITokenRouteDependencies): Router => {
     const router: Router = express.Router();
 
     router.get("/has-access-token", tokenController.hasAccessToken);
