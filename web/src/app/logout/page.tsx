@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useUserContext } from "@/app/hooks/UserHook";
 
 export default function Logout() {
-  const logoutUrl = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/auth/logout`;
+  const logoutUrl = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/user/logout`;
   const router = useRouter();
   const userContext = useUserContext();
 

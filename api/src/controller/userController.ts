@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
 import { UserRequest } from "@typings/express/index";
 import { IUserService } from "@service/userService";
 import { UserDto } from "@dtos/user.dto";
@@ -15,6 +15,7 @@ interface UserControllerDependencies {
 export interface IUserController {
     createUser(req: Request, res: Response): Promise<void>;
     loginUser(req: Request, res: Response): Promise<void>;
+    logoutUser(req: Request, res: Response): void;
     getCurrentUser(req: UserRequest, res: Response): Promise<void>;
     getUserById(req: Request<{ userId: number }>, res: Response): Promise<void>;
 };
@@ -88,6 +89,16 @@ export const createUserController = ({
         return true;
     }
 
+    const logoutUser = (req: Request, res: Response): void => {
+        const cookieOptions: CookieOptions = {
+            maxAge: 0
+        };
+
+        res.cookie("access_token", "", cookieOptions);
+        res.cookie("refresh_token", "", cookieOptions);
+        res.status(200).json({ message: "Logged out" });
+    }
+
     const getCurrentUser = async (req: UserRequest, res: Response): Promise<void> => {
         if (!req.user) {
             res.status(401).send("Unauthorized");
@@ -111,6 +122,7 @@ export const createUserController = ({
     return {
         createUser,
         loginUser,
+        logoutUser,
         getCurrentUser,
         getUserById
     };
