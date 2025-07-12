@@ -1,4 +1,4 @@
-import { CookieOptions, Request, Response } from "express";
+import { Request, Response } from "express";
 import { UserRequest } from "@typings/express/index";
 import { IUserService } from "@service/userService";
 import { UserDto } from "@dtos/user.dto";
