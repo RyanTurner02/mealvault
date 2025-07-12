@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
-import * as UserRepository from "@repository/userRepository";
+import { IUserRepository } from "@repository/userRepository";
 import User from "@model/user";
 import { UserDto } from "@dtos/user.dto";
 
 interface UserServiceDependencies {
-    userRepository: ReturnType<typeof UserRepository.createUserRepository>
+    userRepository: IUserRepository;
 };
 
 export interface IUserService {
@@ -13,7 +13,7 @@ export interface IUserService {
     getUser(userId: number): Promise<User | null>;
 };
 
-export const createUserService = ({ userRepository } : UserServiceDependencies): IUserService => {
+export const createUserService = ({ userRepository }: UserServiceDependencies): IUserService => {
     const createUser = async (user: UserDto) => {
         const saltRounds = 10;
         user.password = await bcrypt.hash(user.password, saltRounds);
