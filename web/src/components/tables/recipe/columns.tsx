@@ -19,6 +19,7 @@ const recipeSchema = z.object({
     name: z.string(),
     category: z.string(),
     difficulty: z.string(),
+    prepTime: z.string(),
     cookTime: z.string(),
     servings: z.number(),
     actions: z.string(),
@@ -40,6 +41,9 @@ export const columns: ColumnDef<Recipe>[] = [
     header: "Difficulty",
   },
   {
+    accessorKey: "prepTime",
+    header: "Prep Time",
+  },  {
     accessorKey: "cookTime",
     header: "Cook Time",
   },
