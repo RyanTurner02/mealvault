@@ -7,6 +7,7 @@ export default function Page() {
       <Header />
       <div className="flex items-center justify-center w-full p-6 md:p-10">
         <div className="w-full max-w-sm">
+          <h1 className="mt-2 mb-5 text-4xl font-bold text-center">Create Recipe</h1>
           <CreateRecipeForm />
         </div>
       </div>
