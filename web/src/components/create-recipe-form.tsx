@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,6 +20,7 @@ const formSchema = z.object({
     name: z.string().min(1, "Enter a recipe name"),
     ingredients: z.string().min(1, "Enter ingredients"),
     instructions: z.string().min(1, "Enter recipe instructions"),
+    links: z.string().optional(),
 });
 
 export const CreateRecipeForm = () => {
@@ -71,6 +72,19 @@ export const CreateRecipeForm = () => {
                             <FormLabel className="text-2xl">Instructions</FormLabel>
                                 <FormControl>
                                     <Textarea placeholder="Instructions" { ... field} />
+                                </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="links"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className="text-2xl">Links</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Links" { ... field} />
                                 </FormControl>
                             <FormMessage />
                         </FormItem>
