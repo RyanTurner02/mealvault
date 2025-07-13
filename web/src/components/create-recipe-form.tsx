@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -15,6 +14,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const formSchema = z.object({
     name: z.string().min(1, "Enter a recipe name"),
@@ -94,7 +94,11 @@ export const CreateRecipeForm = () => {
                 />
                 <div className="flex justify-evenly">
                     <Button type="submit">Create</Button>
-                    <Button type="button" variant="destructive">Cancel</Button>
+                    <Link href="/">
+                        <Button type="button" variant="destructive">
+                            Cancel
+                        </Button>
+                    </Link>
                 </div>
             </form>
         </Form>
