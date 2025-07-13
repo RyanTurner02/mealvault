@@ -62,8 +62,8 @@ export const columns: ColumnDef<Recipe>[] = [
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Delete</DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">Delete</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         );
