@@ -82,15 +82,20 @@ export const CreateRecipeForm = () => {
                     name="links"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className="text-2xl">Links</FormLabel>
+                            <div className="flex justify-between">
+                                <FormLabel className="text-2xl">Links</FormLabel>
+                                <Button type="button" variant="secondary">Add Link</Button>
+                            </div>
                                 <FormControl>
                                     <Input placeholder="Links" { ... field} />
                                 </FormControl>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Create</Button>
+                <div className="flex justify-evenly">
+                    <Button type="submit">Create</Button>
+                    <Button type="button" variant="destructive">Cancel</Button>
+                </div>
             </form>
         </Form>
     );
