@@ -18,6 +18,8 @@ import Link from "next/link";
 
 const formSchema = z.object({
     name: z.string().min(1, "Enter a recipe name"),
+    prepTime: z.string().min(1, "Enter prep time"),
+    cookTime: z.string().min(1, "Enter cook time"),
     ingredients: z.string().min(1, "Enter ingredients"),
     instructions: z.string().min(1, "Enter recipe instructions"),
     links: z.string().optional(),
@@ -28,6 +30,10 @@ export const CreateRecipeForm = () => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
+            prepTime: "",
+            cookTime: "",
+            ingredients: "",
+            instructions: "",
         }
     });
 
@@ -47,6 +53,32 @@ export const CreateRecipeForm = () => {
                             <FormControl>
                                 <Input placeholder="Recipe Name" { ... field } />
                             </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="prepTime"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className="text-2xl">Prep Time</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Prep Time" { ... field} />
+                                </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="cookTime"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className="text-2xl">Cook Time</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Cook Time" { ... field} />
+                                </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
