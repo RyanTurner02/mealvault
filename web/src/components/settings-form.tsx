@@ -13,8 +13,6 @@ export const SettingsForm = ({ user }: SettingsFormProps) => {
   const name = user?.name || "";
   const email = user?.email || "";
 
-  console.log(name);
-
   return (
     <>
       <div className="mb-5">
