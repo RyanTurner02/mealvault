@@ -9,12 +9,19 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ChangeEventHandler, useState } from "react";
 
 interface UpdateProfileCardProps {
   displayName: string;
 }
 
 export function UpdateProfileCard({ displayName }: UpdateProfileCardProps) {
+  const [name, setName] = useState(displayName);
+
+  const changeName: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setName(e.target.value);
+  };
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
@@ -29,7 +36,8 @@ export function UpdateProfileCard({ displayName }: UpdateProfileCardProps) {
               <Input
                 id="name"
                 placeholder="Enter your name"
-                value={displayName}
+                value={name}
+                onChange={changeName}
                 required
               />
             </div>
