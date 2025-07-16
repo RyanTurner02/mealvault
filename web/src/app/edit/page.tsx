@@ -1,14 +1,16 @@
 import Header from "@/app/components/header";
 import { EditRecipeForm } from "@/components/edit-recipe-form";
 
-export default function EditPage() {
+export default function Page() {
   return (
-    <div>
+    <div className="min-h-svh">
       <Header />
-      <main className="w-6/12 mx-auto">
-        <h1 className="mt-2 mb-5 text-4xl font-bold text-center">Edit Recipe</h1>
-        <EditRecipeForm />
-      </main>
+      <div className="flex items-center justify-center w-full p-6 md:p-10">
+        <div className="w-full max-w-sm">
+          <h1 className="mt-2 mb-5 text-4xl font-bold text-center">Create Recipe</h1>
+          <EditRecipeForm />
+        </div>
+      </div>
     </div>
   );
 }
