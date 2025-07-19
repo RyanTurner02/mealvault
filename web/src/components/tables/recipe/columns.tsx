@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DeleteRecipeModal } from "@/components/modals/delete-recipe-modal";
 import { useState } from "react";
+import Link from "next/link";
 
 const recipeSchema = z.object({
   id: z.string(),
@@ -32,6 +33,9 @@ export const columns: ColumnDef<Recipe>[] = [
   {
     accessorKey: "name",
     header: "Name",
+    cell: ({ row }) => (
+      <Link className="text-link" href={`/m/${row.original.id}`}>{row.original.name}</Link>
+    ),
   },
   {
     accessorKey: "category",
