@@ -34,7 +34,9 @@ export const columns: ColumnDef<Recipe>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
-      <Link className="text-link" href={`/m/${row.original.id}`}>{row.original.name}</Link>
+      <Link className="text-link" href={`/m/${row.original.id}`}>
+        {row.original.name}
+      </Link>
     ),
   },
   {
@@ -89,9 +91,13 @@ export const columns: ColumnDef<Recipe>[] = [
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <DeleteRecipeModal recipeId={row.original.id} open={open} onOpenChange={setOpen} />
+          <DeleteRecipeModal
+            recipeId={row.original.id}
+            open={open}
+            onOpenChange={setOpen}
+          />
         </>
       );
-    }
+    },
   },
 ];
