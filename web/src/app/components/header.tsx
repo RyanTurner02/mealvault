@@ -6,6 +6,7 @@ import { useUserContext } from "@/app/hooks/UserHook";
 const AuthLinks = () => {
   return (
     <>
+      <Link className="mx-2" href="/create">Create Recipe</Link>
       <Link className="mx-2" href="/settings">Settings</Link>
       <Link className="mx-2" href="/logout">Logout</Link>
     </>

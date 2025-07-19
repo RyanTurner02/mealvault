@@ -3,6 +3,7 @@
 import Header from "@/app/components/header";
 import { useUserContext } from "@/app/hooks/UserHook";
 import { useRouter } from "next/navigation";
+import { SettingsForm } from "@/components/settings-form";
 
 export default function Settings() {
   const userContext = useUserContext();
@@ -13,41 +14,18 @@ export default function Settings() {
   }
 
   return (
-    <>
+    <div className="min-h-svh">
       <Header />
-      { !userContext?.isLoading &&
-        userContext?.user && (
+      {!userContext?.isLoading && userContext?.user && (
         <main>
-          <div className="flex justify-center">
-            <div className="w-11/12 p-5 mt-5 border-2 border-blue-300 rounded-lg sm:w-8/12 md:w-8/12 lg:w-6/12 xl:w-4/12">
-              <h1 className="mb-3 text-4xl font-bold text-center">Settings</h1>
-                <div className="flex flex-col mb-3">
-                <button className="p-1 border border-gray-400 rounded-sm hover:bg-gray-200 text-start" type="button">
-                  <div className="name-field">
-                    Name
-                  </div>
-                  <div className="text-gray-500">
-                    {userContext?.user?.name}
-                  </div>
-                </button>
-                </div>
-                <div className="flex flex-col mb-3">
-                  <button className="p-1 border border-gray-400 rounded-sm hover:bg-gray-200 text-start" type="button">
-                    <div className="email-field">
-                      Email Address
-                    </div>
-                    <div className="text-gray-500">
-                      {userContext?.user?.email}
-                    </div>
-                  </button>
-                </div>
-                <div className="flex flex-col">
-                  <button className="p-1 border border-gray-400 rounded-sm hover:bg-gray-200 text-start" type="button">Password</button>
-                </div>
+          <div className="flex items-center justify-center w-full p-6 md:p-10">
+            <div className="w-full max-w-sm">
+              <h1 className="mb-5 text-4xl font-bold text-center">Settings</h1>
+              <SettingsForm user={userContext?.user} />
             </div>
           </div>
         </main>
       )}
-    </>
+    </div>
   );
 }
