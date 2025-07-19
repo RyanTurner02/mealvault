@@ -77,9 +77,11 @@ export const columns: ColumnDef<Recipe>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                Edit
-              </DropdownMenuItem>
+              <Link href={`/edit`}>
+                <DropdownMenuItem className="cursor-pointer">
+                  Edit
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuItem
                 className="cursor-pointer"
                 onSelect={(e) => {
