@@ -110,6 +110,36 @@ describe("UserController", () => {
         expect(response._getJSONData()).toEqual({ id: expectedId });
     });
 
+    it("logs out the current user", async () => {
+        const options: CookieOptions = {
+            maxAge: 0
+        };
+        const emptyAccessTokenCookie: ICookiePayload = {
+            name: "access_token",
+            value: "",
+            options: options,
+        };
+        const emptyRefreshTokenCookie: ICookiePayload = {
+            name: "refresh_token",
+            value: "",
+            options: options,
+        };
+        const emptyAuthCookies: ICookiePayload[] = [emptyAccessTokenCookie, emptyRefreshTokenCookie];
+        request = createRequest({
+            method: "GET",
+            url: "/api/user/logout",
+        });
+
+        mockCookieUtils.createEmptyAuthCookies.mockReturnValue(emptyAuthCookies);
+
+        userController.logoutUser(request, response);
+
+        emptyAuthCookies.forEach((cookie: ICookiePayload) => {
+            expect(response.cookie).toHaveBeenCalledWith(cookie.name, cookie.value, cookie.options);
+        });
+        expect(response.cookie).toHaveBeenCalledTimes(emptyAuthCookies.length);
+    });
+
     it("gets the current user", async () => {
         const id = 1;
         request = createRequest({
