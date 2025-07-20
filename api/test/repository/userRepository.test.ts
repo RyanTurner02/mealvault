@@ -111,5 +111,11 @@ describe("UserRepository", () => {
       expect(actual?.getEmail()).toBe(sampleUser.getEmail());
       expect(actual?.getPassword()).toBe(sampleUser.getPassword());
     });
+
+    it("does not get a user by id", async () => {
+      const actual: User | null = await userRepository.getUser(-1);
+
+      expect(actual).toBeNull();
+    });
   });
 });
