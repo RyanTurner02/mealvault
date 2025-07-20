@@ -64,7 +64,7 @@ describe("UserController", () => {
             httpOnly: true,
             secure: true,
             sameSite: 'strict',
-            maxAge: 900000
+            maxAge: 604800000
         };
         const authCookies: ICookiePayload[] = [
             { name: "access_token", value: accessToken, options: accessTokenCookieOptions },
