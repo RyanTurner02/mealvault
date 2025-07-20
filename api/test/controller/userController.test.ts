@@ -110,7 +110,7 @@ describe("UserController", () => {
         expect(response._getJSONData()).toEqual({ id: expectedId });
     });
 
-    it("logs out the current user", async () => {
+    it("logs out the user", async () => {
         const options: CookieOptions = {
             maxAge: 0
         };
