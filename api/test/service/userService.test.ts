@@ -105,6 +105,19 @@ describe("UserService", () => {
 
             expect(actual).toBeNull();
         });
+
+        it("does not get user with invalid email", async () => {
+            const email: string = faker.internet.exampleEmail();
+
+            mockUserRepository.getUserByEmail.mockResolvedValue(null);
+
+            const actual: User | null = await userService.getUserByLogin(email, faker.internet.password());
+
+            expect(mockUserRepository.getUserByEmail).toHaveBeenCalledWith(email);
+            expect(mockUserRepository.getUserByEmail).toHaveBeenCalledTimes(1);
+
+            expect(actual).toBeNull();
+        });
     });
 
     it("gets user by id", async () => {
