@@ -94,7 +94,7 @@ export const createUserController = ({
     }
 
     const logoutUser = (req: Request, res: Response): void => {
-        const cookies: ICookiePayload[] = cookieUtils.clearAuthCookies();
+        const cookies: ICookiePayload[] = cookieUtils.createEmptyAuthCookies();
         cookies.forEach((cookie: ICookiePayload) => {
             res.cookie(cookie.name, cookie.value, cookie.options);
         });

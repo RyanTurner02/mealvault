@@ -21,7 +21,7 @@ describe("UserController", () => {
 
     const mockCookieUtils: jest.Mocked<ICookieUtils> = {
         createAuthCookies: jest.fn(),
-        clearAuthCookies: jest.fn(),
+        createEmptyAuthCookies: jest.fn(),
     };
 
     const mockTokenService: jest.Mocked<ITokenService> = {
