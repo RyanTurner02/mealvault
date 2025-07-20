@@ -63,41 +63,47 @@ describe("UserRepository", () => {
     }
   });
 
-  it("creates user with name, email, and password", async () => {
-    const newUser: UserDto = {
-      name: faker.internet.displayName(),
-      email: faker.internet.exampleEmail(),
-      password: faker.internet.password(),
-    };
+  describe("createUser", () => {
+    it("creates user with name, email, and password", async () => {
+      const newUser: UserDto = {
+        name: faker.internet.displayName(),
+        email: faker.internet.exampleEmail(),
+        password: faker.internet.password(),
+      };
 
-    const expected: number = (await db
-      .select({ count: count() })
-      .from(user))
-      .length;
-    const actual: number = await userRepository.createUser(newUser);
+      const expected: number = (await db
+        .select({ count: count() })
+        .from(user))
+        .length;
+      const actual: number = await userRepository.createUser(newUser);
 
-    expect(actual).toEqual(expected + 1);
+      expect(actual).toEqual(expected + 1);
+    });
   });
 
-  it("gets a user by email", async () => {
-    const actual: User | null = await userRepository.getUserByEmail(sampleUser.getEmail());
+  describe("getUserByEmail", () => {
+    it("gets a user by email", async () => {
+      const actual: User | null = await userRepository.getUserByEmail(sampleUser.getEmail());
 
-    expect(actual).not.toBeNull();
+      expect(actual).not.toBeNull();
 
-    expect(actual?.getId()).toBe(sampleUser.getId());
-    expect(actual?.getName()).toBe(sampleUser.getName());
-    expect(actual?.getEmail()).toBe(sampleUser.getEmail());
-    expect(actual?.getPassword()).toBe(sampleUser.getPassword());
+      expect(actual?.getId()).toBe(sampleUser.getId());
+      expect(actual?.getName()).toBe(sampleUser.getName());
+      expect(actual?.getEmail()).toBe(sampleUser.getEmail());
+      expect(actual?.getPassword()).toBe(sampleUser.getPassword());
+    });
   });
 
-  it("gets a user by id", async () => {
-    const actual: User | null = await userRepository.getUser(sampleUser.getId());
+  describe("getUser", () => {
+    it("gets a user by id", async () => {
+      const actual: User | null = await userRepository.getUser(sampleUser.getId());
 
-    expect(actual).not.toBeNull();
+      expect(actual).not.toBeNull();
 
-    expect(actual?.getId()).toBe(sampleUser.getId());
-    expect(actual?.getName()).toBe(sampleUser.getName());
-    expect(actual?.getEmail()).toBe(sampleUser.getEmail());
-    expect(actual?.getPassword()).toBe(sampleUser.getPassword());
+      expect(actual?.getId()).toBe(sampleUser.getId());
+      expect(actual?.getName()).toBe(sampleUser.getName());
+      expect(actual?.getEmail()).toBe(sampleUser.getEmail());
+      expect(actual?.getPassword()).toBe(sampleUser.getPassword());
+    });
   });
 });
