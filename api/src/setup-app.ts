@@ -10,6 +10,7 @@ import { db } from "@db/index";
 import { createTokenService, ITokenService } from "@service/tokenService";
 import { createCookieUtils, ICookieUtils } from "@utils/cookieUtils";
 import { createTokenController, ITokenController } from "@controller/tokenController";
+import { createAuthMiddleware, IAuthMiddleware } from "@middleware/authMiddleware";
 
 export const setupApp = (): Express => {
     const app: Express = express();
@@ -33,7 +34,9 @@ export const setupApp = (): Express => {
     const userService: IUserService = createUserService({ userRepository });
     const userController: IUserController = createUserController({ userService, tokenService, cookieUtils });
 
-    const userRoute: Router = createUserRoute({ userController });
+    const authMiddleware: IAuthMiddleware = createAuthMiddleware();
+
+    const userRoute: Router = createUserRoute({ authMiddleware, userController });
     const tokenRoute: Router = createTokenRoute({ tokenController });
 
     app.use('/api/user/', userRoute);

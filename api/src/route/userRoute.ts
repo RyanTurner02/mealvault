@@ -1,12 +1,15 @@
 import express, { Router } from "express";
 import { IUserController } from "@controller/userController";
-import * as authMiddleware from "@middleware/authMiddleware";
+import { IAuthMiddleware } from "@middleware/authMiddleware";
 
 interface IUserRouteDependencies {
+    authMiddleware: IAuthMiddleware,
     userController: IUserController;
 };
 
-export const createUserRoute = ({ userController }: IUserRouteDependencies): Router => {
+export const createUserRoute = ({
+    authMiddleware, userController
+}: IUserRouteDependencies): Router => {
     const router: Router = express.Router();
 
     router.use(express.json());
