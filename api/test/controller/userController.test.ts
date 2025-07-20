@@ -1,11 +1,12 @@
 import { createUserController, IUserController } from "@controller/userController";
 import { IUserService } from "@service/userService";
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from "node-mocks-http";
 import { faker } from "@faker-js/faker";
 import User from "@model/user";
 import { ITokenService } from "@service/tokenService";
-import { ICookieUtils } from "@utils/cookieUtils";
+import { ICookiePayload, ICookieUtils } from "@utils/cookieUtils";
+import { UserDto } from "@dtos/user.dto";
 
 describe("UserController", () => {
     let userController: IUserController;
@@ -40,6 +41,70 @@ describe("UserController", () => {
         request = createRequest();
         response = createResponse();
         jest.clearAllMocks();
+    });
+
+    it("creates a new user", async () => {
+        const expectedId: number = 1;
+        const expectedStatusCode: number = 200;
+        const accessToken: string = faker.internet.jwt();
+        const refreshToken: string = faker.internet.jwt();
+        const user: UserDto = {
+            name: faker.internet.displayName(),
+            email: faker.internet.exampleEmail(),
+            password: faker.internet.password()
+        };
+        const accessTokenCookieOptions: CookieOptions = {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 900000
+        };
+        const refreshTokenCookieOptions: CookieOptions = {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 900000
+        };
+        const authCookies: ICookiePayload[] = [
+            { name: "access_token", value: accessToken, options: accessTokenCookieOptions },
+            { name: "refresh_token", value: refreshToken, options: refreshTokenCookieOptions }
+        ];
+        request = createRequest({
+            method: "POST",
+            url: "/api/user/create",
+            body: {
+                name: user.name,
+                email: user.email,
+                password: user.password,
+            }
+        });
+
+        mockUserService.createUser.mockResolvedValue(expectedId);
+
+        mockTokenService.generateAccessToken.mockReturnValue(accessToken);
+        mockTokenService.generateRefreshToken.mockReturnValue(refreshToken);
+
+        mockCookieUtils.createAuthCookies.mockReturnValue(authCookies);
+
+        await userController.createUser(request, response);
+
+        expect(mockUserService.createUser).toHaveBeenCalledWith(user);
+        expect(mockUserService.createUser).toHaveBeenCalledTimes(1);
+
+        expect(mockTokenService.generateAccessToken).toHaveBeenCalledWith(expectedId);
+        expect(mockTokenService.generateAccessToken).toHaveBeenCalledTimes(1);
+
+        expect(mockTokenService.generateRefreshToken).toHaveBeenCalledWith(expectedId);
+        expect(mockTokenService.generateRefreshToken).toHaveBeenCalledTimes(1);
+
+        expect(mockCookieUtils.createAuthCookies).toHaveBeenCalledWith(accessToken, refreshToken);
+        expect(mockCookieUtils.createAuthCookies).toHaveBeenCalledTimes(1);
+
+        expect(response.cookies.access_token).toEqual({ value: authCookies[0].value, options: authCookies[0].options });
+        expect(response.cookies.refresh_token).toEqual({ value: authCookies[1].value, options: authCookies[1].options });
+
+        expect(response.statusCode).toBe(expectedStatusCode);
+        expect(response._getJSONData()).toEqual({ id: expectedId });
     });
 
     it("gets the current user", async () => {

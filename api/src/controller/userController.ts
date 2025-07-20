@@ -26,7 +26,11 @@ export const createUserController = ({
     cookieUtils,
 }: UserControllerDependencies): IUserController => {
     const createUser = async (req: Request, res: Response): Promise<void> => {
-        const userDto: UserDto = req.body as UserDto;
+        const userDto: UserDto = {
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+        };
 
         if (!userDto) {
             res.status(400).send("User data is required");
