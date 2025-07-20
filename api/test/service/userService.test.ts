@@ -53,33 +53,58 @@ describe("UserService", () => {
                 name: userDto.name,
                 email: userDto.email,
                 password: hashedPassword,
-            }
-        ));
+            })
+        );
 
         expect(actual).toBe(expected);
     });
 
-    it("gets user by email and password", async () => {
-        const rawPassword = faker.internet.password();
-        const expected: User = new User(
-            1,
-            faker.internet.displayName(),
-            rawPassword,
-            faker.internet.exampleEmail(),
-        );
+    describe("getUserByEmail", () => {
+        it("gets user by email and password", async () => {
+            const rawPassword = faker.internet.password();
+            const expected: User = new User(
+                1,
+                faker.internet.displayName(),
+                rawPassword,
+                faker.internet.exampleEmail(),
+            );
 
-        mockUserRepository.getUserByEmail.mockResolvedValue(expected);
+            mockUserRepository.getUserByEmail.mockResolvedValue(expected);
 
-        const actual: User | null = await userService.getUserByLogin(expected.getEmail(), rawPassword);
+            const actual: User | null = await userService.getUserByLogin(expected.getEmail(), rawPassword);
 
-        expect(mockUserRepository.getUserByEmail).toHaveBeenCalledTimes(1);
-        expect(mockUserRepository.getUserByEmail).toHaveBeenCalledWith(expected.getEmail());
+            expect(mockUserRepository.getUserByEmail).toHaveBeenCalledTimes(1);
+            expect(mockUserRepository.getUserByEmail).toHaveBeenCalledWith(expected.getEmail());
 
-        expect(bcrypt.compareSync).toHaveBeenCalledTimes(1);
-        expect(bcrypt.compareSync).toHaveBeenCalledWith(rawPassword, expected.getPassword());
+            expect(bcrypt.compareSync).toHaveBeenCalledTimes(1);
+            expect(bcrypt.compareSync).toHaveBeenCalledWith(rawPassword, expected.getPassword());
 
-        expect(actual).not.toBeNull();
-        expect(actual).toEqual(expected);
+            expect(actual).not.toBeNull();
+            expect(actual).toEqual(expected);
+        });
+
+        it("does not get user with email and invalid password", async () => {
+            const email: string = faker.internet.exampleEmail();
+            const user: User = new User(
+                1,
+                faker.internet.displayName(),
+                faker.internet.password(),
+                email,
+            );
+            const invalidPassword: string = faker.internet.password();
+
+            mockUserRepository.getUserByEmail.mockResolvedValue(user);
+
+            const actual: User | null = await userService.getUserByLogin(email, invalidPassword);
+
+            expect(mockUserRepository.getUserByEmail).toHaveBeenCalledWith(email);
+            expect(mockUserRepository.getUserByEmail).toHaveBeenCalledTimes(1);
+
+            expect(bcrypt.compareSync).toHaveBeenCalledWith(invalidPassword, user.getPassword());
+            expect(bcrypt.compareSync).toHaveBeenCalledTimes(1);
+
+            expect(actual).toBeNull();
+        });
     });
 
     it("gets user by id", async () => {
