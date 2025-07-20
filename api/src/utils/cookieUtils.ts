@@ -13,25 +13,30 @@ export interface ICookieUtils {
 
 export const createCookieUtils = (): ICookieUtils => {
     const createAuthCookies = (accessToken: string, refreshToken: string): ICookiePayload[] => {
-        const cookieOptions: CookieOptions = {
+        const accessTokenCookieOptions: CookieOptions = {
             httpOnly: true,
             secure: true,
             sameSite: 'strict',
             maxAge: 900000
         };
 
+        const refreshTokenCookieOptions: CookieOptions = {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 604800000
+        };
+
         const accessTokenCookie: ICookiePayload = {
             name: "access_token",
             value: accessToken,
-            options: cookieOptions,
+            options: accessTokenCookieOptions,
         };
-
-        cookieOptions.maxAge = 604800000;
 
         const refreshTokenCookie: ICookiePayload = {
             name: "refresh_token",
             value: refreshToken,
-            options: cookieOptions,
+            options: refreshTokenCookieOptions,
         };
 
         return [accessTokenCookie, refreshTokenCookie];
