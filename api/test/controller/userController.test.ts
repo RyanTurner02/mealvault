@@ -110,6 +110,77 @@ describe("UserController", () => {
         expect(response._getJSONData()).toEqual({ id: expectedId });
     });
 
+    it("logs in the user", async () => {
+        const expectedStatusCode: number = 200;
+        const accessToken: string = faker.internet.jwt();
+        const refreshToken: string = faker.internet.jwt();
+        const expectedUser: User = new User(
+            1,
+            faker.internet.displayName(),
+            faker.internet.password(),
+            faker.internet.exampleEmail(),
+        );
+        const accessTokenCookieOptions: CookieOptions = {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 900000
+        };
+        const refreshTokenCookieOptions: CookieOptions = {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 604800000
+        };
+        const authCookies: ICookiePayload[] = [
+            { name: "access_token", value: accessToken, options: accessTokenCookieOptions },
+            { name: "refresh_token", value: refreshToken, options: refreshTokenCookieOptions }
+        ];
+        const email: string = faker.internet.exampleEmail();
+        const password: string = faker.internet.password();
+        request = createRequest({
+            method: "GET",
+            url: "/api/user/login",
+            body: {
+                email: email,
+                password: password,
+            }
+        });
+
+        mockUserService.getUserByLogin.mockResolvedValue(expectedUser);
+
+        mockTokenService.generateAccessToken.mockReturnValue(accessToken);
+        mockTokenService.generateRefreshToken.mockReturnValue(refreshToken);
+
+        mockCookieUtils.createAuthCookies.mockReturnValue(authCookies);
+
+        await userController.loginUser(request, response);
+
+        expect(mockUserService.getUserByLogin).toHaveBeenCalledWith(email, password);
+        expect(mockUserService.getUserByLogin).toHaveBeenCalledTimes(1);
+
+        expect(mockTokenService.generateAccessToken).toHaveBeenCalledWith(expectedUser.getId());
+        expect(mockTokenService.generateAccessToken).toHaveBeenCalledTimes(1);
+
+        expect(mockTokenService.generateRefreshToken).toHaveBeenCalledWith(expectedUser.getId());
+        expect(mockTokenService.generateRefreshToken).toHaveBeenCalledTimes(1);
+
+        expect(mockCookieUtils.createAuthCookies).toHaveBeenCalledWith(accessToken, refreshToken);
+        expect(mockCookieUtils.createAuthCookies).toHaveBeenCalledTimes(1);
+
+        authCookies.forEach((cookie: ICookiePayload) => {
+            expect(response.cookie).toHaveBeenCalledWith(cookie.name, cookie.value, cookie.options);
+        });
+        expect(response.cookie).toHaveBeenCalledTimes(authCookies.length);
+
+        expect(response.statusCode).toBe(expectedStatusCode);
+        expect(response._getJSONData()).toEqual({
+            id: expectedUser.getId(),
+            name: expectedUser.getName(),
+            email: expectedUser.getEmail(),
+        });
+    });
+
     it("logs out the user", async () => {
         const options: CookieOptions = {
             maxAge: 0
