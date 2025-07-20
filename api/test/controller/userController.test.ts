@@ -181,7 +181,7 @@ describe("UserController", () => {
         });
     });
 
-    it("logs out the user", async () => {
+    it("logs out the user", () => {
         const options: CookieOptions = {
             maxAge: 0
         };
