@@ -92,6 +92,12 @@ describe("UserRepository", () => {
       expect(actual?.getEmail()).toBe(sampleUser.getEmail());
       expect(actual?.getPassword()).toBe(sampleUser.getPassword());
     });
+
+    it("does not get a user by email", async () => {
+      const actual: User | null = await userRepository.getUserByEmail("");
+      
+      expect(actual).toBeNull();
+    });
   });
 
   describe("getUser", () => {
