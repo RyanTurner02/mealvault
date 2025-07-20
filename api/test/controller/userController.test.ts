@@ -40,6 +40,7 @@ describe("UserController", () => {
     beforeEach(() => {
         request = createRequest();
         response = createResponse();
+        response.cookie = jest.fn();
         jest.clearAllMocks();
     });
 
@@ -100,8 +101,10 @@ describe("UserController", () => {
         expect(mockCookieUtils.createAuthCookies).toHaveBeenCalledWith(accessToken, refreshToken);
         expect(mockCookieUtils.createAuthCookies).toHaveBeenCalledTimes(1);
 
-        expect(response.cookies.access_token).toEqual({ value: authCookies[0].value, options: authCookies[0].options });
-        expect(response.cookies.refresh_token).toEqual({ value: authCookies[1].value, options: authCookies[1].options });
+        authCookies.forEach((cookie: ICookiePayload) => {
+            expect(response.cookie).toHaveBeenCalledWith(cookie.name, cookie.value, cookie.options);
+        });
+        expect(response.cookie).toHaveBeenCalledTimes(authCookies.length);
 
         expect(response.statusCode).toBe(expectedStatusCode);
         expect(response._getJSONData()).toEqual({ id: expectedId });
