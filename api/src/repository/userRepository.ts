@@ -16,61 +16,49 @@ export interface IUserRepository {
 
 export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserRepository => {
     const getUserByEmail = async (email: string): Promise<User | null> => {
-        try {
-            const result = await db
-                .select()
-                .from(user)
-                .where(eq(user.userEmail, email));
+        const result = await db
+            .select()
+            .from(user)
+            .where(eq(user.userEmail, email));
 
-            if (!result?.length) return null;
+        if (!result?.length) return null;
 
-            return new User(
-                result[0].userId,
-                result[0].userName,
-                result[0].userPassword,
-                result[0].userEmail,
-            );
-        } catch (err) {
-            return null;
-        }
+        return new User(
+            result[0].userId,
+            result[0].userName,
+            result[0].userPassword,
+            result[0].userEmail,
+        );
     }
 
     const createUser = async (userDto: UserDto): Promise<number | null> => {
-        try {
-            const result = await db
-                .insert(user)
-                .values({
-                    userName: userDto.name,
-                    userPassword: userDto.password,
-                    userEmail: userDto.email,
-                });
+        const result = await db
+            .insert(user)
+            .values({
+                userName: userDto.name,
+                userPassword: userDto.password,
+                userEmail: userDto.email,
+            });
 
-            if (!result?.length) return null;
+        if (!result?.length) return null;
 
-            return result[0].insertId;
-        } catch (err) {
-            return null;
-        }
+        return result[0].insertId;
     }
 
     const getUser = async (userId: number): Promise<User | null> => {
-        try {
-            const result = await db
-                .select()
-                .from(user)
-                .where(eq(user.userId, userId));
+        const result = await db
+            .select()
+            .from(user)
+            .where(eq(user.userId, userId));
 
-            if (!result?.length) return null;
+        if (!result?.length) return null;
 
-            return new User(
-                result[0].userId,
-                result[0].userName,
-                result[0].userPassword,
-                result[0].userEmail
-            );
-        } catch (err) {
-            return null;
-        }
+        return new User(
+            result[0].userId,
+            result[0].userName,
+            result[0].userPassword,
+            result[0].userEmail
+        );
     }
 
     return {
