@@ -54,7 +54,7 @@ export const createCookieUtils = (): ICookieUtils => {
         };
 
         const refreshTokenCookie: ICookiePayload = {
-            name: "access_token",
+            name: "refresh_token",
             value: "",
             options: cookieOptions,
         };
