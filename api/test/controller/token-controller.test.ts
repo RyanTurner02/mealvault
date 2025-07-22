@@ -43,5 +43,21 @@ describe("TokenController", () => {
                 hasAccessToken: true
             });
         });
+
+        it("does not have an access token", async () => {
+            const request: MockRequest<Request> = createRequest({
+                method: "GET",
+                url: "/api/token/has-access-token",
+            });
+
+            const response: MockResponse<Response> = createResponse();
+
+            await tokenController.hasAccessToken(request, response);
+
+            expect(response.statusCode).toBe(200);
+            expect(response._getJSONData()).toEqual({
+                hasAccessToken: false
+            });
+        });
     });
 });
