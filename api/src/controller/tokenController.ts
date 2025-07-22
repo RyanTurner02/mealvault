@@ -15,8 +15,8 @@ export interface ITokenController {
 export const createTokenController = ({
     tokenService
 }: ITokenControllerDependencies) => {
-    const verifyTokenAsync = async (token: string | null, secretKey: string | null): Promise<boolean> => {
-        if (!token || !secretKey) {
+    const verifyTokenAsync = async (token: string | null, secretKey: string): Promise<boolean> => {
+        if (!token) {
             return Promise.resolve(false);
         }
 
