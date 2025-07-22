@@ -15,34 +15,32 @@ export interface ITokenController {
 export const createTokenController = ({
     tokenService
 }: ITokenControllerDependencies) => {
-    const hasAccessToken = (req: Request, res: Response): any => {
-        const accessToken = req.cookies?.access_token;
-
-        if (!accessToken) {
-            return res.status(200).json({ hasAccessToken: false });
+    const verifyTokenAsync = async (token: string | null, secretKey: string | null): Promise<boolean> => {
+        if (!token || !secretKey) {
+            return Promise.resolve(false);
         }
 
-        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!, (err: any) => {
-            if (err) {
-                return res.status(200).json({ hasAccessToken: false });
-            }
-            return res.status(200).json({ hasAccessToken: true });
+        return new Promise((resolve) => {
+            jwt.verify(token, secretKey, (err) => {
+                resolve(!err);
+            });
         });
     }
 
-    const hasRefreshToken = (req: Request, res: Response): any => {
-        const refreshToken = req.cookies?.refresh_token;
+    const hasAccessToken = async (req: Request, res: Response): Promise<void> => {
+        const result: boolean = await verifyTokenAsync(
+            req.cookies?.access_token,
+            process.env.ACCESS_TOKEN_SECRET!);
 
-        if (!refreshToken) {
-            return res.status(200).json({ hasRefreshToken: false });
-        }
+        res.status(200).json({ hasAccessToken: result });
+    }
 
-        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!, (err: any) => {
-            if (err) {
-                return res.status(200).json({ hasRefreshToken: false });
-            }
-            return res.status(200).json({ hasRefreshToken: true });
-        });
+    const hasRefreshToken = async (req: Request, res: Response): Promise<void> => {
+        const result: boolean = await verifyTokenAsync(
+            req.cookies?.refresh_token,
+            process.env.REFRESH_TOKEN_SECRET!);
+
+        res.status(200).json({ hasRefreshToken: result });
     }
 
     const refreshAccessToken = (req: Request, res: Response): any => {
