@@ -15,7 +15,7 @@ export const createUserRoute = ({
     router.use(express.json());
     router.post("/create", userController.createUser);
     router.post("/login", userController.loginUser);
-    router.get("/logout", userController.logoutUser);
+    router.post("/logout", userController.logoutUser);
     router.get("/me", authMiddleware.authenticateToken, userController.getCurrentUser);
     router.get("/:userId", userController.getUserById);
 
