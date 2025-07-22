@@ -60,4 +60,46 @@ describe("TokenController", () => {
             });
         });
     });
+
+    describe("hasRefreshToken", () => {
+        it("has a refresh token", async () => {
+            const refreshToken: string = jwt.sign(
+                { id: 0 },
+                process.env.REFRESH_TOKEN_SECRET!,
+                { expiresIn: '7d' });
+
+            const request: MockRequest<Request> = createRequest({
+                method: "GET",
+                url: "/api/token/has-refresh-token",
+                cookies: {
+                    refresh_token: refreshToken,
+                },
+            });
+
+            const response: MockResponse<Response> = createResponse();
+
+            await tokenController.hasRefreshToken(request, response);
+
+            expect(response.statusCode).toBe(200);
+            expect(response._getJSONData()).toEqual({
+                hasRefreshToken: true
+            });
+        });
+
+        it("does not have a refresh token", async () => {
+            const request: MockRequest<Request> = createRequest({
+                method: "GET",
+                url: "/api/token/has-refresh-token",
+            });
+
+            const response: MockResponse<Response> = createResponse();
+
+            await tokenController.hasRefreshToken(request, response);
+
+            expect(response.statusCode).toBe(200);
+            expect(response._getJSONData()).toEqual({
+                hasRefreshToken: false
+            });
+        });
+    });
 });
