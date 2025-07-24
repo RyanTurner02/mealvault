@@ -1,6 +1,7 @@
 import { createTokenService, ITokenService } from "@service/tokenService";
 import * as jwt from "jsonwebtoken";
 import "dotenv/config";
+import { JwtPayload } from "jsonwebtoken";
 
 describe("TokenService", () => {
     let tokenService: ITokenService;
@@ -12,15 +13,20 @@ describe("TokenService", () => {
     describe("generateAccessToken", () => {
         it("should return a valid JWT containing the user id", () => {
             const id: number = 0;
-            
             const accessToken: string = tokenService.generateAccessToken(id);
-            const decoded: any = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!);
+            const decoded: string | JwtPayload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!);
             
             expect(decoded).toHaveProperty("id", id);
         });
     });
 
     describe("generateRefreshToken", () => {
-        
+        it("should return a valid JWT containing the user id", () => {
+            const id: number = 0;
+            const refreshToken: string = tokenService.generateRefreshToken(id);
+            const decodedToken: string | JwtPayload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
+
+            expect(decodedToken).toHaveProperty("id", id);
+        });
     });
 });
