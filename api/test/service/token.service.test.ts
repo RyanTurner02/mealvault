@@ -14,9 +14,9 @@ describe("TokenService", () => {
         it("should return a valid JWT containing the user id", () => {
             const id: number = 0;
             const accessToken: string = tokenService.generateAccessToken(id);
-            const decoded: string | JwtPayload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!);
+            const decodedToken: string | JwtPayload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!);
             
-            expect(decoded).toHaveProperty("id", id);
+            expect(decodedToken).toHaveProperty("id", id);
         });
     });
 
