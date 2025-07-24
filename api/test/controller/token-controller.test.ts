@@ -1,12 +1,20 @@
 import { createTokenController, ITokenController } from "@controller/tokenController";
 import { ITokenService } from "@service/tokenService";
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from "node-mocks-http";
 import * as jwt from "jsonwebtoken";
 import "dotenv/config";
+import { ICookiePayload, ICookieUtils } from "@utils/cookieUtils";
+import { faker } from "@faker-js/faker/.";
 
 describe("TokenController", () => {
     let tokenController: ITokenController;
+
+    const mockCookieUtils: jest.Mocked<ICookieUtils> = {
+        createAccessTokenCookie: jest.fn(),
+        createAuthCookies: jest.fn(),
+        createEmptyAuthCookies: jest.fn(),
+    }
 
     const mockTokenService: jest.Mocked<ITokenService> = {
         generateAccessToken: jest.fn(),
@@ -15,6 +23,7 @@ describe("TokenController", () => {
 
     beforeAll(() => {
         tokenController = createTokenController({
+            cookieUtils: mockCookieUtils,
             tokenService: mockTokenService
         });
     });
@@ -100,6 +109,54 @@ describe("TokenController", () => {
             expect(response._getJSONData()).toEqual({
                 hasRefreshToken: false
             });
+        });
+    });
+
+    describe("refreshAccessToken", () => {
+        it("refreshes the access token", async () => {
+            const id: number = 0;
+            const accessToken: string = faker.internet.jwt();
+            const refreshToken: string = jwt.sign(
+                { id: id },
+                process.env.REFRESH_TOKEN_SECRET!,
+                { expiresIn: '7d' });
+            const accessTokenCookieOptions: CookieOptions = {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'strict',
+                maxAge: 900000
+            };
+            const accessTokenCookie: ICookiePayload = {
+                name: "access_token",
+                value: accessToken,
+                options: accessTokenCookieOptions,
+            };
+            const request: MockRequest<Request> = createRequest({
+                method: "GET",
+                url: "/api/token/refresh",
+                cookies: {
+                    refresh_token: refreshToken,
+                },
+            });
+
+            mockCookieUtils.createAccessTokenCookie.mockReturnValue(accessTokenCookie);
+            mockTokenService.generateAccessToken.mockReturnValue(accessToken);
+
+            const response: MockResponse<Response> = createResponse();
+            response.cookie = jest.fn();
+
+            await tokenController.refreshAccessToken(request, response);
+
+            expect(mockTokenService.generateAccessToken).toHaveBeenCalledWith(id);
+            expect(mockTokenService.generateAccessToken).toHaveBeenCalledTimes(1);
+
+            expect(mockCookieUtils.createAccessTokenCookie).toHaveBeenCalledWith(accessToken);
+            expect(mockCookieUtils.createAccessTokenCookie).toHaveBeenCalledTimes(1);
+
+            expect(response.cookie).toHaveBeenCalledWith(accessTokenCookie.name, accessTokenCookie.value, accessTokenCookie.options);
+            expect(response.cookie).toHaveBeenCalledTimes(1);
+
+            expect(response.statusCode).toBe(200);
         });
     });
 });

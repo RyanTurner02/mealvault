@@ -1,18 +1,22 @@
 import { ITokenService } from "@service/tokenService";
-import { CookieOptions, Request, Response } from "express";
+import { ICookiePayload, ICookieUtils } from "@utils/cookieUtils";
+import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
+import { JwtPayload } from "jsonwebtoken";
 
 interface ITokenControllerDependencies {
+    cookieUtils: ICookieUtils
     tokenService: ITokenService;
 };
 
 export interface ITokenController {
-    hasAccessToken(req: Request, res: Response): any;
-    hasRefreshToken(req: Request, res: Response): any;
-    refreshAccessToken(req: Request, res: Response): any;
+    hasAccessToken(req: Request, res: Response): Promise<void>;
+    hasRefreshToken(req: Request, res: Response): Promise<void>;
+    refreshAccessToken(req: Request, res: Response): Promise<void>;
 };
 
 export const createTokenController = ({
+    cookieUtils,
     tokenService
 }: ITokenControllerDependencies) => {
     const verifyTokenAsync = async (token: string | null, secretKey: string): Promise<boolean> => {
@@ -43,28 +47,26 @@ export const createTokenController = ({
         res.status(200).json({ hasRefreshToken: result });
     }
 
-    const refreshAccessToken = (req: Request, res: Response): any => {
+    const refreshAccessToken = async (req: Request, res: Response): Promise<void> => {
         const refreshToken = req.cookies?.refresh_token;
 
         if (!refreshToken) {
-            return res.sendStatus(401);
+            res.sendStatus(401);
+            return;
         }
 
-        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!, (err: any, user: any) => {
-            if (err) {
-                return res.sendStatus(401);
-            }
+        const decodedToken: JwtPayload = await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!) as JwtPayload;
 
-            const accessToken = tokenService.generateAccessToken(user.id);
-            const cookieOptions: CookieOptions = {
-                httpOnly: true,
-                secure: true,
-                sameSite: 'strict',
-                maxAge: 900000
-            };
-            res.cookie("access_token", accessToken, cookieOptions);
-            return res.sendStatus(200);
-        });
+        if (!decodedToken) {
+            res.sendStatus(401);
+            return;
+        }
+
+        const accessToken: string = tokenService.generateAccessToken(decodedToken.id);
+        const accessTokenCookie: ICookiePayload = cookieUtils.createAccessTokenCookie(accessToken);
+
+        res.cookie(accessTokenCookie.name, accessTokenCookie.value, accessTokenCookie.options);
+        res.sendStatus(200);
     }
 
     return {

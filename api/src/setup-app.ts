@@ -28,7 +28,7 @@ export const setupApp = (): Express => {
     const cookieUtils: ICookieUtils = createCookieUtils();
 
     const tokenService: ITokenService = createTokenService();
-    const tokenController: ITokenController = createTokenController({ tokenService });
+    const tokenController: ITokenController = createTokenController({ cookieUtils, tokenService });
 
     const userRepository: IUserRepository = createUserRepository({ db });
     const userService: IUserService = createUserService({ userRepository });
