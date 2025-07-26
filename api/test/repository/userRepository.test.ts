@@ -26,7 +26,6 @@ describe("UserRepository", () => {
 
   beforeAll(async () => {
     container = await new MySqlContainer("mysql:9.3.0")
-      .withName("user-repository-test-container")
       .withUsername("test")
       .withUserPassword("test")
       .withDatabase("test_db")
