@@ -31,35 +31,37 @@ describe("UserService", () => {
         jest.clearAllMocks();
     });
 
-    it("creates user with name, email, and password", async () => {
-        const rawPassword = faker.internet.password();
-        const userDto: UserDto = {
-            name: faker.internet.displayName(),
-            email: faker.internet.exampleEmail(),
-            password: rawPassword,
-        };
+    describe("createUser", () => {
+        it("creates user with name, email, and password", async () => {
+            const rawPassword = faker.internet.password();
+            const userDto: UserDto = {
+                name: faker.internet.displayName(),
+                email: faker.internet.exampleEmail(),
+                password: rawPassword,
+            };
 
-        mockUserRepository.createUser.mockResolvedValue(1);
+            mockUserRepository.createUser.mockResolvedValue(1);
 
-        const expected: number = 1;
-        const actual: number | null = await userService.createUser(userDto);
+            const expected: number = 1;
+            const actual: number | null = await userService.createUser(userDto);
 
-        expect(bcrypt.hash).toHaveBeenCalledWith(rawPassword, 10);
-        expect(bcrypt.hash).toHaveBeenCalledTimes(1);
+            expect(bcrypt.hash).toHaveBeenCalledWith(rawPassword, 10);
+            expect(bcrypt.hash).toHaveBeenCalledTimes(1);
 
-        expect(mockUserRepository.createUser).toHaveBeenCalledTimes(1);
-        expect(mockUserRepository.createUser).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: userDto.name,
-                email: userDto.email,
-                password: hashedPassword,
-            })
-        );
+            expect(mockUserRepository.createUser).toHaveBeenCalledTimes(1);
+            expect(mockUserRepository.createUser).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    name: userDto.name,
+                    email: userDto.email,
+                    password: hashedPassword,
+                })
+            );
 
-        expect(actual).toBe(expected);
+            expect(actual).toBe(expected);
+        });
     });
 
-    describe("getUserByEmail", () => {
+    describe("getUserByLogin", () => {
         it("gets user by email and password", async () => {
             const rawPassword = faker.internet.password();
             const expected: User = new User(
@@ -120,20 +122,22 @@ describe("UserService", () => {
         });
     });
 
-    it("gets user by id", async () => {
-        const expected: User = new User(
-            1,
-            faker.internet.displayName(),
-            faker.internet.password(),
-            faker.internet.exampleEmail(),
-        );
+    describe("getUser", () => {
+        it("gets user by id", async () => {
+            const expected: User = new User(
+                1,
+                faker.internet.displayName(),
+                faker.internet.password(),
+                faker.internet.exampleEmail(),
+            );
 
-        mockUserRepository.getUser.mockResolvedValue(expected);
+            mockUserRepository.getUser.mockResolvedValue(expected);
 
-        const actual: User | null = await userService.getUser(expected.getId());
+            const actual: User | null = await userService.getUser(expected.getId());
 
-        expect(actual).not.toBeNull();
-        expect(mockUserRepository.getUser).toHaveBeenCalledWith(expected.getId());
-        expect(actual).toEqual(expected);
+            expect(actual).not.toBeNull();
+            expect(mockUserRepository.getUser).toHaveBeenCalledWith(expected.getId());
+            expect(actual).toEqual(expected);
+        });
     });
 });
