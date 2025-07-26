@@ -10,8 +10,6 @@ import { UserDto } from "@dtos/user.dto";
 
 describe("UserController", () => {
     let userController: IUserController;
-    let request: MockRequest<Request>;
-    let response: MockResponse<Response>;
 
     const mockUserService: jest.Mocked<IUserService> = {
         createUser: jest.fn(),
@@ -39,9 +37,6 @@ describe("UserController", () => {
     });
 
     beforeEach(() => {
-        request = createRequest();
-        response = createResponse();
-        response.cookie = jest.fn();
         jest.clearAllMocks();
     });
 
@@ -72,7 +67,7 @@ describe("UserController", () => {
                 { name: "access_token", value: accessToken, options: accessTokenCookieOptions },
                 { name: "refresh_token", value: refreshToken, options: refreshTokenCookieOptions }
             ];
-            request = createRequest({
+            const request: MockRequest<Request> = createRequest({
                 method: "POST",
                 url: "/api/user/create",
                 body: {
@@ -81,6 +76,8 @@ describe("UserController", () => {
                     password: user.password,
                 }
             });
+            const response: MockResponse<Response> = createResponse();
+            response.cookie = jest.fn();
 
             mockUserService.createUser.mockResolvedValue(expectedId);
 
@@ -142,7 +139,7 @@ describe("UserController", () => {
             ];
             const email: string = faker.internet.exampleEmail();
             const password: string = faker.internet.password();
-            request = createRequest({
+            const request: MockRequest<Request> = createRequest({
                 method: "GET",
                 url: "/api/user/login",
                 body: {
@@ -150,6 +147,8 @@ describe("UserController", () => {
                     password: password,
                 }
             });
+            const response: MockResponse<Response> = createResponse();
+            response.cookie = jest.fn();
 
             mockUserService.getUserByLogin.mockResolvedValue(expectedUser);
 
@@ -202,10 +201,12 @@ describe("UserController", () => {
                 options: options,
             };
             const emptyAuthCookies: ICookiePayload[] = [emptyAccessTokenCookie, emptyRefreshTokenCookie];
-            request = createRequest({
+            const request: MockRequest<Request> = createRequest({
                 method: "GET",
                 url: "/api/user/logout",
             });
+            const response: MockResponse<Response> = createResponse();
+            response.cookie = jest.fn();
 
             mockCookieUtils.createEmptyAuthCookies.mockReturnValue(emptyAuthCookies);
 
@@ -221,14 +222,14 @@ describe("UserController", () => {
     describe("getCurrentUser", () => {
         it("gets the current user", async () => {
             const id = 1;
-            request = createRequest({
+            const request: MockRequest<Request> = createRequest({
                 method: "GET",
                 url: "/api/user/me",
                 user: {
                     id: id
                 },
             });
-
+            const response: MockResponse<Response> = createResponse();
             const expectedUser: User = new User(id,
                 faker.internet.displayName(),
                 faker.internet.password(),
@@ -258,7 +259,6 @@ describe("UserController", () => {
                 faker.internet.password(),
                 faker.internet.exampleEmail()
             );
-
             const request: MockRequest<Request<{ userId: number }>> = createRequest({
                 method: "GET",
                 url: `/api/user/${id}`,
@@ -266,8 +266,10 @@ describe("UserController", () => {
                     userId: id,
                 },
             });
+            const response: MockResponse<Response> = createResponse();
 
             mockUserService.getUser.mockResolvedValue(expectedUser);
+
             await userController.getUserById(request, response);
 
             expect(mockUserService.getUser).toHaveBeenCalledWith(id);
