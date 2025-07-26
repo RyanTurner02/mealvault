@@ -20,6 +20,7 @@ const formSchema = z.object({
     name: z.string().min(1, "Enter a recipe name"),
     prepTime: z.string().min(1, "Enter prep time"),
     cookTime: z.string().min(1, "Enter cook time"),
+    servings: z.string().min(1, "Enter number of servings"),
     ingredients: z.string().min(1, "Enter ingredients"),
     instructions: z.string().min(1, "Enter recipe instructions"),
     externalLink: z.string().optional(),
@@ -32,6 +33,7 @@ export const CreateRecipeForm = () => {
             name: "",
             prepTime: "",
             cookTime: "",
+            servings: "",
             ingredients: "",
             instructions: "",
         }
@@ -78,6 +80,19 @@ export const CreateRecipeForm = () => {
                             <FormLabel className="text-2xl">Cook Time</FormLabel>
                                 <FormControl>
                                     <Input placeholder="Cook Time" { ... field} />
+                                </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="servings"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className="text-2xl">Servings</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Servings" { ... field} />
                                 </FormControl>
                             <FormMessage />
                         </FormItem>
