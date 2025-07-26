@@ -31,6 +31,17 @@ export const createTokenController = ({
         });
     }
 
+    const verifyJwtAsync = async (token: string, secretKey: string): Promise<JwtPayload | null> => {
+        return new Promise((resolve) => {
+            jwt.verify(token, secretKey, (err, decoded) => {
+                if (err || typeof decoded !== "object" || decoded === null) {
+                    return resolve(null);
+                }
+                resolve(decoded as JwtPayload);
+            });
+        })
+    }
+
     const hasAccessToken = async (req: Request, res: Response): Promise<void> => {
         const result: boolean = await verifyTokenAsync(
             req.cookies?.access_token,
@@ -55,7 +66,7 @@ export const createTokenController = ({
             return;
         }
 
-        const decodedToken: JwtPayload = await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!) as JwtPayload;
+        const decodedToken: JwtPayload | null = await verifyJwtAsync(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
 
         if (!decodedToken) {
             res.sendStatus(401);

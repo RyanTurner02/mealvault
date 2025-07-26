@@ -159,6 +159,22 @@ describe("TokenController", () => {
             expect(response.statusCode).toBe(200);
         });
 
+        it("does not have a valid refresh token", async () => {
+            const request: MockRequest<Request> = createRequest({
+                method: "GET",
+                url: "/api/token/refresh",
+                cookies: {
+                    refresh_token: faker.internet.jwt()
+                }
+            });
+
+            const response: MockResponse<Response> = createResponse();
+
+            await tokenController.refreshAccessToken(request, response);
+
+            expect(response.statusCode).toBe(401);
+        });
+
         it("does not have a refresh token", async () => {
             const request: MockRequest<Request> = createRequest({
                 method: "GET",
