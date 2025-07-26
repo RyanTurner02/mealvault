@@ -13,5 +13,7 @@ module.exports = {
     '@typings/(.*)': '<rootDir>/src/typings/$1',
     '@dtos/(.*)': '<rootDir>/src/dtos/$1',
     '@db/(.*)': '<rootDir>/src/db/$1',
+    '@utils/(.*)': '<rootDir>/src/utils/$1',
+    '@route/(.*)': '<rootDir>/src/route/$1',
   }
 };

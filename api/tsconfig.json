@@ -42,6 +42,8 @@
       "@typings/*": ["src/typings/*"],
       "@dtos/*" : ["src/dtos/*"],
       "@db/*": ["src/db/*"],
+      "@utils/*": ["src/utils/*"],
+      "@route/*": ["src/route/*"],
     },
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     "typeRoots": [                                       /* Specify multiple folders that act like './node_modules/@types'. */

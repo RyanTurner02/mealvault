@@ -1,12 +1,25 @@
 import { UserDto } from "@dtos/user.dto";
 import User from "@model/user";
-import { db } from "@db/index";
 import { user } from "@db/schema";
 import { eq } from "drizzle-orm";
+import { MySql2Database } from "drizzle-orm/mysql2";
 
-export const getUserByEmail = async (email: string): Promise<User | null> => {
-    try {
-        const result = await db.select().from(user).where(eq(user.userEmail, email));
+interface UserRepositoryDependencies {
+    db: MySql2Database<Record<string, never>>;
+}
+
+export interface IUserRepository {
+    getUserByEmail(email: string): Promise<User | null>;
+    createUser(userDto: UserDto): Promise<number | null>;
+    getUser(userId: number): Promise<User | null>;
+};
+
+export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserRepository => {
+    const getUserByEmail = async (email: string): Promise<User | null> => {
+        const result = await db
+            .select()
+            .from(user)
+            .where(eq(user.userEmail, email));
 
         if (!result?.length) return null;
 
@@ -16,30 +29,27 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
             result[0].userPassword,
             result[0].userEmail,
         );
-    } catch (err) {
-        return null;
     }
-}
 
-export const createUser = async (userDto: UserDto): Promise<number | null> => {
-    try {
-        const result = await db.insert(user).values({
-            userName: userDto.name,
-            userPassword: userDto.password,
-            userEmail: userDto.email,
-        });
-        
+    const createUser = async (userDto: UserDto): Promise<number | null> => {
+        const result = await db
+            .insert(user)
+            .values({
+                userName: userDto.name,
+                userPassword: userDto.password,
+                userEmail: userDto.email,
+            });
+
         if (!result?.length) return null;
 
         return result[0].insertId;
-    } catch (err) {
-        return null;
     }
-}
 
-export const getUser = async (userId: number): Promise<User | null> => {
-    try {
-        const result = await db.select().from(user).where(eq(user.userId, userId));
+    const getUser = async (userId: number): Promise<User | null> => {
+        const result = await db
+            .select()
+            .from(user)
+            .where(eq(user.userId, userId));
 
         if (!result?.length) return null;
 
@@ -49,7 +59,11 @@ export const getUser = async (userId: number): Promise<User | null> => {
             result[0].userPassword,
             result[0].userEmail
         );
-    } catch (err) {
-        return null;
     }
+
+    return {
+        getUserByEmail,
+        createUser,
+        getUser
+    };
 }

@@ -1,21 +1,7 @@
-import express, { Express } from "express";
-import cors, { CorsOptions } from "cors";
-import cookieParser from "cookie-parser";
+import { Express } from "express";
+import { setupApp } from "./setup-app";
 
-const app: Express = express();
-const port = process.env.PORT;
-const corsOptions: CorsOptions = {
-    origin: `${process.env.FRONTEND_URL}:${process.env.FRONTEND_PORT}`,
-    credentials: true,
-    optionsSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
-app.use(cookieParser());
-
-const authRoute = require("./route/AuthRoute");
-app.use('/api/auth/', authRoute);
-
-const userRoute = require("./route/userRoute");
-app.use('/api/user/', userRoute);
+const port: number = Number(process.env.PORT) || 8080;
+const app: Express = setupApp();
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

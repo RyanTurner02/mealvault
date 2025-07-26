@@ -1,13 +1,23 @@
 import express, { Router } from "express";
-import * as userController from "@controller/userController";
-import * as userAuthMiddleware from "@middleware/userAuthMiddleware";
+import { IUserController } from "@controller/userController";
+import { IAuthMiddleware } from "@middleware/authMiddleware";
 
-const router: Router = express.Router();
-router.use(express.json());
+interface IUserRouteDependencies {
+    authMiddleware: IAuthMiddleware,
+    userController: IUserController;
+};
 
-router.post("/create", userController.createUser);
-router.post("/login", userController.loginUser);
-router.get("/me", userAuthMiddleware.authenticateToken, userController.getCurrentUser);
-router.get("/:userId", userController.getUserById);
+export const createUserRoute = ({
+    authMiddleware, userController
+}: IUserRouteDependencies): Router => {
+    const router: Router = express.Router();
 
-module.exports = router;
+    router.use(express.json());
+    router.post("/create", userController.createUser);
+    router.post("/login", userController.loginUser);
+    router.post("/logout", userController.logoutUser);
+    router.get("/me", authMiddleware.authenticateToken, userController.getCurrentUser);
+    router.get("/:userId", userController.getUserById);
+
+    return router;
+}
