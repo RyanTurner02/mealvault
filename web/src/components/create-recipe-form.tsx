@@ -22,7 +22,7 @@ const formSchema = z.object({
     cookTime: z.string().min(1, "Enter cook time"),
     ingredients: z.string().min(1, "Enter ingredients"),
     instructions: z.string().min(1, "Enter recipe instructions"),
-    links: z.string().optional(),
+    externalLink: z.string().optional(),
 });
 
 export const CreateRecipeForm = () => {
@@ -111,15 +111,12 @@ export const CreateRecipeForm = () => {
                 />
                 <FormField
                     control={form.control}
-                    name="links"
+                    name="externalLink"
                     render={({ field }) => (
                         <FormItem>
-                            <div className="flex justify-between">
-                                <FormLabel className="text-2xl">Links</FormLabel>
-                                <Button type="button" variant="secondary">Add Link</Button>
-                            </div>
-                                <FormControl>
-                                    <Input placeholder="Links" { ... field} />
+                            <FormLabel className="text-2xl">External Link</FormLabel>
+                            <FormControl>
+                                    <Input placeholder="https://mealvault.dev" { ... field} />
                                 </FormControl>
                         </FormItem>
                     )}
