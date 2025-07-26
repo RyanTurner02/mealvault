@@ -39,8 +39,28 @@ export const CreateRecipeForm = () => {
         }
     });
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/create`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: values.name,
+                prepTime: values.prepTime,
+                cookTime: values.cookTime,
+                servings: values.servings,
+                ingredients: values.ingredients,
+                instructions: values.instructions,
+                externalLink: values?.externalLink
+            })
+        });
+
+        if (!response.ok) {
+            console.log("Invalid recipe");
+            return;
+        }
     }
 
     return (
