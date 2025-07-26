@@ -13,6 +13,8 @@ import { createTokenController, ITokenController } from "@controller/tokenContro
 import { createAuthMiddleware, IAuthMiddleware } from "@middleware/authMiddleware";
 import { createRecipeRoute } from "@route/recipe.route";
 import { createRecipeController, IRecipeController } from "@controller/recipe.controller";
+import { createRecipeService, IRecipeService } from "@service/recipe.service";
+import { createRecipeRepository, IRecipeRepository } from "@repository/recipe.repository";
 
 export const setupApp = (): Express => {
     const app: Express = express();
@@ -36,7 +38,9 @@ export const setupApp = (): Express => {
     const userService: IUserService = createUserService({ userRepository });
     const userController: IUserController = createUserController({ userService, tokenService, cookieUtils });
 
-    const recipeController: IRecipeController = createRecipeController({});
+    const recipeRepository: IRecipeRepository = createRecipeRepository({ db });
+    const recipeService: IRecipeService = createRecipeService({ recipeRepository });
+    const recipeController: IRecipeController = createRecipeController({ recipeService });
 
     const authMiddleware: IAuthMiddleware = createAuthMiddleware();
 
