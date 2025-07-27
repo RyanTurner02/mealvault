@@ -19,8 +19,6 @@ import Link from "next/link";
 const recipeSchema = z.object({
   id: z.string(),
   name: z.string(),
-  category: z.string(),
-  difficulty: z.string(),
   prepTime: z.string(),
   cookTime: z.string(),
   servings: z.number(),
@@ -38,14 +36,6 @@ export const columns: ColumnDef<Recipe>[] = [
         {row.original.name}
       </Link>
     ),
-  },
-  {
-    accessorKey: "category",
-    header: "Category",
-  },
-  {
-    accessorKey: "difficulty",
-    header: "Difficulty",
   },
   {
     accessorKey: "prepTime",
