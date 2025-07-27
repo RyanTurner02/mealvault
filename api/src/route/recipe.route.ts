@@ -15,6 +15,7 @@ export const createRecipeRoute = ({
 
     router.use(express.json());
     router.post("/create", authMiddleware.authenticateToken, recipeController.createRecipe);
+    router.get("/:recipeId", authMiddleware.authenticateToken, recipeController.getRecipe);
 
     return router;
 }

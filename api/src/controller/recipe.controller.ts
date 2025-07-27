@@ -1,14 +1,15 @@
 import { RecipeDto } from "@dtos/recipe.dto";
 import { IRecipeService } from "@service/recipe.service";
 import { UserRequest } from "@typings/express";
-import { Request, Response } from "express";
+import { Response } from "express";
 
 interface IRecipeControllerDependencies {
     recipeService: IRecipeService,
 };
 
 export interface IRecipeController {
-    createRecipe(req: Request, res: Response): Promise<void>;
+    createRecipe(req: UserRequest, res: Response): Promise<void>;
+    getRecipe(req: UserRequest<{ recipeId: string }>, res: Response): Promise<void>;
 };
 
 export const createRecipeController = ({
@@ -35,7 +36,14 @@ export const createRecipeController = ({
         res.status(200).json(recipe);
     }
 
+    const getRecipe = async (req: UserRequest<{ recipeId: string }>, res: Response): Promise<void> => {
+        const recipe: RecipeDto | null = await recipeService.getRecipe(req.user!.id, Number(req.params.recipeId));
+
+        res.status(200).json(recipe);
+    }
+
     return {
         createRecipe,
+        getRecipe,
     };
 }

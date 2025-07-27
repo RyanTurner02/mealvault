@@ -1,5 +1,6 @@
 import { recipe } from "@db/schema";
 import { RecipeDto } from "@dtos/recipe.dto";
+import { and, eq } from "drizzle-orm";
 import { MySql2Database, MySqlRawQueryResult } from "drizzle-orm/mysql2";
 
 interface IRecipeRepositoryDependencies {
@@ -8,6 +9,7 @@ interface IRecipeRepositoryDependencies {
 
 export interface IRecipeRepository {
     createRecipe(userId: number, recipeDto: RecipeDto): Promise<number | null>;
+    getRecipe(userId: number, recipeId: number): Promise<RecipeDto | null>;
 };
 
 export const createRecipeRepository = ({ db }: IRecipeRepositoryDependencies): IRecipeRepository => {
@@ -29,7 +31,21 @@ export const createRecipeRepository = ({ db }: IRecipeRepositoryDependencies): I
         return result[0].insertId;
     }
 
+    const getRecipe = async (userId: number, recipeId: number): Promise<any> => {
+        const result = await db
+            .select()
+            .from(recipe)
+            .where(
+                and(
+                    eq(recipe.userId, userId),
+                    eq(recipe.recipeId, recipeId)
+                ));
+
+        return result;
+    }
+
     return {
-        createRecipe
+        createRecipe,
+        getRecipe,
     };
 }
