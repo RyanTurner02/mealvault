@@ -1,19 +1,34 @@
+import { recipe } from "@db/schema";
 import { RecipeDto } from "@dtos/recipe.dto";
-import { MySql2Database } from "drizzle-orm/mysql2";
+import { MySql2Database, MySqlRawQueryResult } from "drizzle-orm/mysql2";
 
 interface IRecipeRepositoryDependencies {
     db: MySql2Database<Record<string, never>>;
 };
 
 export interface IRecipeRepository {
-    createRecipe(recipeDto: RecipeDto): boolean;
+    createRecipe(userId: number, recipeDto: RecipeDto): Promise<number | null>;
 };
 
 export const createRecipeRepository = ({ db }: IRecipeRepositoryDependencies): IRecipeRepository => {
-    const createRecipe = (recipeDto: RecipeDto): boolean => {
-        return true;
+    const createRecipe = async (userId: number, recipeDto: RecipeDto): Promise<number | null> => {
+        const result: MySqlRawQueryResult = await db.insert(recipe).values({
+            userId: userId,
+            recipeName: recipeDto.name,
+            prepTime: recipeDto.prepTime,
+            cookTime: recipeDto.cookTime,
+            servings: recipeDto.servings,
+            ingredients: recipeDto.ingredients,
+            instructions: recipeDto.instructions,
+            externalLink: recipeDto?.externalLink
+        });
+
+        if (!result?.length) {
+            return null;
+        }
+        return result[0].insertId;
     }
-    
+
     return {
         createRecipe
     };

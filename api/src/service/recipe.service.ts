@@ -6,16 +6,14 @@ interface IRecipeServiceDependencies {
 }
 
 export interface IRecipeService {
-    createRecipe(recipeDto: RecipeDto): boolean;
+    createRecipe(userId: number, recipeDto: RecipeDto): Promise<number | null>;
 }
 
 export const createRecipeService = ({
     recipeRepository
 }: IRecipeServiceDependencies): IRecipeService => {
-    const createRecipe = (recipeDto: RecipeDto): boolean => {
-        recipeRepository.createRecipe(recipeDto);
-        
-        return true;
+    const createRecipe = async (userId: number, recipeDto: RecipeDto): Promise<number | null> => {
+        return await recipeRepository.createRecipe(userId, recipeDto);
     };
 
     return {

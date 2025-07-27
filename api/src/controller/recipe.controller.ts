@@ -1,5 +1,6 @@
 import { RecipeDto } from "@dtos/recipe.dto";
 import { IRecipeService } from "@service/recipe.service";
+import { UserRequest } from "@typings/express";
 import { Request, Response } from "express";
 
 interface IRecipeControllerDependencies {
@@ -13,7 +14,7 @@ export interface IRecipeController {
 export const createRecipeController = ({
     recipeService
 }: IRecipeControllerDependencies): IRecipeController => {
-    const createRecipe = async (req: Request, res: Response): Promise<void> => {
+    const createRecipe = async (req: UserRequest, res: Response): Promise<void> => {
         const recipe: RecipeDto = {
             name: req.body.name,
             prepTime: req.body.prepTime,
@@ -24,7 +25,7 @@ export const createRecipeController = ({
             externalLink: req.body?.externalLink,
         };
 
-        const result: boolean = recipeService.createRecipe(recipe);
+        const result: number | null = await recipeService.createRecipe(req.user!.id, recipe);
 
         if (!result) {
             res.status(500).send("Unable to create recipe");
