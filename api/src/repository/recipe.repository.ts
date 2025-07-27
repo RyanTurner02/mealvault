@@ -9,6 +9,7 @@ interface IRecipeRepositoryDependencies {
 
 export interface IRecipeRepository {
     createRecipe(userId: number, recipeDto: RecipeDto): Promise<number | null>;
+    getAllRecipes(userId: number): Promise<any>;
     getRecipe(userId: number, recipeId: number): Promise<RecipeDto | null>;
 };
 
@@ -31,6 +32,17 @@ export const createRecipeRepository = ({ db }: IRecipeRepositoryDependencies): I
         return result[0].insertId;
     }
 
+    const getAllRecipes = async (userId: number): Promise<any> => {
+        const result = await db
+            .select()
+            .from(recipe)
+            .where(
+                eq(recipe.userId, userId)
+            );
+
+        return result;
+    }
+
     const getRecipe = async (userId: number, recipeId: number): Promise<any> => {
         const result = await db
             .select()
@@ -46,6 +58,7 @@ export const createRecipeRepository = ({ db }: IRecipeRepositoryDependencies): I
 
     return {
         createRecipe,
+        getAllRecipes,
         getRecipe,
     };
 }

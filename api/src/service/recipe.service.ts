@@ -7,6 +7,7 @@ interface IRecipeServiceDependencies {
 
 export interface IRecipeService {
     createRecipe(userId: number, recipeDto: RecipeDto): Promise<number | null>;
+    getAllRecipes(userId: number): Promise<RecipeDto[] | null>;
     getRecipe(userId: number, recipeId: number): Promise<RecipeDto | null>;
 }
 
@@ -17,12 +18,17 @@ export const createRecipeService = ({
         return await recipeRepository.createRecipe(userId, recipeDto);
     };
 
+    const getAllRecipes = async (userId: number) => {
+        return await recipeRepository.getAllRecipes(userId);
+    }
+
     const getRecipe = async (userId: number, recipeId: number) => {
         return await recipeRepository.getRecipe(userId, recipeId);
     }
 
     return {
         createRecipe,
+        getAllRecipes,
         getRecipe,
     };
 }
