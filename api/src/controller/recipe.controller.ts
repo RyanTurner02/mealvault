@@ -34,7 +34,7 @@ export const createRecipeController = ({
             return;
         }
 
-        res.status(200).json(recipe);
+        res.status(200).json(result);
     }
 
     const getAllRecipes = async (req: UserRequest, res: Response): Promise<void> => {

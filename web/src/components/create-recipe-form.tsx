@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
     name: z.string().min(1, "Enter a recipe name"),
@@ -27,6 +28,8 @@ const formSchema = z.object({
 });
 
 export const CreateRecipeForm = () => {
+    const router = useRouter();
+    
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -61,6 +64,9 @@ export const CreateRecipeForm = () => {
             console.log("Invalid recipe");
             return;
         }
+
+        const result: number = await response.json();        
+        router.push(`/m/${result}`);
     }
 
     return (
