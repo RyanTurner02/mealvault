@@ -53,7 +53,7 @@ export const createRecipeRepository = ({ db }: IRecipeRepositoryDependencies): I
                     eq(recipe.recipeId, recipeId)
                 ));
 
-        return result;
+        return result[0];
     }
 
     return {
