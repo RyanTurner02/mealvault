@@ -1,7 +1,5 @@
 import { Request } from "express";
 
-export interface UserRequest extends Request {
-  user?: {
-    id: number;
-  };
+export interface UserRequest<P = {}> extends Request<P> {
+  user?: { id: number };
 }

@@ -17,10 +17,8 @@ import { useState } from "react";
 import Link from "next/link";
 
 const recipeSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  category: z.string(),
-  difficulty: z.string(),
+  recipeId: z.string(),
+  recipeName: z.string(),
   prepTime: z.string(),
   cookTime: z.string(),
   servings: z.number(),
@@ -34,18 +32,10 @@ export const columns: ColumnDef<Recipe>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
-      <Link className="text-link" href={`/m/${row.original.id}`}>
-        {row.original.name}
+      <Link className="text-link" href={`/m/${row.original.recipeId}`}>
+        {row.original.recipeName}
       </Link>
     ),
-  },
-  {
-    accessorKey: "category",
-    header: "Category",
-  },
-  {
-    accessorKey: "difficulty",
-    header: "Difficulty",
   },
   {
     accessorKey: "prepTime",
@@ -94,7 +84,7 @@ export const columns: ColumnDef<Recipe>[] = [
             </DropdownMenuContent>
           </DropdownMenu>
           <DeleteRecipeModal
-            recipeId={row.original.id}
+            recipeId={row.original.recipeId}
             open={open}
             onOpenChange={setOpen}
           />

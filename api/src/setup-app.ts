@@ -11,6 +11,10 @@ import { createTokenService, ITokenService } from "@service/tokenService";
 import { createCookieUtils, ICookieUtils } from "@utils/cookieUtils";
 import { createTokenController, ITokenController } from "@controller/tokenController";
 import { createAuthMiddleware, IAuthMiddleware } from "@middleware/authMiddleware";
+import { createRecipeRoute } from "@route/recipe.route";
+import { createRecipeController, IRecipeController } from "@controller/recipe.controller";
+import { createRecipeService, IRecipeService } from "@service/recipe.service";
+import { createRecipeRepository, IRecipeRepository } from "@repository/recipe.repository";
 
 export const setupApp = (): Express => {
     const app: Express = express();
@@ -34,13 +38,19 @@ export const setupApp = (): Express => {
     const userService: IUserService = createUserService({ userRepository });
     const userController: IUserController = createUserController({ userService, tokenService, cookieUtils });
 
+    const recipeRepository: IRecipeRepository = createRecipeRepository({ db });
+    const recipeService: IRecipeService = createRecipeService({ recipeRepository });
+    const recipeController: IRecipeController = createRecipeController({ recipeService });
+
     const authMiddleware: IAuthMiddleware = createAuthMiddleware();
 
     const userRoute: Router = createUserRoute({ authMiddleware, userController });
     const tokenRoute: Router = createTokenRoute({ tokenController });
+    const recipeRoute: Router = createRecipeRoute({ authMiddleware, recipeController });
 
     app.use('/api/user/', userRoute);
     app.use('/api/token/', tokenRoute);
+    app.use("/api/recipe/", recipeRoute);
 
     return app;
 }
