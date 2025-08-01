@@ -103,7 +103,7 @@ export default function Page() {
 
           <CardFooter>
             <span className="font-bold">External Link:</span>&nbsp;
-            <Link className="text-link" href={`${recipe?.externalLink}`}>
+            <Link className="text-link" href={`${recipe?.externalLink}`} target="_blank">
               {recipe?.externalLink}
             </Link>
           </CardFooter>
