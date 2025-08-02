@@ -9,6 +9,7 @@ export interface IRecipeService {
     createRecipe(userId: number, recipeDto: RecipeDto): Promise<number | null>;
     getAllRecipes(userId: number): Promise<RecipeDto[] | null>;
     getRecipe(userId: number, recipeId: number): Promise<RecipeDto | null>;
+    updateRecipe(userId: number, recipeId: number, recipeDto: RecipeDto): Promise<number>;
 }
 
 export const createRecipeService = ({
@@ -26,9 +27,14 @@ export const createRecipeService = ({
         return await recipeRepository.getRecipe(userId, recipeId);
     }
 
+    const updateRecipe = async (userId: number, recipeId: number, recipeDto: RecipeDto): Promise<number> => {
+        return await recipeRepository.updateRecipe(userId, recipeId, recipeDto);
+    }
+
     return {
         createRecipe,
         getAllRecipes,
         getRecipe,
+        updateRecipe,
     };
 }
