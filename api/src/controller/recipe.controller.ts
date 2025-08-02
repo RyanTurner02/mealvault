@@ -52,12 +52,11 @@ export const createRecipeController = ({
     }
 
     const deleteRecipe = async (req: UserRequest<{ recipeId: string }>, res: Response): Promise<void> => {
-        const successfulDelete: number = 1;
-        const result: number = await recipeService.deleteRecipe(
+        const recipeDeleted: boolean = await recipeService.deleteRecipe(
             req.user!.id,
             Number(req.params.recipeId));
 
-        if (result !== successfulDelete) {
+        if (!recipeDeleted) {
             res.status(404).json({ message: "Recipe does not exist" });
             return;
         }
