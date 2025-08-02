@@ -6,8 +6,7 @@ export default function Page() {
     <div className="min-h-svh">
       <Header />
       <div className="flex items-center justify-center w-full p-6 md:p-10">
-        <div className="w-full max-w-sm">
-          <h1 className="mt-2 mb-5 text-4xl font-bold text-center">Edit Recipe</h1>
+        <div className="w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl">
           <EditRecipeForm />
         </div>
       </div>

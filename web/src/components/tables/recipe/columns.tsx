@@ -67,7 +67,7 @@ export const columns: ColumnDef<Recipe>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <Link href={`/edit`}>
+              <Link href={`/m/${row.original.recipeId}/edit`}>
                 <DropdownMenuItem className="cursor-pointer">
                   Edit
                 </DropdownMenuItem>

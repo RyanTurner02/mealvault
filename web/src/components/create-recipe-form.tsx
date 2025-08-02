@@ -23,22 +23,13 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-const formSchema = z.object({
-  name: z.string().min(1, "Enter a recipe name"),
-  prepTime: z.string().min(1, "Enter prep time"),
-  cookTime: z.string().min(1, "Enter cook time"),
-  servings: z.string().min(1, "Enter number of servings"),
-  ingredients: z.string().min(1, "Enter ingredients"),
-  instructions: z.string().min(1, "Enter recipe instructions"),
-  externalLink: z.string().optional(),
-});
+import { recipeFormSchema } from "@/lib/schemas/recipe-form.schema";
 
 export const CreateRecipeForm = () => {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof recipeFormSchema>>({
+    resolver: zodResolver(recipeFormSchema),
     defaultValues: {
       name: "",
       prepTime: "",
@@ -49,7 +40,7 @@ export const CreateRecipeForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof recipeFormSchema>) => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/create`,
       {
