@@ -27,7 +27,9 @@ const recipeSchema = z.object({
 
 export type Recipe = z.infer<typeof recipeSchema>;
 
-export const columns: ColumnDef<Recipe>[] = [
+export const columns = (
+  onDelete: (id: string) => void
+): ColumnDef<Recipe>[] => [
   {
     accessorKey: "name",
     header: "Name",
@@ -86,6 +88,22 @@ export const columns: ColumnDef<Recipe>[] = [
           <DeleteRecipeModal
             recipeId={row.original.recipeId}
             open={open}
+            onDeleteClicked={async () => {
+              const response = await fetch(
+                `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/${row.original.recipeId}/delete`,
+                {
+                  method: "DELETE",
+                  credentials: "include",
+                }
+              );
+
+              if (response.status !== 204) {
+                return;
+              }
+
+              onDelete(row.original.recipeId);
+              setOpen(false);
+            }}
             onOpenChange={setOpen}
           />
         </>
