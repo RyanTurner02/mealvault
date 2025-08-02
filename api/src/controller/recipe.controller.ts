@@ -11,6 +11,7 @@ export interface IRecipeController {
     createRecipe(req: UserRequest, res: Response): Promise<void>;
     getAllRecipes(req: UserRequest, res: Response): Promise<void>;
     getRecipe(req: UserRequest<{ recipeId: string }>, res: Response): Promise<void>;
+    deleteRecipe(req: UserRequest<{ recipeId: string }>, res: Response): Promise<void>;
     updateRecipe(req: UserRequest<{ recipeId: string }>, res: Response): Promise<void>;
 };
 
@@ -40,7 +41,7 @@ export const createRecipeController = ({
 
     const getAllRecipes = async (req: UserRequest, res: Response): Promise<void> => {
         const recipes: RecipeDto[] | null = await recipeService.getAllRecipes(req.user!.id);
-        
+
         res.status(200).json(recipes);
     }
 
@@ -48,6 +49,20 @@ export const createRecipeController = ({
         const recipe: RecipeDto | null = await recipeService.getRecipe(req.user!.id, Number(req.params.recipeId));
 
         res.status(200).json(recipe);
+    }
+
+    const deleteRecipe = async (req: UserRequest<{ recipeId: string }>, res: Response): Promise<void> => {
+        const successfulDelete: number = 1;
+        const result: number = await recipeService.deleteRecipe(
+            req.user!.id,
+            Number(req.params.recipeId));
+
+        if (result !== successfulDelete) {
+            res.status(404).json({ message: "Recipe does not exist" });
+            return;
+        }
+
+        res.sendStatus(204);
     }
 
     const updateRecipe = async (req: UserRequest<{ recipeId: string }>, res: Response): Promise<void> => {
@@ -69,6 +84,7 @@ export const createRecipeController = ({
         createRecipe,
         getAllRecipes,
         getRecipe,
+        deleteRecipe,
         updateRecipe,
     };
 }

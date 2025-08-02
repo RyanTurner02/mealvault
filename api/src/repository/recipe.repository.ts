@@ -11,6 +11,7 @@ export interface IRecipeRepository {
     createRecipe(userId: number, recipeDto: RecipeDto): Promise<number | null>;
     getAllRecipes(userId: number): Promise<any>;
     getRecipe(userId: number, recipeId: number): Promise<RecipeDto | null>;
+    deleteRecipe(userId: number, recipeId: number): Promise<number>;
     updateRecipe(userId: number, recipeId: number, recipeDto: RecipeDto): Promise<number>;
 };
 
@@ -57,6 +58,19 @@ export const createRecipeRepository = ({ db }: IRecipeRepositoryDependencies): I
         return result[0];
     }
 
+    const deleteRecipe = async (userId: number, recipeId: number): Promise<any> => {
+        const result = await db
+            .delete(recipe)
+            .where(
+                and(
+                    eq(recipe.userId, userId),
+                    eq(recipe.recipeId, recipeId)
+                )
+            )
+
+        return result[0].affectedRows;
+    }
+
     const updateRecipe = async (userId: number, recipeId: number, recipeDto: RecipeDto): Promise<number> => {
         const result = await db
             .update(recipe)
@@ -83,6 +97,7 @@ export const createRecipeRepository = ({ db }: IRecipeRepositoryDependencies): I
         createRecipe,
         getAllRecipes,
         getRecipe,
+        deleteRecipe,
         updateRecipe,
     };
 }
