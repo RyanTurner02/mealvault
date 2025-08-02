@@ -25,15 +25,38 @@ import Link from "next/link";
 import { recipeFormSchema } from "@/lib/schemas/recipe-form.schema";
 import { useEffect, useState } from "react";
 import { recipeSchema } from "@/lib/schemas/recipe.schema";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 export const EditRecipeForm = () => {
+  const router = useRouter();
   const params = useParams();
-  const url: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/${params.id}`;
+  const recipeUrl: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/${params.id}`;
+  const editRecipeUrl: string = `${recipeUrl}/edit`;
   const [recipe, setRecipe] = useState<z.infer<typeof recipeSchema>>();
 
-  const onSubmit = (values: z.infer<typeof recipeFormSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof recipeFormSchema>) => {
+    const response = await fetch(editRecipeUrl, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: values.name,
+        prepTime: values.prepTime,
+        cookTime: values.cookTime,
+        servings: values.servings,
+        ingredients: values.ingredients,
+        instructions: values.instructions,
+        externalLink: values.externalLink,
+      }),
+    });
+
+    if (!response.ok) {
+      return;
+    }
+
+    router.push(`/m/${params.id}`);
   };
 
   const form = useForm<z.infer<typeof recipeFormSchema>>({
@@ -51,7 +74,7 @@ export const EditRecipeForm = () => {
 
   useEffect(() => {
     const fetchRecipe = async () => {
-      const response = await fetch(url, {
+      const response = await fetch(recipeUrl, {
         method: "GET",
         credentials: "include",
         headers: {
