@@ -21,7 +21,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import { recipeFormSchema } from "@/lib/schemas/recipe-form.schema";
 import { useEffect, useState } from "react";
 import { recipeSchema } from "@/lib/schemas/recipe.schema";
@@ -218,11 +217,13 @@ export const EditRecipeForm = () => {
 
             <CardFooter className="flex justify-end p-0 pt-4 space-x-5">
               <Button type="submit">Save</Button>
-              <Link href="/">
-                <Button type="button" variant="destructive">
-                  Cancel
-                </Button>
-              </Link>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={() => router.back()}
+              >
+                Cancel
+              </Button>
             </CardFooter>
           </form>
         </Form>
