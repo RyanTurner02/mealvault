@@ -23,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { recipeFormSchema } from "@/lib/schemas/recipe-form-schema";
+import { recipeFormSchema } from "@/lib/schemas/recipe-form.schema";
 
 export const CreateRecipeForm = () => {
   const router = useRouter();

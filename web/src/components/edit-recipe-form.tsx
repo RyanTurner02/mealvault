@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { recipeFormSchema } from "@/lib/schemas/recipe-form-schema";
+import { recipeFormSchema } from "@/lib/schemas/recipe-form.schema";
 
 export const EditRecipeForm = () => {
   const onSubmit = (values: z.infer<typeof recipeFormSchema>) => {
