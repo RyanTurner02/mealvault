@@ -23,8 +23,15 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { recipeFormSchema } from "@/lib/schemas/recipe-form.schema";
+import { useEffect, useState } from "react";
+import { recipeSchema } from "@/lib/schemas/recipe.schema";
+import { useParams } from "next/navigation";
 
 export const EditRecipeForm = () => {
+  const params = useParams();
+  const url: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/${params.id}`;
+  const [recipe, setRecipe] = useState<z.infer<typeof recipeSchema>>();
+
   const onSubmit = (values: z.infer<typeof recipeFormSchema>) => {
     console.log(values);
   };
@@ -38,8 +45,40 @@ export const EditRecipeForm = () => {
       servings: "",
       ingredients: "",
       instructions: "",
+      externalLink: "",
     },
   });
+
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      const response = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        return;
+      }
+
+      const result = await response.json();
+      setRecipe(result);
+
+      form.reset({
+        name: result.recipeName ?? "",
+        prepTime: result.prepTime ?? "",
+        cookTime: result.cookTime ?? "",
+        servings: result.servings ?? "",
+        ingredients: result.ingredients ?? "",
+        instructions: result.instructions ?? "",
+        externalLink: result.externalLink ?? "",
+      });
+    };
+
+    fetchRecipe();
+  }, []);
 
   return (
     <Card>

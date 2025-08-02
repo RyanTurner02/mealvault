@@ -12,23 +12,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-const recipeSchema = z.object({
-  recipeName: z.string(),
-  prepTime: z.string(),
-  cookTime: z.string(),
-  servings: z.number(),
-  ingredients: z.string(),
-  instructions: z.string(),
-  externalLink: z.string().optional(),
-});
-
-export type RecipeData = z.infer<typeof recipeSchema>;
+import { recipeSchema } from "@/lib/schemas/recipe.schema";
 
 export default function Page() {
   const params = useParams();
   const url: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/${params.id}`;
-  const [recipe, setRecipe] = useState<RecipeData>();
+  const [recipe, setRecipe] = useState<z.infer<typeof recipeSchema>>();
 
   useEffect(() => {
     const fetchRecipe = async () => {
