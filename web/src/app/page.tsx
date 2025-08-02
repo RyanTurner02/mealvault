@@ -30,12 +30,16 @@ export default function Home() {
     fetchRecipes();
   }, []);
 
+  const handleDelete = (recipeId: string) => {
+    setRecipes((prev) => prev.filter((r) => r.recipeId !== recipeId));
+  };
+
   return (
     <div>
       <Header />
       <main className="w-6/12 mx-auto">
         <h1 className="mt-2 mb-5 text-4xl font-bold text-center">My Recipes</h1>
-        <DataTable columns={columns} data={recipes} />
+        <DataTable columns={columns(handleDelete)} data={recipes} />
       </main>
     </div>
   );

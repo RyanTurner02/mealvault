@@ -12,12 +12,14 @@ import {
 interface DeleteRecipeModalProps {
   recipeId: string;
   open: boolean;
+  onDeleteClicked: () => void;
   onOpenChange: (open: boolean) => void;
 }
 
 export function DeleteRecipeModal({
   recipeId,
   open,
+  onDeleteClicked,
   onOpenChange,
 }: DeleteRecipeModalProps) {
   return (
@@ -30,7 +32,9 @@ export function DeleteRecipeModal({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction>Delete</AlertDialogAction>
+          <AlertDialogAction onClick={() => onDeleteClicked()}>
+            Delete
+          </AlertDialogAction>
           <AlertDialogCancel onClick={() => onOpenChange(false)}>
             Cancel
           </AlertDialogCancel>
