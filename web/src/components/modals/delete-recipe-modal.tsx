@@ -10,14 +10,12 @@ import {
 } from "@/components/ui/alert-dialog";
 
 interface DeleteRecipeModalProps {
-  recipeId: string;
   open: boolean;
   onDeleteClicked: () => void;
   onOpenChange: (open: boolean) => void;
 }
 
 export function DeleteRecipeModal({
-  recipeId,
   open,
   onDeleteClicked,
   onOpenChange,

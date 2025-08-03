@@ -86,7 +86,6 @@ export const columns = (
             </DropdownMenuContent>
           </DropdownMenu>
           <DeleteRecipeModal
-            recipeId={row.original.recipeId}
             open={open}
             onDeleteClicked={async () => {
               const response = await fetch(
