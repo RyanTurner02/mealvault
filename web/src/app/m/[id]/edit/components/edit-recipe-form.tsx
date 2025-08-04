@@ -25,14 +25,13 @@ import {
   recipeFormSchema,
   RecipeFormValues,
 } from "@/lib/schemas/recipe-form.schema";
-import { useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEditRecipe } from "@/app/features/edit-recipe/hooks/use-edit-recipe";
+import { useFetchRecipe } from "@/app/features/edit-recipe/hooks/use-fetch-recipe";
+import { useEffect } from "react";
 
 export const EditRecipeForm = () => {
   const router = useRouter();
-  const params = useParams();
-  const recipeUrl: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/${params.id}`;
 
   const form = useForm<RecipeFormValues>({
     resolver: zodResolver(recipeFormSchema),
@@ -40,35 +39,18 @@ export const EditRecipeForm = () => {
   });
 
   const onSubmit = useEditRecipe();
+  const recipe = useFetchRecipe();
 
   useEffect(() => {
-    const fetchRecipe = async () => {
-      const response = await fetch(recipeUrl, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        return;
-      }
-
-      const result = await response.json();
-
-      form.reset({
-        name: result.recipeName ?? "",
-        prepTime: result.prepTime ?? "",
-        cookTime: result.cookTime ?? "",
-        servings: result.servings ?? "",
-        ingredients: result.ingredients ?? "",
-        instructions: result.instructions ?? "",
-        externalLink: result.externalLink ?? "",
-      });
-    };
-
-    fetchRecipe();
+    form.reset({
+      name: recipe?.name ?? "",
+      prepTime: recipe?.prepTime ?? "",
+      cookTime: recipe?.cookTime ?? "",
+      servings: recipe?.servings ?? "",
+      ingredients: recipe?.ingredients ?? "",
+      instructions: recipe?.instructions ?? "",
+      externalLink: recipe?.externalLink ?? "",
+    });
   }, []);
 
   return (
