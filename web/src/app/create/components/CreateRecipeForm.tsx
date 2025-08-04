@@ -22,13 +22,9 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { recipeFormSchema, RecipeFormValues } from "@/lib/schemas/recipe-form.schema";
-import { createRecipe } from "@/app/features/create-recipe/api/create-recipe";
-import { useRouter } from "next/navigation";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useCreateRecipe } from "@/app/features/create-recipe/hooks/use-create-recipe";
 
 export const CreateRecipeForm = () => {
-  const router: AppRouterInstance = useRouter();
-
   const form = useForm<RecipeFormValues>({
     resolver: zodResolver(recipeFormSchema),
     defaultValues: {
@@ -41,9 +37,7 @@ export const CreateRecipeForm = () => {
     },
   });
 
-  const onSubmit = async (values: RecipeFormValues) => {
-    await createRecipe({ router, values });
-  };
+  const onSubmit = useCreateRecipe();
 
   return (
     <Card>
