@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -21,55 +20,26 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { recipeFormSchema, RecipeFormValues } from "@/lib/schemas/recipe-form.schema";
-import { useEffect, useState } from "react";
-import { recipeSchema } from "@/lib/schemas/recipe.schema";
+import {
+  defaultRecipeFormValues,
+  recipeFormSchema,
+  RecipeFormValues,
+} from "@/lib/schemas/recipe-form.schema";
+import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useEditRecipe } from "@/app/features/edit-recipe/hooks/use-edit-recipe";
 
 export const EditRecipeForm = () => {
   const router = useRouter();
   const params = useParams();
   const recipeUrl: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/${params.id}`;
-  const editRecipeUrl: string = `${recipeUrl}/edit`;
-  const [recipe, setRecipe] = useState<z.infer<typeof recipeSchema>>();
-
-  const onSubmit = async (values: RecipeFormValues) => {
-    const response = await fetch(editRecipeUrl, {
-      method: "PUT",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: values.name,
-        prepTime: values.prepTime,
-        cookTime: values.cookTime,
-        servings: values.servings,
-        ingredients: values.ingredients,
-        instructions: values.instructions,
-        externalLink: values.externalLink,
-      }),
-    });
-
-    if (!response.ok) {
-      return;
-    }
-
-    router.push(`/m/${params.id}`);
-  };
 
   const form = useForm<RecipeFormValues>({
     resolver: zodResolver(recipeFormSchema),
-    defaultValues: {
-      name: "",
-      prepTime: "",
-      cookTime: "",
-      servings: "",
-      ingredients: "",
-      instructions: "",
-      externalLink: "",
-    },
+    defaultValues: defaultRecipeFormValues,
   });
+
+  const onSubmit = useEditRecipe();
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -86,7 +56,6 @@ export const EditRecipeForm = () => {
       }
 
       const result = await response.json();
-      setRecipe(result);
 
       form.reset({
         name: result.recipeName ?? "",
