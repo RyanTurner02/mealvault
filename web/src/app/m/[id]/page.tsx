@@ -2,9 +2,6 @@
 
 import Header from "@/app/components/header";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import z from "zod";
 import {
   Card,
   CardContent,
@@ -12,32 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { recipeSchema } from "@/lib/schemas/recipe.schema";
+import { useFetchRecipe } from "@/app/hooks/use-fetch-recipe";
 
 export default function Page() {
-  const params = useParams();
-  const url: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/${params.id}`;
-  const [recipe, setRecipe] = useState<z.infer<typeof recipeSchema>>();
-
-  useEffect(() => {
-    const fetchRecipe = async () => {
-      const response = await fetch(url, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        return;
-      }
-
-      setRecipe(await response.json());
-    };
-
-    fetchRecipe();
-  }, []);
+  const recipe = useFetchRecipe();
 
   return (
     <div className="min-h-svh">

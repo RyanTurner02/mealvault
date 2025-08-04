@@ -27,7 +27,7 @@ import {
 } from "@/lib/schemas/recipe-form.schema";
 import { useRouter } from "next/navigation";
 import { useEditRecipe } from "@/app/features/edit-recipe/hooks/use-edit-recipe";
-import { useFetchRecipe } from "@/app/features/edit-recipe/hooks/use-fetch-recipe";
+import { useFetchRecipe } from "@/app/hooks/use-fetch-recipe";
 import { useEffect } from "react";
 
 export const EditRecipeForm = () => {
