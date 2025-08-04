@@ -1,34 +1,14 @@
-"use client"
+"use client";
 
 import Header from "@/app/components/header";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useUserContext } from "@/app/hooks/UserHook";
+import { useLogout } from "@/app/features/logout/hooks/use-logout";
 
 export default function Logout() {
-  const logoutUrl = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/user/logout`;
-  const router = useRouter();
-  const userContext = useUserContext();
-
-  useEffect(() => {
-    const logout = async () => {
-      await fetch(logoutUrl, {
-        method: "POST",
-        credentials: "include"
-      });
-      
-      await userContext?.refreshUser();
-      router.push("/");  
-    }
-    logout();
-  }, []);
+  useLogout();
 
   return (
     <div>
       <Header />
-      <main>
-        <h1 className="mt-2 mb-1 text-4xl font-bold text-center">Logging out</h1>
-      </main>
     </div>
   );
 }
