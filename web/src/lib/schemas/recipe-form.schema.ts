@@ -11,3 +11,13 @@ export const recipeFormSchema = z.object({
 });
 
 export type RecipeFormValues = z.infer<typeof recipeFormSchema>;
+
+export const defaultRecipeFormValues: RecipeFormValues = {
+  name: "",
+  prepTime: "",
+  cookTime: "",
+  servings: "",
+  ingredients: "",
+  instructions: "",
+  externalLink: "",
+};
