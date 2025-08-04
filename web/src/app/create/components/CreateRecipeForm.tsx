@@ -48,7 +48,7 @@ export const CreateRecipeForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <FormField
               control={form.control}
-              name="name"
+              name="recipeName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-2xl">
