@@ -9,3 +9,5 @@ export const recipeFormSchema = z.object({
   instructions: z.string().min(1, "Enter recipe instructions"),
   externalLink: z.string().optional(),
 });
+
+export type RecipeFormValues = z.infer<typeof recipeFormSchema>;

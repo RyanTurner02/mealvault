@@ -1,5 +1,5 @@
 import Header from "@/app/components/header";
-import { CreateRecipeForm } from "@/components/create-recipe-form";
+import { CreateRecipeForm } from "@/app/create/components/CreateRecipeForm";
 
 export default function Page() {
   return (

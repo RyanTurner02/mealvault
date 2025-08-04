@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -22,13 +21,15 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { recipeFormSchema, RecipeFormValues } from "@/lib/schemas/recipe-form.schema";
+import { createRecipe } from "@/app/features/create-recipe/api/create-recipe";
 import { useRouter } from "next/navigation";
-import { recipeFormSchema } from "@/lib/schemas/recipe-form.schema";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export const CreateRecipeForm = () => {
-  const router = useRouter();
+  const router: AppRouterInstance = useRouter();
 
-  const form = useForm<z.infer<typeof recipeFormSchema>>({
+  const form = useForm<RecipeFormValues>({
     resolver: zodResolver(recipeFormSchema),
     defaultValues: {
       name: "",
@@ -40,34 +41,8 @@ export const CreateRecipeForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof recipeFormSchema>) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/create`,
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: values.name,
-          prepTime: values.prepTime,
-          cookTime: values.cookTime,
-          servings: values.servings,
-          ingredients: values.ingredients,
-          instructions: values.instructions,
-          externalLink: values?.externalLink,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      console.log("Invalid recipe");
-      return;
-    }
-
-    const result: number = await response.json();
-    router.push(`/m/${result}`);
+  const onSubmit = async (values: RecipeFormValues) => {
+    await createRecipe({ router, values });
   };
 
   return (

@@ -21,7 +21,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { recipeFormSchema } from "@/lib/schemas/recipe-form.schema";
+import { recipeFormSchema, RecipeFormValues } from "@/lib/schemas/recipe-form.schema";
 import { useEffect, useState } from "react";
 import { recipeSchema } from "@/lib/schemas/recipe.schema";
 import { useParams, useRouter } from "next/navigation";
@@ -33,7 +33,7 @@ export const EditRecipeForm = () => {
   const editRecipeUrl: string = `${recipeUrl}/edit`;
   const [recipe, setRecipe] = useState<z.infer<typeof recipeSchema>>();
 
-  const onSubmit = async (values: z.infer<typeof recipeFormSchema>) => {
+  const onSubmit = async (values: RecipeFormValues) => {
     const response = await fetch(editRecipeUrl, {
       method: "PUT",
       credentials: "include",
@@ -58,7 +58,7 @@ export const EditRecipeForm = () => {
     router.push(`/m/${params.id}`);
   };
 
-  const form = useForm<z.infer<typeof recipeFormSchema>>({
+  const form = useForm<RecipeFormValues>({
     resolver: zodResolver(recipeFormSchema),
     defaultValues: {
       name: "",
