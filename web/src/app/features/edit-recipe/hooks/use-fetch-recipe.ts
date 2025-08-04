@@ -12,7 +12,7 @@ export const useFetchRecipe = (): RecipeFormValues | null => {
 
     useEffect(() => {
         const fetchData = async () => {
-            setRecipe(await fetchRecipe(params.id));
+            setRecipe(await fetchRecipe({ recipeId: params.id }));
         };
 
         fetchData();

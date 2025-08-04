@@ -43,7 +43,7 @@ export const EditRecipeForm = () => {
 
   useEffect(() => {
     form.reset({
-      name: recipe?.name ?? "",
+      recipeName: recipe?.recipeName ?? "",
       prepTime: recipe?.prepTime ?? "",
       cookTime: recipe?.cookTime ?? "",
       servings: recipe?.servings ?? "",
@@ -51,7 +51,7 @@ export const EditRecipeForm = () => {
       instructions: recipe?.instructions ?? "",
       externalLink: recipe?.externalLink ?? "",
     });
-  }, []);
+  }, [form, recipe]);
 
   return (
     <Card>
@@ -65,7 +65,7 @@ export const EditRecipeForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <FormField
               control={form.control}
-              name="name"
+              name="recipeName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-2xl">

@@ -19,7 +19,7 @@ export const createRecipe = async ({
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: values.name,
+                name: values.recipeName,
                 prepTime: values.prepTime,
                 cookTime: values.cookTime,
                 servings: values.servings,
