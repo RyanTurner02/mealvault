@@ -18,7 +18,7 @@ export default function Page() {
     <div className="min-h-svh">
       <Header />
       <div className="flex items-center justify-center w-full p-6 md:p-10">
-        <Card className="w-full max-w-7xlxl md:max-w-6xl lg:max-w-4xl">
+        <Card className="w-full max-w-7xl md:max-w-6xl lg:max-w-4xl">
           <CardHeader>
             <CardTitle className="text-4xl font-bold text-center">
               {recipe?.recipeName}
