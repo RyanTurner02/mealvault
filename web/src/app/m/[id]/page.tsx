@@ -62,15 +62,24 @@ export default function Page() {
               </div>
             </div>
 
-            <hr className="border-t border-gray-200" />
+            {recipe?.externalLink && (
+              <hr className="border-t border-gray-200" />
+            )}
           </CardContent>
 
-          <CardFooter>
-            <span className="font-bold">External Link:</span>&nbsp;
-            <Link className="text-link" href={`${recipe?.externalLink}`} target="_blank">
-              {recipe?.externalLink}
-            </Link>
-          </CardFooter>
+          {recipe?.externalLink && (
+            <CardFooter>
+              <span className="font-bold">External Link:</span>&nbsp;
+              <Link
+                className="text-link"
+                href={`${recipe?.externalLink}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {recipe?.externalLink}
+              </Link>
+            </CardFooter>
+          )}
         </Card>
       </div>
     </div>
