@@ -74,7 +74,7 @@ export default function Page() {
                 <h2 className="mb-1 text-2xl font-bold text-center ">
                   Ingredients
                 </h2>
-                <p>{recipe?.ingredients}</p>
+                <p className="whitespace-pre-line">{recipe?.ingredients}</p>
               </div>
 
               <hr className="border-t border-gray-200" />
@@ -83,7 +83,7 @@ export default function Page() {
                 <h2 className="mb-1 text-2xl font-bold text-center">
                   Instructions
                 </h2>
-                <p>{recipe?.instructions}</p>
+                <p className="whitespace-pre-line">{recipe?.instructions}</p>
               </div>
             </div>
 
