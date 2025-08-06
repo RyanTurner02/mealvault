@@ -16,7 +16,7 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const userContext = useUserContext();
   const router = useRouter();
-  const { handleLogin } = useLogin({ userContext, router });
+  const { handleLogin } = useLogin({ userContext });
 
   useEffect(() => {
     if (userContext?.user) {
