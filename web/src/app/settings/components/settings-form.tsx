@@ -1,8 +1,8 @@
 "use client";
 
-import { UpdateEmailCard } from "@/components/cards/update-email-card";
-import { UpdatePasswordCard } from "@/components/cards/update-password-card";
-import { UpdateProfileCard } from "@/components/cards/update-profile-card";
+import { UpdateEmailCard } from "@/app/settings/components/cards/update-email-card";
+import { UpdatePasswordCard } from "@/app/settings/components/cards/update-password-card";
+import { UpdateProfileCard } from "@/app/settings/components/cards/update-profile-card";
 import { User } from "@/app/types/user";
 
 interface SettingsFormProps {
