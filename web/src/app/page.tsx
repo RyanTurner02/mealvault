@@ -1,8 +1,9 @@
 "use client";
 
 import Header from "@/app/components/header";
-import { columns, Recipe } from "@/components/tables/recipe/columns";
+import { columns } from "@/components/tables/recipe/columns";
 import { DataTable } from "@/components/tables/recipe/data-table";
+import { Recipe } from "@/lib/schemas/recipe-table-schema";
 import { useEffect, useState } from "react";
 
 export default function Home() {
