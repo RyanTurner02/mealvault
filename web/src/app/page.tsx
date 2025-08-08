@@ -5,30 +5,17 @@ import { columns } from "@/components/tables/recipe/columns";
 import { DataTable } from "@/components/tables/recipe/data-table";
 import { Recipe } from "@/lib/schemas/recipe-table-schema";
 import { useEffect, useState } from "react";
+import { fetchRecipes } from "@/app/features/fetch-recipes/api/fetch-recipes";
 
 export default function Home() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const url: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/`;
 
   useEffect(() => {
-    const fetchRecipes = async () => {
-      const response = await fetch(url, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        return;
-      }
-
-      const result: Recipe[] = await response.json();
-      setRecipes(result);
+    const loadRecipes = async () => {
+      setRecipes(await fetchRecipes());
     };
 
-    fetchRecipes();
+    loadRecipes();
   }, []);
 
   const handleDelete = (recipeId: string) => {
