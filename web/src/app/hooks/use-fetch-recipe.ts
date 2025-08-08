@@ -2,7 +2,7 @@
 
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import { useParams } from "next/navigation";
-import { fetchRecipe } from "../api/fetch-recipe";
+import { fetchRecipe } from "@/app/api/recipes/fetch-recipe";
 import { RecipeFormValues } from "@/app/schemas/recipe-form.schema";
 import { useEffect, useState } from "react";
 
