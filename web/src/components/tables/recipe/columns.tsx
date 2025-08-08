@@ -15,6 +15,7 @@ import {
 import { DeleteRecipeModal } from "@/components/modals/delete-recipe-modal";
 import { useState } from "react";
 import Link from "next/link";
+import { deleteRecipe } from "@/app/features/delete-recipe/api/delete-recipe";
 
 const recipeSchema = z.object({
   recipeId: z.string(),
@@ -88,15 +89,10 @@ export const columns = (
           <DeleteRecipeModal
             open={open}
             onDeleteClicked={async () => {
-              const response = await fetch(
-                `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/${row.original.recipeId}/delete`,
-                {
-                  method: "DELETE",
-                  credentials: "include",
-                }
-              );
+              const recipeId: number = Number(row.original.recipeId);
+              const deletedRecipe: boolean = await deleteRecipe({ recipeId });
 
-              if (response.status !== 204) {
+              if (!deletedRecipe) {
                 return;
               }
 
