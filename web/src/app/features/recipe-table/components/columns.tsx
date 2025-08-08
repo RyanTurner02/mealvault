@@ -15,7 +15,7 @@ import { DeleteRecipeModal } from "@/app/features/recipe-table/components/delete
 import { useState } from "react";
 import Link from "next/link";
 import { deleteRecipe } from "@/app/features/delete-recipe/api/delete-recipe";
-import { Recipe } from "@/lib/schemas/recipe-table-schema";
+import { Recipe } from "@/app/schemas/recipe-table-schema";
 
 export const columns = (
   onDelete: (id: string) => void
