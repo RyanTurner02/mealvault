@@ -1,4 +1,4 @@
-import { RecipeFormValues } from "@/app/schemas/recipe-form.schema";
+import { RecipeFormValues } from "@/app/schemas/recipe-form-schema";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 

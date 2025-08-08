@@ -1,4 +1,4 @@
-import { UserContextType } from "@/app/types/UserContextType";
+import { UserContextType } from "@/app/types/user-context-type";
 import { createAccount } from "@/app/features/register/api/create-account";
 
 interface IUseCreateAccount {

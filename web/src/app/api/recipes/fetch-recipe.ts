@@ -1,6 +1,6 @@
 "use client";
 
-import { RecipeFormValues } from "@/app/schemas/recipe-form.schema";
+import { RecipeFormValues } from "@/app/schemas/recipe-form-schema";
 
 interface IFetchRecipe {
     recipeId: string;

@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react";
-import { UserContext } from "@/app/contexts/UserContext";
+import { UserContext } from "@/app/contexts/user-context";
 import { User } from "@/app/types/user";
-import { FetchUser } from "@/app/utils/FetchUser";
+import { FetchUser } from "@/app/utils/fetch-user";
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);

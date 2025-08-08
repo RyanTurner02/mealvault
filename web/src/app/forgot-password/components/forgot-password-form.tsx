@@ -19,7 +19,7 @@ import {
   defaultForgotPasswordFormValues,
   forgotPasswordFormSchema,
   ForgotPasswordFormValues,
-} from "@/app/forgot-password/schemas/form-schema";
+} from "@/app/forgot-password/schemas/forgot-password-form-schema";
 
 export const ForgotPasswordForm = () => {
   const form = useForm<ForgotPasswordFormValues>({

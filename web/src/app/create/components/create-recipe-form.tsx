@@ -25,7 +25,7 @@ import {
   defaultRecipeFormValues,
   recipeFormSchema,
   RecipeFormValues,
-} from "@/app/schemas/recipe-form.schema";
+} from "@/app/schemas/recipe-form-schema";
 import { useCreateRecipe } from "@/app/features/create-recipe/hooks/use-create-recipe";
 
 export const CreateRecipeForm = () => {

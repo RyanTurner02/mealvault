@@ -1,5 +1,5 @@
 import { login } from "@/app/features/login/api/login";
-import { UserContextType } from "@/app/types/UserContextType";
+import { UserContextType } from "@/app/types/user-context-type";
 
 interface IUseLogin {
     userContext: UserContextType | null;
