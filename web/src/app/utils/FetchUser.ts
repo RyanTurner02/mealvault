@@ -1,21 +1,10 @@
 import { hasAccessToken } from "@/app/api/tokens/has-access-token";
 import { hasRefreshToken } from "@/app/api/tokens/has-refresh-token";
+import { fetchCurrentUser } from "@/app/api/users/fetch-current-user";
 
 export const FetchUser = async () => {
     const baseUrl = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}`;
-    const meUrl = `${baseUrl}/api/user/me`;
     const refreshUrl = `${baseUrl}/api/token/refresh`;
-
-    const fetchUserData = async () => {
-        const response = await fetch(meUrl, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        return response.ok ? await response.json() : null;
-    }
 
     try {
         const access = await hasAccessToken();
@@ -32,7 +21,8 @@ export const FetchUser = async () => {
                 return null;
             }
         }
-        return await fetchUserData();
+
+        return await fetchCurrentUser();
     } catch (err) {
         return null;
     }
