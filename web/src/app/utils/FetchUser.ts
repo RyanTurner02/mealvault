@@ -1,37 +1,10 @@
+import { hasAccessToken } from "@/app/api/tokens/has-access-token";
+import { hasRefreshToken } from "@/app/api/tokens/has-refresh-token";
+
 export const FetchUser = async () => {
     const baseUrl = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}`;
-    const hasAccessTokenUrl = `${baseUrl}/api/token/has-access-token`;
-    const hasRefreshTokenurl = `${baseUrl}/api/token/has-refresh-token`;
     const meUrl = `${baseUrl}/api/user/me`;
     const refreshUrl = `${baseUrl}/api/token/refresh`;
-
-    const hasAccessToken = async () => {
-        const response = await fetch(hasAccessTokenUrl, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-
-        if (!response.ok) return false;
-        const data = await response.json();
-        return data.hasAccessToken;
-    }
-
-    const hasRefreshToken = async () => {
-        const response = await fetch(hasRefreshTokenurl, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-
-        if (!response.ok) return false;
-        const data = await response.json();
-        return data.hasRefreshToken;
-    }
 
     const fetchUserData = async () => {
         const response = await fetch(meUrl, {
