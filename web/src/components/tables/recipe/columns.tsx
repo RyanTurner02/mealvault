@@ -16,17 +16,7 @@ import { DeleteRecipeModal } from "@/components/modals/delete-recipe-modal";
 import { useState } from "react";
 import Link from "next/link";
 import { deleteRecipe } from "@/app/features/delete-recipe/api/delete-recipe";
-
-const recipeSchema = z.object({
-  recipeId: z.string(),
-  recipeName: z.string(),
-  prepTime: z.string(),
-  cookTime: z.string(),
-  servings: z.number(),
-  actions: z.string(),
-});
-
-export type Recipe = z.infer<typeof recipeSchema>;
+import { Recipe } from "@/lib/schemas/recipe-table-schema";
 
 export const columns = (
   onDelete: (id: string) => void
