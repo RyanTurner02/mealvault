@@ -1,8 +1,8 @@
 "use client";
 
 import Header from "@/app/components/header";
-import { columns } from "@/components/tables/recipe/columns";
-import { DataTable } from "@/components/tables/recipe/data-table";
+import { columns } from "@/app/features/recipe-table/components/columns";
+import { DataTable } from "@/app/features/recipe-table/components/data-table";
 import { Recipe } from "@/lib/schemas/recipe-table-schema";
 import { useEffect, useState } from "react";
 import { fetchRecipes } from "@/app/features/fetch-recipes/api/fetch-recipes";

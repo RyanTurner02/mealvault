@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DeleteRecipeModal } from "@/components/modals/delete-recipe-modal";
+import { DeleteRecipeModal } from "@/app/features/recipe-table/components/delete-recipe-modal";
 import { useState } from "react";
 import Link from "next/link";
 import { deleteRecipe } from "@/app/features/delete-recipe/api/delete-recipe";
