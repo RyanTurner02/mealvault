@@ -1,4 +1,4 @@
-import Header from "@/app/components/header";
+import Header from "@/app/components/ui/header";
 import { EditRecipeForm } from "@/app/m/[id]/edit/components/edit-recipe-form";
 
 export default function Page() {

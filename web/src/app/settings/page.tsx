@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "@/app/components/header";
+import Header from "@/app/components/ui/header";
 import { useUserContext } from "@/app/hooks/UserHook";
 import { useRouter } from "next/navigation";
 import { SettingsForm } from "@/app/settings/components/settings-form";

@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "@/app/components/header";
+import Header from "@/app/components/ui/header";
 import Link from "next/link";
 import {
   Card,
@@ -8,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/app/components/ui/card";
 import { useFetchRecipe } from "@/app/hooks/use-fetch-recipe";
 
 export default function Page() {

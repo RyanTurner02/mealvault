@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "@/app/components/header";
+import Header from "@/app/components/ui/header";
 import { columns } from "@/app/features/recipe-table/components/columns";
 import { DataTable } from "@/app/features/recipe-table/components/data-table";
 import { Recipe } from "@/lib/schemas/recipe-table-schema";

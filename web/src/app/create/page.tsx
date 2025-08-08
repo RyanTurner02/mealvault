@@ -1,4 +1,4 @@
-import Header from "@/app/components/header";
+import Header from "@/app/components/ui/header";
 import { CreateRecipeForm } from "@/app/create/components/CreateRecipeForm";
 
 export default function Page() {
