@@ -50,14 +50,11 @@ export const ActionsCell = ({ recipeId, onDelete }: ActionsCellProps) => {
       <DeleteRecipeModal
         open={open}
         onDeleteClicked={async () => {
-          const deletedRecipe: boolean = await deleteRecipe({ recipeId });
-
-          if (!deletedRecipe) {
-            return;
-          }
-
-          onDelete(recipeId);
           setOpen(false);
+
+          if (await deleteRecipe({ recipeId })) {
+            onDelete(recipeId);
+          }
         }}
         onOpenChange={setOpen}
       />
