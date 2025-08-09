@@ -1,10 +1,4 @@
-interface IDeleteRecipe {
-    recipeId: string;
-};
-
-export const deleteRecipe = async ({
-    recipeId,
-}: IDeleteRecipe): Promise<boolean> => {
+export const deleteRecipe = async (recipeId: string): Promise<boolean> => {
     const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/${recipeId}/delete`,
         {

@@ -52,7 +52,7 @@ export const ActionsCell = ({ recipeId, onDelete }: ActionsCellProps) => {
         onDeleteClicked={async () => {
           setOpen(false);
 
-          if (await deleteRecipe({ recipeId })) {
+          if (await deleteRecipe(recipeId)) {
             onDelete(recipeId);
           }
         }}
