@@ -10,13 +10,14 @@ import { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react";
 import { useUserContext } from "@/app/hooks/user-hook";
 import { useRouter } from "next/navigation";
 import { useLogin } from "@/app/features/login/hooks/use-login";
+import { login } from "@/app/features/login/api/login";
 
 export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const userContext = useUserContext();
   const router = useRouter();
-  const { handleLogin } = useLogin({ userContext });
+  const { handleLogin } = useLogin({ userContext, login });
 
   useEffect(() => {
     if (userContext?.user) {
