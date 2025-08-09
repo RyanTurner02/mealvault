@@ -16,19 +16,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { deleteRecipe } from "@/app/features/delete-recipe/api/delete-recipe";
 import { Recipe } from "@/app/schemas/recipe-table-schema";
-
-interface RecipeNameCellProps {
-  recipeId: string;
-  recipeName: string;
-}
-
-const RecipeNameCell = ({ recipeId, recipeName }: RecipeNameCellProps) => {
-  return (
-    <Link className="text-link" href={`/m/${recipeId}`}>
-      {recipeName}
-    </Link>
-  );
-};
+import { RecipeNameCell } from "@/app/features/recipe-table/components/recipe-name-cell";
 
 interface ActionsCellProps {
   recipeId: string;
