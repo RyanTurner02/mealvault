@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useUserContext } from "@/app/hooks/use-user-context";
+import { SearchBar } from "@/app/components/ui/search-bar";
 
 const AuthLinks = () => {
   return (
@@ -32,6 +33,9 @@ export default function Header() {
       <nav className="flex flex-wrap justify-between">
         <div>
           <Link className="mx-2 text-2xl font-bold" href="/">Mealvault</Link>
+        </div>
+        <div className="w-5/12">
+          <SearchBar />
         </div>
         <div className="my-auto">
           { linksToRender }
