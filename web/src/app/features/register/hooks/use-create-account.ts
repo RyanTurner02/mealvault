@@ -9,7 +9,7 @@ export const useCreateAccount = ({
     userContext,
 }: IUseCreateAccount) => {
     const handleCreateAccount = async (name: string, email: string, password: string) => {
-        const registerSuccess: boolean = await createAccount({ name, email, password });
+        const registerSuccess: boolean = await createAccount(name, email, password);
 
         if (!registerSuccess) {
             return;
