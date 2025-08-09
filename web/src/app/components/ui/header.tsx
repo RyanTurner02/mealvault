@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { useUserContext } from "@/app/hooks/user-hook";
+import { useUserContext } from "@/app/hooks/use-user-context";
 
 const AuthLinks = () => {
   return (
