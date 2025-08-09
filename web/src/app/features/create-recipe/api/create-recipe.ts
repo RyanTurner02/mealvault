@@ -1,9 +1,9 @@
-import { RecipeFormValues } from "@/app/schemas/recipe-form-schema";
+import { RecipeForm } from "@/app/schemas/recipe-form-schema";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 interface createRecipeProps {
     router: AppRouterInstance;
-    values: RecipeFormValues;
+    values: RecipeForm;
 }
 
 export const createRecipe = async ({

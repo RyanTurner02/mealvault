@@ -21,9 +21,9 @@ import {
 } from "@/app/components/ui/card";
 import { Input } from "@/app/components/ui/input";
 import {
-  defaultRecipeFormValues,
+  defaultRecipeForm,
   recipeFormSchema,
-  RecipeFormValues,
+  RecipeForm,
 } from "@/app/schemas/recipe-form-schema";
 import { useRouter } from "next/navigation";
 import { useEditRecipe } from "@/app/features/edit-recipe/hooks/use-edit-recipe";
@@ -33,9 +33,9 @@ import { useEffect } from "react";
 export const EditRecipeForm = () => {
   const router = useRouter();
 
-  const form = useForm<RecipeFormValues>({
+  const form = useForm<RecipeForm>({
     resolver: zodResolver(recipeFormSchema),
-    defaultValues: defaultRecipeFormValues,
+    defaultValues: defaultRecipeForm,
   });
 
   const onSubmit = useEditRecipe();

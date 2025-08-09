@@ -3,12 +3,12 @@
 import Header from "@/app/components/ui/header";
 import { columns } from "@/app/features/recipe-table/components/columns";
 import { DataTable } from "@/app/features/recipe-table/components/data-table";
-import { Recipe } from "@/app/schemas/recipe-table-schema";
+import { RecipeTable } from "@/app/schemas/recipe-table-schema";
 import { useEffect, useState } from "react";
 import { fetchRecipes } from "@/app/features/fetch-recipes/api/fetch-recipes";
 
 export default function Home() {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [recipes, setRecipes] = useState<RecipeTable[]>([]);
 
   useEffect(() => {
     const loadRecipes = async () => {

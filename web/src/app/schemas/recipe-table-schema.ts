@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const recipeSchema = z.object({
+export const recipeTableSchema = z.object({
   recipeId: z.string(),
   recipeName: z.string(),
   prepTime: z.string(),
@@ -9,4 +9,4 @@ export const recipeSchema = z.object({
   actions: z.string(),
 });
 
-export type Recipe = z.infer<typeof recipeSchema>;
+export type RecipeTable = z.infer<typeof recipeTableSchema>;

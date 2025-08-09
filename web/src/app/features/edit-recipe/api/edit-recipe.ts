@@ -1,11 +1,11 @@
-import { RecipeFormValues } from "@/app/schemas/recipe-form-schema";
+import { RecipeForm } from "@/app/schemas/recipe-form-schema";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 
 interface EditRecipeProps {
     params: Params;
     router: AppRouterInstance;
-    values: RecipeFormValues;
+    values: RecipeForm;
 };
 
 export const editRecipe = async ({

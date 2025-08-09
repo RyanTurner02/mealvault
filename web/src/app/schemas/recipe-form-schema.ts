@@ -10,9 +10,9 @@ export const recipeFormSchema = z.object({
   externalLink: z.string().optional(),
 });
 
-export type RecipeFormValues = z.infer<typeof recipeFormSchema>;
+export type RecipeForm = z.infer<typeof recipeFormSchema>;
 
-export const defaultRecipeFormValues: RecipeFormValues = {
+export const defaultRecipeForm: RecipeForm = {
   recipeName: "",
   prepTime: "",
   cookTime: "",

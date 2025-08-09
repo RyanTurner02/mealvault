@@ -1,13 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Recipe } from "@/app/schemas/recipe-table-schema";
+import { RecipeTable } from "@/app/schemas/recipe-table-schema";
 import { RecipeNameCell } from "@/app/features/recipe-table/components/recipe-name-cell";
 import { ActionsCell } from "@/app/features/recipe-table/components/actions-cell";
 
 export const columns = (
   onDelete: (id: string) => void
-): ColumnDef<Recipe>[] => [
+): ColumnDef<RecipeTable>[] => [
   {
     accessorKey: "name",
     header: "Name",

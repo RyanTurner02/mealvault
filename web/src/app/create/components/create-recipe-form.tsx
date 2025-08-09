@@ -22,16 +22,16 @@ import {
 import { Input } from "@/app/components/ui/input";
 import Link from "next/link";
 import {
-  defaultRecipeFormValues,
+  defaultRecipeForm,
   recipeFormSchema,
-  RecipeFormValues,
+  RecipeForm,
 } from "@/app/schemas/recipe-form-schema";
 import { useCreateRecipe } from "@/app/features/create-recipe/hooks/use-create-recipe";
 
 export const CreateRecipeForm = () => {
-  const form = useForm<RecipeFormValues>({
+  const form = useForm<RecipeForm>({
     resolver: zodResolver(recipeFormSchema),
-    defaultValues: defaultRecipeFormValues,
+    defaultValues: defaultRecipeForm,
   });
 
   const onSubmit = useCreateRecipe();
