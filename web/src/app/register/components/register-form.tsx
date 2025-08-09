@@ -10,6 +10,7 @@ import { useUserContext } from "@/app/hooks/user-hook";
 import { UserContextType } from "@/app/types/user-context-type";
 import { useCreateAccount } from "@/app/features/register/hooks/use-create-account";
 import { ChangeEvent, ChangeEventHandler, useState } from "react";
+import { createAccount } from "@/app/features/register/api/create-account";
 
 export function RegisterForm() {
   const [name, setName] = useState("");
@@ -19,7 +20,7 @@ export function RegisterForm() {
 
   const userContext: UserContextType | null = useUserContext();
   const router: AppRouterInstance = useRouter();
-  const { handleCreateAccount } = useCreateAccount({ userContext });
+  const { handleCreateAccount } = useCreateAccount({ userContext, createAccount });
 
   if (!userContext?.isLoading && userContext?.user) {
     router.push("/");

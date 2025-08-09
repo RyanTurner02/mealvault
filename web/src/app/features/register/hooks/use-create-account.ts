@@ -1,12 +1,13 @@
 import { UserContextType } from "@/app/types/user-context-type";
-import { createAccount } from "@/app/features/register/api/create-account";
 
 interface IUseCreateAccount {
     userContext: UserContextType | null;
+    createAccount(name: string, email: string, password: string): Promise<boolean>;
 };
 
 export const useCreateAccount = ({
     userContext,
+    createAccount,
 }: IUseCreateAccount) => {
     const handleCreateAccount = async (name: string, email: string, password: string) => {
         const registerSuccess: boolean = await createAccount(name, email, password);
