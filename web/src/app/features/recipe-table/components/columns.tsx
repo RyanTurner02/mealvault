@@ -67,8 +67,7 @@ const ActionsCell = ({ recipeId, onDelete }: ActionsCellProps) => {
       <DeleteRecipeModal
         open={open}
         onDeleteClicked={async () => {
-          const id: number = Number(recipeId);
-          const deletedRecipe: boolean = await deleteRecipe({ recipeId: id });
+          const deletedRecipe: boolean = await deleteRecipe({ recipeId });
 
           if (!deletedRecipe) {
             return;

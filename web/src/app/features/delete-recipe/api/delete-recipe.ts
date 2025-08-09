@@ -1,5 +1,5 @@
 interface IDeleteRecipe {
-    recipeId: number;
+    recipeId: string;
 };
 
 export const deleteRecipe = async ({
