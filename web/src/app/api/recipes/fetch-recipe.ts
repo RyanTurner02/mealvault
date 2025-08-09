@@ -2,13 +2,7 @@
 
 import { RecipeForm } from "@/app/schemas/recipe-form-schema";
 
-interface IFetchRecipe {
-    recipeId: string;
-};
-
-export const fetchRecipe = async ({
-    recipeId
-}: IFetchRecipe): Promise<RecipeForm | null> => {
+export const fetchRecipe = async (recipeId: string): Promise<RecipeForm | null> => {
     const url: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/${recipeId}`;
 
     const response = await fetch(url, {
