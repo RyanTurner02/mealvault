@@ -17,6 +17,19 @@ import Link from "next/link";
 import { deleteRecipe } from "@/app/features/delete-recipe/api/delete-recipe";
 import { Recipe } from "@/app/schemas/recipe-table-schema";
 
+interface RecipeNameCellProps {
+  recipeId: string;
+  recipeName: string;
+}
+
+const RecipeNameCell = ({ recipeId, recipeName }: RecipeNameCellProps) => {
+  return (
+    <Link className="text-link" href={`/m/${recipeId}`}>
+      {recipeName}
+    </Link>
+  );
+};
+
 export const columns = (
   onDelete: (id: string) => void
 ): ColumnDef<Recipe>[] => [
@@ -24,9 +37,10 @@ export const columns = (
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
-      <Link className="text-link" href={`/m/${row.original.recipeId}`}>
-        {row.original.recipeName}
-      </Link>
+      <RecipeNameCell
+        recipeId={row.original.recipeId}
+        recipeName={row.original.recipeName}
+      />
     ),
   },
   {
