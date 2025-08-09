@@ -7,6 +7,6 @@ export const useEditRecipe = () => {
     const router = useRouter();
 
     return async (values: RecipeForm) => {
-        await editRecipe({ params, router, values });
+        await editRecipe(params, router, values);
     }
 }
