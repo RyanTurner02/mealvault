@@ -1,9 +1,9 @@
 "use client";
 
-import Header from "@/app/components/header";
-import { useUserContext } from "@/app/hooks/UserHook";
+import Header from "@/app/components/ui/header";
+import { useUserContext } from "@/app/hooks/use-user-context";
 import { useRouter } from "next/navigation";
-import { SettingsForm } from "@/components/settings-form";
+import { SettingsForm } from "@/app/settings/components/settings-form";
 
 export default function Settings() {
   const userContext = useUserContext();

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { UserProvider } from "./providers/UserProvider";
+import { UserProvider } from "@/app/providers/user-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

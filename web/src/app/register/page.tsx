@@ -1,7 +1,7 @@
 "use client";
 
-import Header from "@/app/components/header";
-import { RegisterForm } from "@/components/register-form";
+import Header from "@/app/components/ui/header";
+import { RegisterForm } from "@/app/register/components/register-form";
 
 export default function Register() {
   return (

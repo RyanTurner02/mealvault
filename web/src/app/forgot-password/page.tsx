@@ -1,5 +1,5 @@
-import Header from "@/app/components/header";
-import { ForgotPasswordForm } from "@/components/forgot-password-form";
+import Header from "@/app/components/ui/header";
+import { ForgotPasswordForm } from "@/app/forgot-password/components/forgot-password-form";
 
 export default function Page() {
   return (
