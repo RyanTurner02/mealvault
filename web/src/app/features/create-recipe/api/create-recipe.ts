@@ -1,15 +1,7 @@
 import { RecipeForm } from "@/app/schemas/recipe-form-schema";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-interface createRecipeProps {
-    router: AppRouterInstance;
-    values: RecipeForm;
-}
-
-export const createRecipe = async ({
-    router,
-    values,
-}: createRecipeProps) => {
+export const createRecipe = async (router: AppRouterInstance, values: RecipeForm) => {
     const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/create`,
         {

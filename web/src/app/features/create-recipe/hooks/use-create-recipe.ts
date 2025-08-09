@@ -7,6 +7,6 @@ export const useCreateRecipe = () => {
     const router: AppRouterInstance = useRouter();
 
     return async (values: RecipeForm) => {
-        await createRecipe({ router, values });
+        await createRecipe(router, values);
     }
 }
