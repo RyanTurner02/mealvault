@@ -1,6 +1,6 @@
 import { recipe } from "@db/schema";
 import { RecipeDto } from "@dtos/recipe.dto";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { MySql2Database, MySqlRawQueryResult } from "drizzle-orm/mysql2";
 
 interface IRecipeRepositoryDependencies {
@@ -11,6 +11,7 @@ export interface IRecipeRepository {
     createRecipe(userId: number, recipeDto: RecipeDto): Promise<number | null>;
     getAllRecipes(userId: number): Promise<any>;
     getRecipe(userId: number, recipeId: number): Promise<RecipeDto | null>;
+    searchRecipes(userId: number, keywords: string): Promise<any>;
     deleteRecipe(userId: number, recipeId: number): Promise<number>;
     updateRecipe(userId: number, recipeId: number, recipeDto: RecipeDto): Promise<number>;
 };
@@ -58,6 +59,18 @@ export const createRecipeRepository = ({ db }: IRecipeRepositoryDependencies): I
         return result[0];
     }
 
+    const searchRecipes = async (userId: number, keywords: string): Promise<any> => {
+        const result = await db.execute(
+            sql`SELECT *
+            FROM ${recipe}
+            WHERE user_id = ${userId}
+            AND MATCH (recipe_name, ingredients, instructions)
+                AGAINST (${keywords})`
+        );
+
+        return result;
+    }
+
     const deleteRecipe = async (userId: number, recipeId: number): Promise<any> => {
         const result = await db
             .delete(recipe)
@@ -97,6 +110,7 @@ export const createRecipeRepository = ({ db }: IRecipeRepositoryDependencies): I
         createRecipe,
         getAllRecipes,
         getRecipe,
+        searchRecipes,
         deleteRecipe,
         updateRecipe,
     };

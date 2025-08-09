@@ -9,7 +9,7 @@ interface IRecipeControllerDependencies {
 
 export interface IRecipeController {
     createRecipe(req: UserRequest, res: Response): Promise<void>;
-    getAllRecipes(req: UserRequest, res: Response): Promise<void>;
+    getRecipes(req: UserRequest, res: Response): Promise<void>;
     getRecipe(req: UserRequest<{ recipeId: string }>, res: Response): Promise<void>;
     deleteRecipe(req: UserRequest<{ recipeId: string }>, res: Response): Promise<void>;
     updateRecipe(req: UserRequest<{ recipeId: string }>, res: Response): Promise<void>;
@@ -39,10 +39,17 @@ export const createRecipeController = ({
         res.status(200).json(result);
     }
 
-    const getAllRecipes = async (req: UserRequest, res: Response): Promise<void> => {
-        const recipes: RecipeDto[] | null = await recipeService.getAllRecipes(req.user!.id);
+    const getRecipes = async (req: UserRequest, res: Response): Promise<void> => {
+        let recipes: RecipeDto[] | null = [];
+        const query: string = req.query.q as string;
 
-        res.status(200).json(recipes);
+        if (query) {
+            recipes = await recipeService.searchRecipes(req.user!.id, query);
+        } else {
+            recipes = await recipeService.getAllRecipes(req.user!.id);
+        }
+
+        res.status(200).json(recipes)
     }
 
     const getRecipe = async (req: UserRequest<{ recipeId: string }>, res: Response): Promise<void> => {
@@ -81,7 +88,7 @@ export const createRecipeController = ({
 
     return {
         createRecipe,
-        getAllRecipes,
+        getRecipes,
         getRecipe,
         deleteRecipe,
         updateRecipe,
