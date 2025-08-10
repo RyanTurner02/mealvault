@@ -68,7 +68,7 @@ export const createRecipeRepository = ({ db }: IRecipeRepositoryDependencies): I
                 AGAINST (${keywords})`
         );
 
-        return result;
+        return result[0];
     }
 
     const deleteRecipe = async (userId: number, recipeId: number): Promise<any> => {
