@@ -1,20 +1,20 @@
 import { Input } from "@/app/components/ui/input";
+import { useSearchContext } from "@/app/hooks/use-search-context";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export const SearchBar = () => {
-  const [query, setQuery] = useState("");
+  const searchContext = useSearchContext();
   const router = useRouter();
 
   return (
     <Input
       className="placeholder:text-gray-200"
       placeholder="Search"
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
+      value={searchContext.query}
+      onChange={(e) => searchContext.setQuery(e.target.value)}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
-          router.push(`/?q=${query}`);
+          router.push(`/?q=${searchContext.query}`);
         }
       }}
     />
