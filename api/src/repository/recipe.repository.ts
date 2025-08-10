@@ -61,8 +61,8 @@ export const createRecipeRepository = ({ db }: IRecipeRepositoryDependencies): I
 
     const searchRecipes = async (userId: number, keywords: string): Promise<any> => {
         const result = await db.execute(
-            sql`
-            SELECT recipe_name AS recipeName,
+            sql
+            `SELECT recipe_name AS recipeName,
                 prep_time AS prepTime,
                 cook_time AS cookTime,
                 servings
