@@ -6,17 +6,23 @@ import { DataTable } from "@/app/features/recipe-table/components/data-table";
 import { RecipeTable } from "@/app/schemas/recipe-table-schema";
 import { useEffect, useState } from "react";
 import { fetchRecipes } from "@/app/features/fetch-recipes/api/fetch-recipes";
+import { useSearchParams } from "next/navigation";
+import { searchRecipes } from "./features/search-recipe/api/search-recipes";
 
 export default function Home() {
   const [recipes, setRecipes] = useState<RecipeTable[]>([]);
+  const params = useSearchParams();
+  const query = params.get("q");
 
   useEffect(() => {
     const loadRecipes = async () => {
-      setRecipes(await fetchRecipes());
+      query
+        ? setRecipes(await searchRecipes(query))
+        : setRecipes(await fetchRecipes());
     };
 
     loadRecipes();
-  }, []);
+  }, [query]);
 
   const handleDelete = (recipeId: string) => {
     setRecipes((prev) => prev.filter((r) => r.recipeId !== recipeId));

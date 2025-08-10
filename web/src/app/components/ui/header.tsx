@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useUserContext } from "@/app/hooks/use-user-context";
+import { SearchBar } from "@/app/components/ui/search-bar";
+import { useSearchContext } from "@/app/hooks/use-search-context";
 
 const AuthLinks = () => {
   return (
@@ -24,6 +26,7 @@ const UnauthLinks = () => {
 
 export default function Header() {
   const userContext = useUserContext();
+  const searchContext = useSearchContext();
   const navigationLinks = userContext?.user ? <AuthLinks/> : <UnauthLinks />;
   const linksToRender = userContext?.isLoading ? <></> : navigationLinks;
 
@@ -31,7 +34,17 @@ export default function Header() {
     <header className="p-2 text-white bg-blue-700 border-b">
       <nav className="flex flex-wrap justify-between">
         <div>
-          <Link className="mx-2 text-2xl font-bold" href="/">Mealvault</Link>
+          <Link
+            className="mx-2 text-2xl font-bold"
+            href="/"
+            onClick={() => {
+              searchContext.query = ""
+            }}>
+              Mealvault
+          </Link>
+        </div>
+        <div className="w-5/12">
+          <SearchBar />
         </div>
         <div className="my-auto">
           { linksToRender }
