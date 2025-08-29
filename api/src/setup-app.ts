@@ -1,20 +1,20 @@
 import express, { Express, Router } from "express";
 import cors, { CorsOptions } from "cors";
 import cookieParser from "cookie-parser";
-import { createUserRoute } from "@route/userRoute";
-import { createTokenRoute } from "@route/tokenRoute";
-import { createUserController, IUserController } from "@controller/userController";
-import { createUserService, IUserService } from "@service/userService";
-import { createUserRepository, IUserRepository } from "@repository/userRepository";
+import { createUserRoute } from "@route/user-route";
+import { createTokenRoute } from "@route/token-route";
+import { createUserController, IUserController } from "@controller/user-controller";
+import { createUserService, IUserService } from "@service/user-service";
+import { createUserRepository, IUserRepository } from "@repository/user-repository";
 import { db } from "@db/index";
-import { createTokenService, ITokenService } from "@service/tokenService";
-import { createCookieUtils, ICookieUtils } from "@utils/cookieUtils";
-import { createTokenController, ITokenController } from "@controller/tokenController";
-import { createAuthMiddleware, IAuthMiddleware } from "@middleware/authMiddleware";
-import { createRecipeRoute } from "@route/recipe.route";
-import { createRecipeController, IRecipeController } from "@controller/recipe.controller";
-import { createRecipeService, IRecipeService } from "@service/recipe.service";
-import { createRecipeRepository, IRecipeRepository } from "@repository/recipe.repository";
+import { createTokenService, ITokenService } from "@service/token-service";
+import { createCookieUtils, ICookieUtils } from "@utils/cookie-utils";
+import { createTokenController, ITokenController } from "@controller/token-controller";
+import { createAuthMiddleware, IAuthMiddleware } from "@middleware/auth-middleware";
+import { createRecipeRoute } from "@route/recipe-route";
+import { createRecipeController, IRecipeController } from "@controller/recipe-controller";
+import { createRecipeService, IRecipeService } from "@service/recipe-service";
+import { createRecipeRepository, IRecipeRepository } from "@repository/recipe-repository";
 
 export const setupApp = (): Express => {
     const app: Express = express();

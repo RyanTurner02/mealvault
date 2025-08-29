@@ -1,6 +1,6 @@
 import express, { Router } from "express";
-import { IRecipeController } from "@controller/recipe.controller";
-import { IAuthMiddleware } from "@middleware/authMiddleware";
+import { IRecipeController } from "@controller/recipe-controller";
+import { IAuthMiddleware } from "@middleware/auth-middleware";
 
 interface IRecipeRouteDependencies {
     authMiddleware: IAuthMiddleware,

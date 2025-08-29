@@ -1,5 +1,5 @@
-import { ITokenService } from "@service/tokenService";
-import { ICookiePayload, ICookieUtils } from "@utils/cookieUtils";
+import { ITokenService } from "@service/token-service";
+import { ICookiePayload, ICookieUtils } from "@utils/cookie-utils";
 import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import { JwtPayload } from "jsonwebtoken";

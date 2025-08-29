@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { UserRequest } from "@typings/express/index";
-import { IUserService } from "@service/userService";
-import { UserDto } from "@dtos/user.dto";
-import { ITokenService } from "@service/tokenService";
-import { ICookiePayload, ICookieUtils } from "@utils/cookieUtils";
+import { IUserService } from "@service/user-service";
+import { UserDto } from "@dtos/user-dto";
+import { ITokenService } from "@service/token-service";
+import { ICookiePayload, ICookieUtils } from "@utils/cookie-utils";
 import User from "@model/user";
 
 interface UserControllerDependencies {

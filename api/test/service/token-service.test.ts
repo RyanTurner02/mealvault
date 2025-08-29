@@ -1,4 +1,4 @@
-import { createTokenService, ITokenService } from "@service/tokenService";
+import { createTokenService, ITokenService } from "@service/token-service";
 import * as jwt from "jsonwebtoken";
 import "dotenv/config";
 import { JwtPayload } from "jsonwebtoken";

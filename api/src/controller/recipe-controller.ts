@@ -1,5 +1,5 @@
-import { RecipeDto } from "@dtos/recipe.dto";
-import { IRecipeService } from "@service/recipe.service";
+import { RecipeDto } from "@dtos/recipe-dto";
+import { IRecipeService } from "@service/recipe-service";
 import { UserRequest } from "@typings/express";
 import { Response } from "express";
 

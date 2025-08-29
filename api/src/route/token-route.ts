@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { ITokenController } from "@controller/tokenController";
+import { ITokenController } from "@controller/token-controller";
 
 interface ITokenRouteDependencies {
     tokenController: ITokenController;
