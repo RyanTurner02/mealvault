@@ -18,7 +18,7 @@ export const createUserValidationService = (): IUserValidationService => {
     }
 
     const validatePassword = (password: string): boolean => {
-        const passwordRegex: RegExp = /^[a-zA-Z0-9!@#$%^&*]{8, 71}$/;
+        const passwordRegex: RegExp = /^[a-zA-Z0-9!@#$%^&*]{8,71}$/;
         return passwordRegex.test(password);
     }
 
