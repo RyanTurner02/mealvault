@@ -70,7 +70,6 @@ export function LoginForm() {
                   placeholder="someone@example.com"
                   value={email}
                   onChange={updateEmail}
-                  required
                 />
               </div>
               <div className="grid gap-2">
@@ -89,12 +88,13 @@ export function LoginForm() {
                   placeholder="Password"
                   value={password}
                   onChange={updatePassword}
-                  required
                 />
+                {loginError && (
+                  <p className="text-sm text-red-500">
+                    Invalid email or password
+                  </p>
+                )}
               </div>
-              {loginError && (
-                <p className="text-red-500">Invalid email or password</p>
-              )}
               <Button type="submit" className="w-full">
                 Login
               </Button>
