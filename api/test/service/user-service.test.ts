@@ -1,9 +1,9 @@
-import { IUserRepository } from "@repository/userRepository";
-import { createUserService, IUserService } from "@service/userService";
+import { IUserRepository } from "@repository/user-repository";
+import { createUserService, IUserService } from "@service/user-service";
 import { faker } from "@faker-js/faker";
 import User from "@model/user";
 import * as bcrypt from "bcrypt";
-import { UserDto } from "@dtos/user.dto";
+import { UserDto } from "@dtos/user-dto";
 
 const mockUserRepository: jest.Mocked<IUserRepository> = {
     getUserByEmail: jest.fn(),

@@ -4,10 +4,10 @@ import "dotenv/config";
 import { migrate } from "drizzle-orm/mysql2/migrator";
 import { drizzle, MySql2Database } from "drizzle-orm/mysql2";
 import { user } from "@db/schema";
-import * as UserRepository from "@repository/userRepository";
+import * as UserRepository from "@repository/user-repository";
 import User from "@model/user";
 import { faker } from "@faker-js/faker";
-import { UserDto } from "@dtos/user.dto";
+import { UserDto } from "@dtos/user-dto";
 import { count } from "drizzle-orm";
 
 describe("UserRepository", () => {

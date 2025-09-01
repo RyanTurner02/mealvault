@@ -1,5 +1,5 @@
-import { RecipeDto } from "@dtos/recipe.dto";
-import { IRecipeRepository } from "@repository/recipe.repository";
+import { RecipeDto } from "@dtos/recipe-dto";
+import { IRecipeRepository } from "@repository/recipe-repository";
 
 interface IRecipeServiceDependencies {
     recipeRepository: IRecipeRepository;

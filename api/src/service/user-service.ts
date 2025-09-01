@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import { IUserRepository } from "@repository/userRepository";
+import { IUserRepository } from "@repository/user-repository";
 import User from "@model/user";
-import { UserDto } from "@dtos/user.dto";
+import { UserDto } from "@dtos/user-dto";
 
 interface UserServiceDependencies {
     userRepository: IUserRepository;

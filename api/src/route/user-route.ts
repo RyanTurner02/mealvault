@@ -1,6 +1,6 @@
 import express, { Router } from "express";
-import { IUserController } from "@controller/userController";
-import { IAuthMiddleware } from "@middleware/authMiddleware";
+import { IUserController } from "@controller/user-controller";
+import { IAuthMiddleware } from "@middleware/auth-middleware";
 
 interface IUserRouteDependencies {
     authMiddleware: IAuthMiddleware,

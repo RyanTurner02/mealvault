@@ -1,10 +1,10 @@
-import { createTokenController, ITokenController } from "@controller/tokenController";
-import { ITokenService } from "@service/tokenService";
+import { createTokenController, ITokenController } from "@controller/token-controller";
+import { ITokenService } from "@service/token-service";
 import { CookieOptions, Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from "node-mocks-http";
 import * as jwt from "jsonwebtoken";
 import "dotenv/config";
-import { ICookiePayload, ICookieUtils } from "@utils/cookieUtils";
+import { ICookiePayload, ICookieUtils } from "@utils/cookie-utils";
 import { faker } from "@faker-js/faker/.";
 
 describe("TokenController", () => {

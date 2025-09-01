@@ -1,4 +1,4 @@
-import { UserDto } from "@dtos/user.dto";
+import { UserDto } from "@dtos/user-dto";
 import User from "@model/user";
 import { user } from "@db/schema";
 import { eq } from "drizzle-orm";

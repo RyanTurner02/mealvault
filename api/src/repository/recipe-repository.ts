@@ -1,5 +1,5 @@
 import { recipe } from "@db/schema";
-import { RecipeDto } from "@dtos/recipe.dto";
+import { RecipeDto } from "@dtos/recipe-dto";
 import { and, eq, sql } from "drizzle-orm";
 import { MySql2Database, MySqlRawQueryResult } from "drizzle-orm/mysql2";
 

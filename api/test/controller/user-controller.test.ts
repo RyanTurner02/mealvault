@@ -1,12 +1,12 @@
-import { createUserController, IUserController } from "@controller/userController";
-import { IUserService } from "@service/userService";
+import { createUserController, IUserController } from "@controller/user-controller";
+import { IUserService } from "@service/user-service";
 import { CookieOptions, Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from "node-mocks-http";
 import { faker } from "@faker-js/faker";
 import User from "@model/user";
-import { ITokenService } from "@service/tokenService";
-import { ICookiePayload, ICookieUtils } from "@utils/cookieUtils";
-import { UserDto } from "@dtos/user.dto";
+import { ITokenService } from "@service/token-service";
+import { ICookiePayload, ICookieUtils } from "@utils/cookie-utils";
+import { UserDto } from "@dtos/user-dto";
 
 describe("UserController", () => {
     let userController: IUserController;
