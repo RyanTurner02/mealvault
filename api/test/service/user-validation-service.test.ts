@@ -22,4 +22,24 @@ describe("UserValidationService", () => {
             expect(userValidationService.validateName(name)).toBe(false);
         })
     });
+
+    describe("validatePassword", () => {
+        test.each([
+            "X@p3^VGq",
+            "Y&tHrt$DYo695K#Ekww3Vxs@2fe5zs!Gf^gH9^GP72Gid4eiQ^uBupRTyjocM83%2%iJB^R"
+        ])("is a valid password", (password: string) => {
+            expect(userValidationService.validatePassword(password)).toBe(true);
+        });
+
+        test.each([
+            "",
+            "password",
+            "PASSWORD",
+            "Password",
+            "Password1",
+            "Password!",
+        ])("is an invalid password", (password: string) => {
+            expect(userValidationService.validatePassword(password)).toBe(false);
+        });
+    });
 });
