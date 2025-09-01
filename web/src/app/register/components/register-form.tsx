@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/app/lib/utils";
 import { Button } from "@/app/components/ui/button";
 import {
@@ -30,6 +30,7 @@ export function RegisterForm() {
     defaultValues: defaultRegisterFormValues,
     mode: "onTouched",
   });
+  const [registerError, setRegisterError] = useState(false);
 
   const userContext: UserContextType | null = useUserContext();
   const router: AppRouterInstance = useRouter();
@@ -44,8 +45,16 @@ export function RegisterForm() {
     }
   }, [userContext?.isLoading, userContext?.user, router]);
 
-  const onSubmit = (values: registerFormValues) => {
-    handleCreateAccount(values.name, values.email, values.password);
+  const onSubmit = async (values: registerFormValues) => {
+    const result: boolean = await handleCreateAccount(
+      values.name,
+      values.email,
+      values.password
+    );
+
+    if (!result) {
+      setRegisterError(true);
+    }
   };
 
   const {
@@ -129,6 +138,12 @@ export function RegisterForm() {
                   </p>
                 )}
               </div>
+
+              {registerError && (
+                <p className="text-sm text-red-500">
+                  Unable to create account
+                </p>
+              )}
 
               <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? "Creating..." : "Create Account"}
