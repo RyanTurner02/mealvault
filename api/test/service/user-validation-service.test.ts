@@ -23,6 +23,20 @@ describe("UserValidationService", () => {
         })
     });
 
+    describe("validateEmail", () => {
+        test.each([
+            "test@example.com"
+        ])("is a valid email", (email: string) => {
+            expect(userValidationService.validateEmail(email)).toBe(true);
+        })
+
+        test.each([
+            "",
+        ])("is an invalid email", (email: string) => {
+            expect(userValidationService.validateEmail(email)).toBe(false);
+        })
+    })
+
     describe("validatePassword", () => {
         test.each([
             "X@p3^VGq",
