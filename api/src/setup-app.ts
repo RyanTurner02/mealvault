@@ -15,6 +15,7 @@ import { createRecipeRoute } from "@route/recipe-route";
 import { createRecipeController, IRecipeController } from "@controller/recipe-controller";
 import { createRecipeService, IRecipeService } from "@service/recipe-service";
 import { createRecipeRepository, IRecipeRepository } from "@repository/recipe-repository";
+import { createUserValidationService, IUserValidationService } from "@service/user-validation-service";
 
 export const setupApp = (): Express => {
     const app: Express = express();
@@ -36,7 +37,8 @@ export const setupApp = (): Express => {
 
     const userRepository: IUserRepository = createUserRepository({ db });
     const userService: IUserService = createUserService({ userRepository });
-    const userController: IUserController = createUserController({ userService, tokenService, cookieUtils });
+    const userValidationService: IUserValidationService = createUserValidationService();
+    const userController: IUserController = createUserController({ userService, userValidationService, tokenService, cookieUtils });
 
     const recipeRepository: IRecipeRepository = createRecipeRepository({ db });
     const recipeService: IRecipeService = createRecipeService({ recipeRepository });

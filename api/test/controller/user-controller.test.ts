@@ -7,6 +7,7 @@ import User from "@model/user";
 import { ITokenService } from "@service/token-service";
 import { ICookiePayload, ICookieUtils } from "@utils/cookie-utils";
 import { UserDto } from "@dtos/user-dto";
+import { IUserValidationService } from "@service/user-validation-service";
 
 describe("UserController", () => {
     let userController: IUserController;
@@ -15,6 +16,12 @@ describe("UserController", () => {
         createUser: jest.fn(),
         getUserByLogin: jest.fn(),
         getUser: jest.fn(),
+    };
+
+    const mockUserValidationService: jest.Mocked<IUserValidationService> = {
+        validateName: jest.fn(),
+        validateEmail: jest.fn(),
+        validatePassword: jest.fn(),
     };
 
     const mockCookieUtils: jest.Mocked<ICookieUtils> = {
@@ -31,6 +38,7 @@ describe("UserController", () => {
     beforeAll(async () => {
         userController = createUserController({
             userService: mockUserService,
+            userValidationService: mockUserValidationService,
             cookieUtils: mockCookieUtils,
             tokenService: mockTokenService,
         });
@@ -79,6 +87,10 @@ describe("UserController", () => {
             const response: MockResponse<Response> = createResponse();
             response.cookie = jest.fn();
 
+            mockUserValidationService.validateName.mockReturnValue(true);
+            mockUserValidationService.validateEmail.mockReturnValue(true);
+            mockUserValidationService.validatePassword.mockReturnValue(true);
+
             mockUserService.createUser.mockResolvedValue(expectedId);
 
             mockTokenService.generateAccessToken.mockReturnValue(accessToken);
@@ -87,6 +99,13 @@ describe("UserController", () => {
             mockCookieUtils.createAuthCookies.mockReturnValue(authCookies);
 
             await userController.createUser(request, response);
+
+            expect(mockUserValidationService.validateName).toHaveBeenCalledWith(user.name);
+            expect(mockUserValidationService.validateEmail).toHaveBeenCalledWith(user.email);
+            expect(mockUserValidationService.validatePassword).toHaveBeenCalledWith(user.password);
+            expect(mockUserValidationService.validateName).toHaveBeenCalledTimes(1);
+            expect(mockUserValidationService.validateEmail).toHaveBeenCalledTimes(1);
+            expect(mockUserValidationService.validatePassword).toHaveBeenCalledTimes(1);
 
             expect(mockUserService.createUser).toHaveBeenCalledWith(user);
             expect(mockUserService.createUser).toHaveBeenCalledTimes(1);

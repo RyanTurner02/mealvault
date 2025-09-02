@@ -5,9 +5,11 @@ import { UserDto } from "@dtos/user-dto";
 import { ITokenService } from "@service/token-service";
 import { ICookiePayload, ICookieUtils } from "@utils/cookie-utils";
 import User from "@model/user";
+import { IUserValidationService } from "@service/user-validation-service";
 
 interface UserControllerDependencies {
     userService: IUserService;
+    userValidationService: IUserValidationService;
     tokenService: ITokenService;
     cookieUtils: ICookieUtils,
 };
@@ -22,6 +24,7 @@ export interface IUserController {
 
 export const createUserController = ({
     userService,
+    userValidationService,
     tokenService,
     cookieUtils,
 }: UserControllerDependencies): IUserController => {
@@ -34,6 +37,15 @@ export const createUserController = ({
 
         if (!userDto) {
             res.status(400).send("User data is required");
+            return;
+        }
+
+        const validName: boolean = userValidationService.validateName(userDto.name);
+        const validEmail: boolean = userValidationService.validateEmail(userDto.email);
+        const validPassword: boolean = userValidationService.validatePassword(userDto.password);
+
+        if (!validName || !validEmail || !validPassword) {
+            res.status(500).send("Invalid name, email, or password");
             return;
         }
 
