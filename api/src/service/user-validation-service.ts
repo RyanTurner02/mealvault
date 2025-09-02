@@ -1,3 +1,5 @@
+import * as z from "zod";
+
 export interface IUserValidationService {
     validateName(name: string): boolean;
     validateEmail(email: string): boolean;
@@ -14,7 +16,7 @@ export const createUserValidationService = (): IUserValidationService => {
     }
 
     const validateEmail = (email: string): boolean => {
-        return true;
+        return z.email().safeParse(email).success;
     }
 
     const validatePassword = (password: string): boolean => {
