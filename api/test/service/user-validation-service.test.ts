@@ -25,13 +25,38 @@ describe("UserValidationService", () => {
 
     describe("validateEmail", () => {
         test.each([
-            "test@example.com"
+            "test@example.com",
+            "simple@example.com",
+            "very.common@example.com",
+            "disposable.style.email.with+symbol@example.com",
+            "other.email-with-dash@example.com",
+            "user.name+tag+sorting@example.com",
+            "x@example.com",
+            "example-indeed@strange-example.com",
+            "admin@mailserver1.com",
+            "example@s.example",
+            "firstname.lastname@example.com"
         ])("is a valid email", (email: string) => {
             expect(userValidationService.validateEmail(email)).toBe(true);
         })
 
         test.each([
             "",
+            "plainaddress",
+            "missingatsign.com",
+            "user@.com",
+            "user@domain",
+            "user@domain..com",
+            "user@-domain.com",
+            "us er@example.com",
+            "user@exa mple.com",
+            "user@domain,com",
+            "user@domain@domain.com",
+            ".user@example.com",
+            "user.@example.com",
+            "user..name@example.com",
+            "@example.com",
+            "user@",
         ])("is an invalid email", (email: string) => {
             expect(userValidationService.validateEmail(email)).toBe(false);
         })
