@@ -77,6 +77,13 @@ describe("UserValidationService", () => {
             "Password",
             "Password1",
             "Password!",
+            "password1",
+            "PASSWORD1",
+            "Passw@rd",
+            "12345678",
+            "Passw0rd",
+            "PASSWORD!",
+            "password!"
         ])("is an invalid password", (password: string) => {
             expect(userValidationService.validatePassword(password)).toBe(false);
         });
