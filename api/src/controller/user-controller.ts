@@ -35,16 +35,9 @@ export const createUserController = ({
             password: req.body.password,
         };
 
-        if (!userDto) {
-            res.status(400).send("User data is required");
-            return;
-        }
-
-        const validName: boolean = userValidationService.validateName(userDto.name);
-        const validEmail: boolean = userValidationService.validateEmail(userDto.email);
-        const validPassword: boolean = userValidationService.validatePassword(userDto.password);
-
-        if (!validName || !validEmail || !validPassword) {
+        if (!userValidationService.validateName(userDto.name) ||
+            !userValidationService.validateEmail(userDto.email) ||
+            !userValidationService.validatePassword(userDto.password)) {
             res.status(500).send("Invalid name, email, or password");
             return;
         }
