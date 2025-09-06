@@ -1,7 +1,7 @@
 import { UserDto } from "@dtos/user-dto";
 import User from "@model/user";
 import { user } from "@db/schema";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { MySql2Database } from "drizzle-orm/mysql2";
 
 interface UserRepositoryDependencies {
@@ -38,6 +38,11 @@ export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserR
                 userName: userDto.name,
                 userPassword: userDto.password,
                 userEmail: userDto.email,
+            })
+            .onDuplicateKeyUpdate({
+                set: {
+                    userId: sql`${user.userId}`
+                }
             });
 
         if (!result?.length) return null;

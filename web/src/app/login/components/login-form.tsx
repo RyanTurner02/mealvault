@@ -2,7 +2,12 @@
 
 import { cn } from "@/app/lib/utils";
 import { Button } from "@/app/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import Link from "next/link";
@@ -15,6 +20,7 @@ import { login } from "@/app/features/login/api/login";
 export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState(false);
   const userContext = useUserContext();
   const router = useRouter();
   const { handleLogin } = useLogin({ userContext, login });
@@ -39,7 +45,12 @@ export function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleLogin(email, password);
+
+    const result: boolean = await handleLogin(email, password);
+
+    if (!result) {
+      setLoginError(true);
+    }
   };
 
   return (
@@ -59,7 +70,6 @@ export function LoginForm() {
                   placeholder="someone@example.com"
                   value={email}
                   onChange={updateEmail}
-                  required
                 />
               </div>
               <div className="grid gap-2">
@@ -78,8 +88,12 @@ export function LoginForm() {
                   placeholder="Password"
                   value={password}
                   onChange={updatePassword}
-                  required
                 />
+                {loginError && (
+                  <p className="text-sm text-red-500">
+                    Invalid email or password
+                  </p>
+                )}
               </div>
               <Button type="submit" className="w-full">
                 Login
