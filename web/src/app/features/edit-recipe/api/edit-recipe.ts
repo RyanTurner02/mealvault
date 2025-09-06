@@ -1,9 +1,14 @@
 import { RecipeForm } from "@/app/schemas/recipe-form-schema";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+import normalizeUrl from "normalize-url";
 
 export const editRecipe = async (params: Params, router: AppRouterInstance, values: RecipeForm) => {
     const url: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/recipe/${params.id}/edit`;
+    const externalLink: string =
+        values?.externalLink
+            ? normalizeUrl(values.externalLink, { defaultProtocol: "https" })
+            : "";
 
     const response = await fetch(url, {
         method: "PUT",
@@ -18,7 +23,7 @@ export const editRecipe = async (params: Params, router: AppRouterInstance, valu
             servings: values.servings,
             ingredients: values.ingredients,
             instructions: values.instructions,
-            externalLink: values.externalLink,
+            externalLink: externalLink,
         }),
     });
 
