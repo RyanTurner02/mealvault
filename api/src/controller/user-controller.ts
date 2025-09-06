@@ -19,6 +19,7 @@ export interface IUserController {
     loginUser(req: Request, res: Response): Promise<void>;
     logoutUser(req: Request, res: Response): void;
     getCurrentUser(req: UserRequest, res: Response): Promise<void>;
+    editUser(req: Request<{ userId: string }>, res: Response): Promise<void>;
     getUserById(req: Request<{ userId: number }>, res: Response): Promise<void>;
 };
 
@@ -123,6 +124,28 @@ export const createUserController = ({
         res.status(200).json({ user: user });
     }
 
+    const editUser = async (req: UserRequest, res: Response): Promise<void> => {
+        if (!req.user) {
+            res.status(401).send("Unauthorized");
+            return;
+        }
+
+        if (!req.body.name && !req.body.email && !req.body.password) {
+            res.status(400).send("Missing name, email, or password");
+            return;
+        }
+
+        const userDto: UserDto = {
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+        };
+
+        const result = await userService.editUser(req.user.id, userDto);
+
+        res.status(200).json(result)
+    }
+
     const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<void> => {
         res.json(await userService.getUser(req.params.userId));
     }
@@ -132,6 +155,7 @@ export const createUserController = ({
         loginUser,
         logoutUser,
         getCurrentUser,
-        getUserById
+        editUser,
+        getUserById,
     };
 }

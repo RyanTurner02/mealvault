@@ -16,6 +16,7 @@ describe("UserController", () => {
         createUser: jest.fn(),
         getUserByLogin: jest.fn(),
         getUser: jest.fn(),
+        editUser: jest.fn()
     };
 
     const mockUserValidationService: jest.Mocked<IUserValidationService> = {

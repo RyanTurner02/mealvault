@@ -17,6 +17,7 @@ export const createUserRoute = ({
     router.post("/login", userController.loginUser);
     router.post("/logout", userController.logoutUser);
     router.get("/me", authMiddleware.authenticateToken, userController.getCurrentUser);
+    router.patch("/me", authMiddleware.authenticateToken, userController.editUser);
     router.get("/:userId", userController.getUserById);
 
     return router;

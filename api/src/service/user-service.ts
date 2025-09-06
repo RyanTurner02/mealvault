@@ -11,14 +11,18 @@ export interface IUserService {
     createUser(user: UserDto): Promise<number | null>;
     getUserByLogin(email: string, password: string): Promise<User | null>;
     getUser(userId: number): Promise<User | null>;
+    editUser(userId: number, userDto: UserDto): Promise<User>;
 };
 
 export const createUserService = ({ userRepository }: UserServiceDependencies): IUserService => {
     const createUser = async (user: UserDto) => {
-        const saltRounds = 10;
-        user.password = await bcrypt.hash(user.password, saltRounds);
-
+        user.password = await hashPassword(user.password);
         return await userRepository.createUser(user);
+    }
+
+    const hashPassword = async (password: string): Promise<string> => {
+        const saltRounds = 10;
+        return await bcrypt.hash(password, saltRounds);
     }
 
     const getUserByLogin = async (email: string, password: string) => {
@@ -38,9 +42,18 @@ export const createUserService = ({ userRepository }: UserServiceDependencies): 
         return await userRepository.getUser(userId);
     }
 
+    const editUser = async (userId: number, userDto: UserDto): Promise<User> => {
+        if (userDto.password) {
+            userDto.password = await hashPassword(userDto.password);
+        }
+
+        return await userRepository.editUser(userId, userDto);
+    }
+
     return {
         createUser,
         getUserByLogin,
-        getUser
+        getUser,
+        editUser,
     };
 }

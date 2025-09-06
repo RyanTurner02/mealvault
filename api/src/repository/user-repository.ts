@@ -12,6 +12,7 @@ export interface IUserRepository {
     getUserByEmail(email: string): Promise<User | null>;
     createUser(userDto: UserDto): Promise<number | null>;
     getUser(userId: number): Promise<User | null>;
+    editUser(userId: number, userDto: UserDto): Promise<any>;
 };
 
 export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserRepository => {
@@ -66,9 +67,23 @@ export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserR
         );
     }
 
+    const editUser = async (userId: number, userDto: UserDto): Promise<any> => {
+        const result = await db
+            .update(user)
+            .set({
+                userName: userDto.name || undefined,
+                userEmail: userDto.email || undefined,
+                userPassword: userDto.password || undefined,
+            })
+            .where(eq(user.userId, userId));
+
+        return result[0];
+    }
+
     return {
         getUserByEmail,
         createUser,
-        getUser
+        getUser,
+        editUser,
     };
 }
