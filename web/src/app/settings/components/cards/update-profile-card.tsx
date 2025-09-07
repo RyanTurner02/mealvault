@@ -17,14 +17,20 @@ interface UpdateProfileCardProps {
 }
 
 export function UpdateProfileCard({ displayName }: UpdateProfileCardProps) {
-  const [name, setName] = useState(displayName);
+  const [name, setName] = useState<string>(displayName);
 
   const changeName: ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
   };
 
-  const handleSubmit = async () => {
-    await updateName(name);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const result: boolean = await updateName(name);
+
+    if (!result) {
+      return;
+    }
   };
 
   return (
