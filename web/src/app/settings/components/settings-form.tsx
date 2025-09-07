@@ -19,7 +19,7 @@ export const SettingsForm = ({ user }: SettingsFormProps) => {
         <UpdateProfileCard displayName={name} />
       </div>
       <div className="mb-5">
-        <UpdateEmailCard email={email} />
+        <UpdateEmailCard currentEmail={email} />
       </div>
       <div className="mb-5">
         <UpdatePasswordCard />
