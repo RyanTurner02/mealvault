@@ -11,6 +11,7 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { ChangeEventHandler, useState } from "react";
 import { updateName } from "@/app/settings/api/update-name";
+import { toast } from "sonner";
 
 interface UpdateProfileCardProps {
   displayName: string;
@@ -29,8 +30,11 @@ export function UpdateProfileCard({ displayName }: UpdateProfileCardProps) {
     const result: boolean = await updateName(name);
 
     if (!result) {
+      toast("Failed to update name. Please try again.");
       return;
     }
+
+    toast("Successfully updated name.");
   };
 
   return (

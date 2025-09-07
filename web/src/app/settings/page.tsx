@@ -4,6 +4,7 @@ import Header from "@/app/components/ui/header";
 import { useUserContext } from "@/app/hooks/use-user-context";
 import { useRouter } from "next/navigation";
 import { SettingsForm } from "@/app/settings/components/settings-form";
+import { Toaster } from "sonner";
 
 export default function Settings() {
   const userContext = useUserContext();
@@ -22,6 +23,7 @@ export default function Settings() {
             <div className="w-full max-w-sm">
               <h1 className="mb-5 text-4xl font-bold text-center">Settings</h1>
               <SettingsForm user={userContext?.user} />
+              <Toaster richColors position="top-center" visibleToasts={3} />
             </div>
           </div>
         </main>

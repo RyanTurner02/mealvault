@@ -11,6 +11,7 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { updateEmail } from "@/app/settings/api/update-email";
 import { ChangeEventHandler, useState } from "react";
+import { toast } from "sonner";
 
 interface UpdateEmailCardProps {
   currentEmail: string;
@@ -34,10 +35,12 @@ export function UpdateEmailCard({ currentEmail }: UpdateEmailCardProps) {
     const result: boolean = await updateEmail(newEmail);
 
     if (!result) {
+      toast("Failed to update email. Please try again.");
       return;
     }
 
     setOldEmail(newEmail);
+    toast("Successfully updated email.");
   };
 
   return (

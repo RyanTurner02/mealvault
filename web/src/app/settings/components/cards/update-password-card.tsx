@@ -11,6 +11,7 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { updatePassword } from "@/app/settings/api/update-password";
 import { ChangeEventHandler, useState } from "react";
+import { toast } from "sonner";
 
 export function UpdatePasswordCard() {
   const [oldPassword, setOldPassword] = useState<string>("");
@@ -35,8 +36,11 @@ export function UpdatePasswordCard() {
     const result: boolean = await updatePassword(oldPassword, newPassword);
 
     if (!result) {
+      toast("Failed to save password. Please try again.");
       return;
     }
+
+    toast("Successfully updated password.");
   };
 
   return (
