@@ -10,6 +10,7 @@ import {
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { ChangeEventHandler, useState } from "react";
+import { updateName } from "@/app/settings/api/update-name";
 
 interface UpdateProfileCardProps {
   displayName: string;
@@ -22,14 +23,18 @@ export function UpdateProfileCard({ displayName }: UpdateProfileCardProps) {
     setName(e.target.value);
   };
 
+  const handleSubmit = async () => {
+    await updateName(name);
+  };
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Profile</CardTitle>
         <CardDescription>Update your personal information.</CardDescription>
       </CardHeader>
-      <CardContent>
-        <form>
+      <form onSubmit={handleSubmit}>
+        <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="name">Name</Label>
@@ -42,13 +47,13 @@ export function UpdateProfileCard({ displayName }: UpdateProfileCardProps) {
               />
             </div>
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex-col gap-2">
-        <Button type="submit" className="w-full">
-          Update Profile
-        </Button>
-      </CardFooter>
+        </CardContent>
+        <CardFooter className="flex-col gap-2">
+          <Button type="submit" className="w-full">
+            Update Profile
+          </Button>
+        </CardFooter>
+      </form>
     </Card>
   );
 }
