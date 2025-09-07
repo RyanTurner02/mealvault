@@ -12,6 +12,7 @@ export interface IUserService {
     getUserByLogin(email: string, password: string): Promise<User | null>;
     getUser(userId: number): Promise<User | null>;
     editUser(userId: number, userDto: UserDto): Promise<User>;
+    editPassword(userId: number, oldPassword: string, newPassword: string): Promise<boolean>;
 };
 
 export const createUserService = ({ userRepository }: UserServiceDependencies): IUserService => {
@@ -50,10 +51,30 @@ export const createUserService = ({ userRepository }: UserServiceDependencies): 
         return await userRepository.editUser(userId, userDto);
     }
 
+    const editPassword = async (userId: number, oldPassword: string, newPassword: string): Promise<boolean> => {
+        if (!oldPassword || !newPassword) {
+            return false;
+        }
+
+        const user: User | null = await userRepository.getUser(userId);
+
+        if (!user) {
+            return false;
+        }
+
+        if (!bcrypt.compareSync(oldPassword, user.getPassword())) {
+            return false;
+        }
+
+        newPassword = await hashPassword(newPassword);
+        return await userRepository.editPassword(userId, newPassword);
+    }
+
     return {
         createUser,
         getUserByLogin,
         getUser,
         editUser,
+        editPassword,
     };
 }
