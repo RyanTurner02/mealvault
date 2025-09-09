@@ -35,12 +35,12 @@ export function UpdateEmailCard({ currentEmail }: UpdateEmailCardProps) {
     const result: boolean = await updateEmail(newEmail);
 
     if (!result) {
-      toast("Failed to update email. Please try again.");
+      toast.error("Failed to update email.");
       return;
     }
 
     setOldEmail(newEmail);
-    toast("Successfully updated email.");
+    toast.success("Successfully updated email.");
   };
 
   return (

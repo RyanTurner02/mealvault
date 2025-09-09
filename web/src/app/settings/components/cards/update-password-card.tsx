@@ -36,11 +36,11 @@ export function UpdatePasswordCard() {
     const result: boolean = await updatePassword(oldPassword, newPassword);
 
     if (!result) {
-      toast("Failed to save password. Please try again.");
+      toast.error("Failed to update password.");
       return;
     }
 
-    toast("Successfully updated password.");
+    toast.success("Successfully updated password.");
   };
 
   return (

@@ -30,11 +30,11 @@ export function UpdateProfileCard({ displayName }: UpdateProfileCardProps) {
     const result: boolean = await updateName(name);
 
     if (!result) {
-      toast("Failed to update name. Please try again.");
+      toast.error("Failed to update name.");
       return;
     }
 
-    toast("Successfully updated name.");
+    toast.success("Successfully updated name.");
   };
 
   return (
