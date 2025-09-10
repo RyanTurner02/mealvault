@@ -10,30 +10,31 @@ import {
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { updatePassword } from "@/app/settings/api/update-password";
-import { ChangeEventHandler, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import {
+  defaultPasswordFormValues,
+  passwordFormSchema,
+  passwordFormValues,
+} from "@/app/settings/schemas/password-form-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export function UpdatePasswordCard() {
-  const [oldPassword, setOldPassword] = useState<string>("");
-  const [newPassword, setNewPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<passwordFormValues>({
+    resolver: zodResolver(passwordFormSchema),
+    mode: "onChange",
+    defaultValues: defaultPasswordFormValues,
+  });
 
-  const updateOldPassword: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setOldPassword(e.target.value);
-  };
-
-  const updateNewPassword: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setNewPassword(e.target.value);
-  };
-
-  const updateConfirmPassword: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setConfirmPassword(e.target.value);
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const result: boolean = await updatePassword(oldPassword, newPassword);
+  const onSubmit = async (values: passwordFormValues) => {
+    const result: boolean = await updatePassword(
+      values.oldPassword,
+      values.newPassword
+    );
 
     if (!result) {
       toast.error("Failed to update password.");
@@ -51,7 +52,7 @@ export function UpdatePasswordCard() {
           Update your password to keep your account secure.
         </CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
@@ -60,10 +61,13 @@ export function UpdatePasswordCard() {
                 id="current-password"
                 type="password"
                 placeholder="Enter current password"
-                value={oldPassword}
-                onChange={updateOldPassword}
-                required
+                {...register("oldPassword")}
               />
+              {errors.oldPassword && (
+                <small className="text-red-600">
+                  {errors.oldPassword.message}
+                </small>
+              )}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="new-password">New Password</Label>
@@ -71,10 +75,13 @@ export function UpdatePasswordCard() {
                 id="new-password"
                 type="password"
                 placeholder="Enter new password"
-                value={newPassword}
-                onChange={updateNewPassword}
-                required
+                {...register("newPassword")}
               />
+              {errors.newPassword && (
+                <small className="text-red-600">
+                  {errors.newPassword.message}
+                </small>
+              )}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="confirm-new-password">Confirm New Password</Label>
@@ -82,10 +89,13 @@ export function UpdatePasswordCard() {
                 id="confirm-new-password"
                 type="password"
                 placeholder="Confirm new password"
-                value={confirmPassword}
-                onChange={updateConfirmPassword}
-                required
+                {...register("confirmNewPassword")}
               />
+              {errors.confirmNewPassword && (
+                <small className="text-red-600">
+                  {errors.confirmNewPassword.message}
+                </small>
+              )}
             </div>
           </div>
         </CardContent>
