@@ -10,6 +10,6 @@ export const profileFormSchema = z.object({
 
 export type profileFormValues = z.infer<typeof profileFormSchema>;
 
-export const defaultProfileFormValues: profileFormValues = {
-    name: ""
-}
+export const defaultProfileFormValues = (name: string = ""): profileFormValues => ({
+    name: name
+});
