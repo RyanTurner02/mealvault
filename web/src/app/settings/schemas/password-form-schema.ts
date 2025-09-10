@@ -16,9 +16,22 @@ export const passwordFormSchema = z.object({
     confirmNewPassword:
         z.string()
             .trim(),
-}).refine(data => data.newPassword === data.confirmNewPassword, {
-    message: "New passwords do not match.",
-    path: ["confirmNewPassword"],
+}).superRefine((val, ctx) => {
+    if (val.oldPassword === val.newPassword) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "New password must not match current password.",
+            path: ["newPassword"],
+        })
+    }
+
+    if (val.newPassword !== val.confirmNewPassword) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "New passwords do not match.",
+            path: ["confirmNewPassword"],
+        })
+    }
 });
 
 export type passwordFormValues = z.infer<typeof passwordFormSchema>;

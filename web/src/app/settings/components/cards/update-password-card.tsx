@@ -26,7 +26,7 @@ export function UpdatePasswordCard() {
     formState: { errors },
   } = useForm<passwordFormValues>({
     resolver: zodResolver(passwordFormSchema),
-    mode: "onChange",
+    mode: "all",
     defaultValues: defaultPasswordFormValues,
   });
 
