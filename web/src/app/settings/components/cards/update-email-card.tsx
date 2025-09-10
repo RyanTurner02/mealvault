@@ -10,36 +10,44 @@ import {
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { updateEmail } from "@/app/settings/api/update-email";
-import { ChangeEventHandler, useState } from "react";
 import { toast } from "sonner";
+import {
+  defaultEmailFormValues,
+  emailFormSchema,
+  emailFormValues,
+} from "@/app/settings/schemas/email-form-schema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface UpdateEmailCardProps {
   currentEmail: string;
 }
 
 export function UpdateEmailCard({ currentEmail }: UpdateEmailCardProps) {
-  const [oldEmail, setOldEmail] = useState<string>(currentEmail);
-  const [newEmail, setNewEmail] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<emailFormValues>({
+    resolver: zodResolver(emailFormSchema),
+    mode: "onChange",
+    defaultValues: defaultEmailFormValues(currentEmail),
+  });
 
-  const updateNewEmail: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setNewEmail(e.target.value);
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (oldEmail === newEmail) {
-
-    }
-
-    const result: boolean = await updateEmail(newEmail);
+  const onSubmit = async (values: emailFormValues) => {
+    const result: boolean = await updateEmail(values.newEmail);
 
     if (!result) {
       toast.error("Failed to update email.");
       return;
     }
 
-    setOldEmail(newEmail);
+    setValue("oldEmail", values.newEmail, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+
     toast.success("Successfully updated email.");
   };
 
@@ -51,7 +59,7 @@ export function UpdateEmailCard({ currentEmail }: UpdateEmailCardProps) {
           Change your email address. You&apos;ll need to verify your new email.
         </CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
@@ -60,10 +68,14 @@ export function UpdateEmailCard({ currentEmail }: UpdateEmailCardProps) {
                 id="current-email"
                 type="email"
                 placeholder="someone@example.com"
-                value={oldEmail}
+                {...register("oldEmail")}
                 disabled
-                required
               />
+              {errors.oldEmail && (
+                <small className="text-red-600">
+                  {errors.oldEmail.message}
+                </small>
+              )}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="new-email">New Email Address</Label>
@@ -71,10 +83,13 @@ export function UpdateEmailCard({ currentEmail }: UpdateEmailCardProps) {
                 id="new-email"
                 type="email"
                 placeholder="someone@example.com"
-                value={newEmail}
-                onChange={updateNewEmail}
-                required
+                {...register("newEmail")}
               />
+              {errors.newEmail && (
+                <small className="text-red-600">
+                  {errors.newEmail.message}
+                </small>
+              )}
             </div>
           </div>
         </CardContent>

@@ -10,13 +10,13 @@ export const emailFormSchema = z.object({
             .trim()
             .email("Please enter a valid email address"),
 }).refine(data => data.oldEmail !== data.newEmail, {
-    message: "Current email must not match with the new email.",
+    message: "New email address cannot be the same as your current one.",
     path: ["newEmail"],
 });
 
 export type emailFormValues = z.infer<typeof emailFormSchema>;
 
-export const defaultEmailFormValues: emailFormValues = {
-    oldEmail: "",
+export const defaultEmailFormValues = (oldEmail: string = ""): emailFormValues => ({
+    oldEmail: oldEmail,
     newEmail: "",
-}
+});
