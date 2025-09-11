@@ -18,17 +18,34 @@ import {
   passwordFormValues,
 } from "@/app/settings/schemas/password-form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 
 export function UpdatePasswordCard() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, dirtyFields },
+    watch,
+    trigger,
   } = useForm<passwordFormValues>({
     resolver: zodResolver(passwordFormSchema),
-    mode: "all",
+    mode: "onChange",
+    reValidateMode: "onChange",
+    criteriaMode: "all",
     defaultValues: defaultPasswordFormValues,
   });
+
+  const oldPw = watch("oldPassword");
+  const newPw = watch("newPassword");
+  const confirmNewPw = watch("confirmNewPassword");
+
+  useEffect(() => {
+    void trigger(["oldPassword", "newPassword"]);
+  }, [oldPw, newPw, trigger]);
+
+  useEffect(() => {
+    void trigger(["newPassword", "confirmNewPassword"]);
+  }, [newPw, confirmNewPw, trigger]);
 
   const onSubmit = async (values: passwordFormValues) => {
     const result: boolean = await updatePassword(
@@ -77,7 +94,7 @@ export function UpdatePasswordCard() {
                 placeholder="Enter new password"
                 {...register("newPassword")}
               />
-              {errors.newPassword && (
+              {dirtyFields.newPassword && errors.newPassword && (
                 <small className="text-red-600">
                   {errors.newPassword.message}
                 </small>
