@@ -13,6 +13,7 @@ export interface IUserRepository {
     createUser(userDto: UserDto): Promise<number | null>;
     getUser(userId: number): Promise<User | null>;
     editUser(userId: number, userDto: UserDto): Promise<any>;
+    editEmail(userId: number, email: string): Promise<boolean>;
     editPassword(userId: number, password: string): Promise<boolean>;
 };
 
@@ -81,6 +82,19 @@ export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserR
         return result[0];
     }
 
+    const editEmail = async (userId: number, email: string): Promise<boolean> => {
+        const result = await db
+            .update(user)
+            .set({
+                userEmail: email
+            })
+            .where(
+                eq(user.userId, userId)
+            );
+
+        return result[0].affectedRows === 1;
+    }
+
     const editPassword = async (userId: number, password: string): Promise<boolean> => {
         const result = await db
             .update(user)
@@ -99,6 +113,7 @@ export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserR
         createUser,
         getUser,
         editUser,
+        editEmail,
         editPassword,
     };
 }

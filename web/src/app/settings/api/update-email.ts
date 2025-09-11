@@ -1,7 +1,7 @@
 "use client"
 
 export const updateEmail = async (email: string): Promise<boolean> => {
-    const url: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/user/me`;
+    const url: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/user/edit-email`;
     const response = await fetch(url, {
         method: "PATCH",
         credentials: "include",

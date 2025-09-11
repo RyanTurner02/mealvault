@@ -20,6 +20,7 @@ export interface IUserController {
     logoutUser(req: Request, res: Response): void;
     getCurrentUser(req: UserRequest, res: Response): Promise<void>;
     editUser(req: Request<{ userId: string }>, res: Response): Promise<void>;
+    editEmail(req: UserRequest, res: Response): Promise<void>;
     editPassword(req: UserRequest, res: Response): Promise<void>;
     getUserById(req: Request<{ userId: number }>, res: Response): Promise<void>;
 };
@@ -147,6 +148,27 @@ export const createUserController = ({
         res.status(200).json(result)
     }
 
+    const editEmail = async (req: UserRequest, res: Response): Promise<void> => {
+        if (!req.user) {
+            res.status(401).send("Unauthorized");
+            return;
+        }
+
+        if (!req.body.email) {
+            res.status(400).send("Missing email");
+            return;
+        }
+
+        const result: boolean = await userService.editEmail(req.user.id, req.body.email);
+
+        if (!result) {
+            res.status(500).send("Unable to change email");
+            return;
+        }
+
+        res.status(200).send("Updated email");
+    }
+
     const editPassword = async (req: UserRequest, res: Response): Promise<void> => {
         if (!req.user) {
             res.status(401).send("Unauthorized");
@@ -178,6 +200,7 @@ export const createUserController = ({
         logoutUser,
         getCurrentUser,
         editUser,
+        editEmail,
         editPassword,
         getUserById,
     };
