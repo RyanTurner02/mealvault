@@ -18,12 +18,13 @@ import {
 } from "@/app/settings/schemas/email-form-schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UserContextType } from "@/app/types/user-context-type";
 
 interface UpdateEmailCardProps {
-  currentEmail: string;
+  userContext: UserContextType;
 }
 
-export function UpdateEmailCard({ currentEmail }: UpdateEmailCardProps) {
+export function UpdateEmailCard({ userContext }: UpdateEmailCardProps) {
   const {
     register,
     handleSubmit,
@@ -32,7 +33,7 @@ export function UpdateEmailCard({ currentEmail }: UpdateEmailCardProps) {
   } = useForm<emailFormValues>({
     resolver: zodResolver(emailFormSchema),
     mode: "onChange",
-    defaultValues: defaultEmailFormValues(currentEmail),
+    defaultValues: defaultEmailFormValues(userContext.user?.email),
   });
 
   const onSubmit = async (values: emailFormValues) => {
@@ -48,6 +49,10 @@ export function UpdateEmailCard({ currentEmail }: UpdateEmailCardProps) {
       shouldValidate: true,
     });
 
+    if (userContext?.user) {
+      userContext.user.email = values.newEmail;
+    }
+    
     toast.success("Successfully updated email.");
   };
 

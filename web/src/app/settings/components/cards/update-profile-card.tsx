@@ -18,12 +18,13 @@ import {
 } from "@/app/settings/schemas/profile-form-schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UserContextType } from "@/app/types/user-context-type";
 
 interface UpdateProfileCardProps {
-  displayName: string;
+  userContext: UserContextType;
 }
 
-export function UpdateProfileCard({ displayName }: UpdateProfileCardProps) {
+export function UpdateProfileCard({ userContext }: UpdateProfileCardProps) {
   const {
     register,
     handleSubmit,
@@ -31,7 +32,7 @@ export function UpdateProfileCard({ displayName }: UpdateProfileCardProps) {
   } = useForm<profileFormValues>({
     resolver: zodResolver(profileFormSchema),
     mode: "onChange",
-    defaultValues: defaultProfileFormValues(displayName),
+    defaultValues: defaultProfileFormValues(userContext.user?.name),
   });
 
   const onSubmit = async (values: profileFormValues) => {
@@ -40,6 +41,10 @@ export function UpdateProfileCard({ displayName }: UpdateProfileCardProps) {
     if (!result) {
       toast.error("Failed to update name.");
       return;
+    }
+
+    if (userContext?.user) {
+      userContext.user.name = values.name;
     }
 
     toast.success("Successfully updated name.");
