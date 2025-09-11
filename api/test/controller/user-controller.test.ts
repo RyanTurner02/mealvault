@@ -16,7 +16,7 @@ describe("UserController", () => {
         createUser: jest.fn(),
         getUserByLogin: jest.fn(),
         getUser: jest.fn(),
-        editUser: jest.fn(),
+        editName: jest.fn(),
         editEmail: jest.fn(),
         editPassword: jest.fn(),
     };

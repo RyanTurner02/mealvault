@@ -11,7 +11,7 @@ export interface IUserService {
     createUser(user: UserDto): Promise<number | null>;
     getUserByLogin(email: string, password: string): Promise<User | null>;
     getUser(userId: number): Promise<User | null>;
-    editUser(userId: number, userDto: UserDto): Promise<User>;
+    editName(userId: number, name: string): Promise<boolean>;
     editEmail(userId: number, email: string): Promise<boolean>;
     editPassword(userId: number, oldPassword: string, newPassword: string): Promise<boolean>;
 };
@@ -44,12 +44,12 @@ export const createUserService = ({ userRepository }: UserServiceDependencies): 
         return await userRepository.getUser(userId);
     }
 
-    const editUser = async (userId: number, userDto: UserDto): Promise<User> => {
-        if (userDto.password) {
-            userDto.password = await hashPassword(userDto.password);
+    const editName = async (userId: number, name: string): Promise<boolean> => {
+        if (!userId || !name) {
+            return false;
         }
 
-        return await userRepository.editUser(userId, userDto);
+        return await userRepository.editName(userId, name);
     }
 
     const editEmail = async (userId: number, email: string): Promise<boolean> => {
@@ -89,7 +89,7 @@ export const createUserService = ({ userRepository }: UserServiceDependencies): 
         createUser,
         getUserByLogin,
         getUser,
-        editUser,
+        editName,
         editEmail,
         editPassword,
     };

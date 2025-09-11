@@ -9,7 +9,7 @@ const mockUserRepository: jest.Mocked<IUserRepository> = {
     getUserByEmail: jest.fn(),
     createUser: jest.fn(),
     getUser: jest.fn(),
-    editUser: jest.fn(),
+    editName: jest.fn(),
     editEmail: jest.fn(),
     editPassword: jest.fn(),
 };

@@ -12,7 +12,7 @@ export interface IUserRepository {
     getUserByEmail(email: string): Promise<User | null>;
     createUser(userDto: UserDto): Promise<number | null>;
     getUser(userId: number): Promise<User | null>;
-    editUser(userId: number, userDto: UserDto): Promise<any>;
+    editName(userId: number, name: String): Promise<boolean>;
     editEmail(userId: number, email: string): Promise<boolean>;
     editPassword(userId: number, password: string): Promise<boolean>;
 };
@@ -69,17 +69,17 @@ export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserR
         );
     }
 
-    const editUser = async (userId: number, userDto: UserDto): Promise<any> => {
+    const editName = async (userId: number, name: string): Promise<boolean> => {
         const result = await db
             .update(user)
             .set({
-                userName: userDto.name || undefined,
-                userEmail: userDto.email || undefined,
-                userPassword: userDto.password || undefined,
+                userName: name
             })
-            .where(eq(user.userId, userId));
+            .where(
+                eq(user.userId, userId)
+            );
 
-        return result[0];
+        return result[0].affectedRows === 1;
     }
 
     const editEmail = async (userId: number, email: string): Promise<boolean> => {
@@ -112,7 +112,7 @@ export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserR
         getUserByEmail,
         createUser,
         getUser,
-        editUser,
+        editName,
         editEmail,
         editPassword,
     };

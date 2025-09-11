@@ -1,7 +1,7 @@
 "use client"
 
 export const updateName = async (name: string): Promise<boolean> => {
-    const url: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/user/me`;
+    const url: string = `${process.env.NEXT_PUBLIC_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/user/edit-name`;
     const response = await fetch(url, {
         method: "PATCH",
         credentials: "include",
