@@ -377,4 +377,80 @@ describe("UserController", () => {
             expect(response._getData()).toBe("Updated name");
         });
     });
+
+    describe("editEmail", () => {
+        it("does not have a user", async () => {
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-email",
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            await userController.editEmail(request, response);
+
+            expect(response.statusCode).toBe(401);
+            expect(response._getData()).toBe("Unauthorized");
+        });
+
+        it("is missing an email", async () => {
+            const id = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-email",
+                user: {
+                    id: id
+                },
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            await userController.editEmail(request, response);
+
+            expect(response.statusCode).toBe(400);
+            expect(response._getData()).toBe("Missing email");
+        });
+
+        it("does not change the user's email", async () => {
+            const id = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-email",
+                user: {
+                    id: id,
+                },
+                body: {
+                    email: faker.internet.exampleEmail(),
+                }
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            mockUserService.editEmail.mockResolvedValue(false);
+
+            await userController.editEmail(request, response);
+
+            expect(response.statusCode).toBe(500);
+            expect(response._getData()).toBe("Unable to change email");
+        });
+
+        it("updates the user's email", async () => {
+            const id = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-email",
+                user: {
+                    id: id,
+                },
+                body: {
+                    email: faker.internet.exampleEmail(),
+                }
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            mockUserService.editEmail.mockResolvedValue(true);
+
+            await userController.editEmail(request, response);
+
+            expect(response.statusCode).toBe(200);
+            expect(response._getData()).toBe("Updated email");
+        });
+    });
 });
