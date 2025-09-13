@@ -4,6 +4,13 @@ import { faker } from "@faker-js/faker";
 import User from "@model/user";
 import * as bcrypt from "bcrypt";
 import { UserDto } from "@dtos/user-dto";
+import { IUserValidationService } from "@service/user-validation-service";
+
+const mockUserValidationService: jest.Mocked<IUserValidationService> = {
+    validateName: jest.fn(),
+    validateEmail: jest.fn(),
+    validatePassword: jest.fn(),
+};
 
 const mockUserRepository: jest.Mocked<IUserRepository> = {
     getUserByEmail: jest.fn(),
@@ -26,6 +33,7 @@ describe("UserService", () => {
 
     beforeAll(async () => {
         userService = createUserService({
+            userValidationService: mockUserValidationService,
             userRepository: mockUserRepository
         });
     });

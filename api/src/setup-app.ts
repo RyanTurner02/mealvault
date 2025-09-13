@@ -35,9 +35,10 @@ export const setupApp = (): Express => {
     const tokenService: ITokenService = createTokenService();
     const tokenController: ITokenController = createTokenController({ cookieUtils, tokenService });
 
-    const userRepository: IUserRepository = createUserRepository({ db });
-    const userService: IUserService = createUserService({ userRepository });
     const userValidationService: IUserValidationService = createUserValidationService();
+    
+    const userRepository: IUserRepository = createUserRepository({ db });
+    const userService: IUserService = createUserService({ userValidationService, userRepository });
     const userController: IUserController = createUserController({ userService, userValidationService, tokenService, cookieUtils });
 
     const recipeRepository: IRecipeRepository = createRecipeRepository({ db });

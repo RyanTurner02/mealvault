@@ -2,8 +2,10 @@ import bcrypt from "bcrypt";
 import { IUserRepository } from "@repository/user-repository";
 import User from "@model/user";
 import { UserDto } from "@dtos/user-dto";
+import { IUserValidationService } from "@service/user-validation-service";
 
 interface UserServiceDependencies {
+    userValidationService: IUserValidationService;
     userRepository: IUserRepository;
 };
 
@@ -16,7 +18,10 @@ export interface IUserService {
     editPassword(userId: number, oldPassword: string, newPassword: string): Promise<boolean>;
 };
 
-export const createUserService = ({ userRepository }: UserServiceDependencies): IUserService => {
+export const createUserService = ({
+    userValidationService,
+    userRepository
+}: UserServiceDependencies): IUserService => {
     const createUser = async (user: UserDto) => {
         user.password = await hashPassword(user.password);
         return await userRepository.createUser(user);
@@ -49,6 +54,10 @@ export const createUserService = ({ userRepository }: UserServiceDependencies): 
             return false;
         }
 
+        if (!userValidationService.validateName(name)) {
+            return false;
+        }
+
         return await userRepository.editName(userId, name);
     }
 
@@ -60,6 +69,10 @@ export const createUserService = ({ userRepository }: UserServiceDependencies): 
         const user: User | null = await userRepository.getUserByEmail(email);
 
         if (user) {
+            return false;
+        }
+
+        if (!userValidationService.validateEmail(email)) {
             return false;
         }
 
@@ -78,6 +91,14 @@ export const createUserService = ({ userRepository }: UserServiceDependencies): 
         }
 
         if (!bcrypt.compareSync(oldPassword, user.getPassword())) {
+            return false;
+        }
+
+        if (oldPassword === newPassword) {
+            return false;
+        }
+
+        if (!userValidationService.validatePassword(newPassword)) {
             return false;
         }
 
