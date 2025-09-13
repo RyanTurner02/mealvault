@@ -453,4 +453,122 @@ describe("UserController", () => {
             expect(response._getData()).toBe("Updated email");
         });
     });
+
+    describe("editPassword", () => {
+        it("does not have a user", async () => {
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-password",
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            await userController.editPassword(request, response);
+
+            expect(response.statusCode).toBe(401);
+            expect(response._getData()).toBe("Unauthorized");
+        });
+
+        it("is missing the old password", async () => {
+            const id = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-password",
+                user: {
+                    id: id
+                },
+                body: {
+                    newPassword: faker.internet.password(),
+                }
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            await userController.editPassword(request, response);
+
+            expect(response.statusCode).toBe(400);
+            expect(response._getData()).toBe("Missing old password or new password");
+        });
+
+        it("is missing the new password", async () => {
+            const id = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-password",
+                user: {
+                    id: id
+                },
+                body: {
+                    oldPassword: faker.internet.password(),
+                }
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            await userController.editPassword(request, response);
+
+            expect(response.statusCode).toBe(400);
+            expect(response._getData()).toBe("Missing old password or new password");
+        });
+
+        it("is missing the old password and new password", async () => {
+            const id = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-password",
+                user: {
+                    id: id
+                },
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            await userController.editPassword(request, response);
+
+            expect(response.statusCode).toBe(400);
+            expect(response._getData()).toBe("Missing old password or new password");
+        });
+
+        it("does not change the user's password", async () => {
+            const id = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-password",
+                user: {
+                    id: id,
+                },
+                body: {
+                    oldPassword: faker.internet.password(),
+                    newPassword: faker.internet.password(),
+                }
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            mockUserService.editPassword.mockResolvedValue(false);
+
+            await userController.editPassword(request, response);
+
+            expect(response.statusCode).toBe(500);
+            expect(response._getData()).toBe("Unable to change password");
+        });
+
+        it("updates the user's password", async () => {
+            const id = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-password",
+                user: {
+                    id: id,
+                },
+                body: {
+                    oldPassword: faker.internet.password(),
+                    newPassword: faker.internet.password(),
+                }
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            mockUserService.editPassword.mockResolvedValue(true);
+
+            await userController.editPassword(request, response);
+
+            expect(response.statusCode).toBe(200);
+            expect(response._getData()).toBe("Updated password");
+        });
+    });
 });

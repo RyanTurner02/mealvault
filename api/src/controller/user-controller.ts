@@ -174,7 +174,7 @@ export const createUserController = ({
             return;
         }
 
-        if (!req.body.oldPassword && !req.body.newPassword) {
+        if (!req.body.oldPassword || !req.body.newPassword) {
             res.status(400).send("Missing old password or new password");
             return;
         }
