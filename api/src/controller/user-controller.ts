@@ -141,6 +141,7 @@ export const createUserController = ({
 
         if (!result) {
             res.status(500).send("Unable to change name");
+            return;
         }
 
         res.status(200).send("Updated name");

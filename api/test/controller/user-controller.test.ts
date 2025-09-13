@@ -8,6 +8,7 @@ import { ITokenService } from "@service/token-service";
 import { ICookiePayload, ICookieUtils } from "@utils/cookie-utils";
 import { UserDto } from "@dtos/user-dto";
 import { IUserValidationService } from "@service/user-validation-service";
+import { UserRequest } from "@typings/express";
 
 describe("UserController", () => {
     let userController: IUserController;
@@ -298,6 +299,82 @@ describe("UserController", () => {
             expect(mockUserService.getUser).toHaveBeenCalledTimes(1);
             expect(response.statusCode).toBe(200);
             expect(response._getJSONData()).toEqual(expectedUser);
+        });
+    });
+
+    describe("editName", () => {
+        it("does not have a user", async () => {
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-name",
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            await userController.editName(request, response);
+
+            expect(response.statusCode).toBe(401);
+            expect(response._getData()).toBe("Unauthorized");
+        });
+
+        it("is missing a name", async () => {
+            const id = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-name",
+                user: {
+                    id: id
+                },
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            await userController.editName(request, response);
+
+            expect(response.statusCode).toBe(400);
+            expect(response._getData()).toBe("Missing name");
+        });
+
+        it("does not change the user's name", async () => {
+            const id = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-name",
+                user: {
+                    id: id,
+                },
+                body: {
+                    name: faker.internet.displayName(),
+                }
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            mockUserService.editName.mockResolvedValue(false);
+
+            await userController.editName(request, response);
+
+            expect(response.statusCode).toBe(500);
+            expect(response._getData()).toBe("Unable to change name");
+        });
+
+        it("updates the user's name", async () => {
+            const id = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "PATCH",
+                url: "/api/user/edit-name",
+                user: {
+                    id: id,
+                },
+                body: {
+                    name: faker.internet.displayName(),
+                }
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            mockUserService.editName.mockResolvedValue(true);
+
+            await userController.editName(request, response);
+
+            expect(response.statusCode).toBe(200);
+            expect(response._getData()).toBe("Updated name");
         });
     });
 });
