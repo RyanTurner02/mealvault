@@ -9,8 +9,58 @@ import {
 } from "@/app/components/ui/card";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
+import { updatePassword } from "@/app/settings/api/update-password";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import {
+  defaultPasswordFormValues,
+  passwordFormSchema,
+  passwordFormValues,
+} from "@/app/settings/schemas/password-form-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 
 export function UpdatePasswordCard() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, dirtyFields },
+    watch,
+    trigger,
+  } = useForm<passwordFormValues>({
+    resolver: zodResolver(passwordFormSchema),
+    mode: "onChange",
+    reValidateMode: "onChange",
+    criteriaMode: "all",
+    defaultValues: defaultPasswordFormValues,
+  });
+
+  const oldPw = watch("oldPassword");
+  const newPw = watch("newPassword");
+  const confirmNewPw = watch("confirmNewPassword");
+
+  useEffect(() => {
+    void trigger(["oldPassword", "newPassword"]);
+  }, [oldPw, newPw, trigger]);
+
+  useEffect(() => {
+    void trigger(["newPassword", "confirmNewPassword"]);
+  }, [newPw, confirmNewPw, trigger]);
+
+  const onSubmit = async (values: passwordFormValues) => {
+    const result: boolean = await updatePassword(
+      values.oldPassword,
+      values.newPassword
+    );
+
+    if (!result) {
+      toast.error("Failed to update password.");
+      return;
+    }
+
+    toast.success("Successfully updated password.");
+  };
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
@@ -19,8 +69,8 @@ export function UpdatePasswordCard() {
           Update your password to keep your account secure.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="current-password">Current Password</Label>
@@ -28,8 +78,13 @@ export function UpdatePasswordCard() {
                 id="current-password"
                 type="password"
                 placeholder="Enter current password"
-                required
+                {...register("oldPassword")}
               />
+              {errors.oldPassword && (
+                <small className="text-red-600">
+                  {errors.oldPassword.message}
+                </small>
+              )}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="new-password">New Password</Label>
@@ -37,8 +92,13 @@ export function UpdatePasswordCard() {
                 id="new-password"
                 type="password"
                 placeholder="Enter new password"
-                required
+                {...register("newPassword")}
               />
+              {dirtyFields.newPassword && errors.newPassword && (
+                <small className="text-red-600">
+                  {errors.newPassword.message}
+                </small>
+              )}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="confirm-new-password">Confirm New Password</Label>
@@ -46,17 +106,22 @@ export function UpdatePasswordCard() {
                 id="confirm-new-password"
                 type="password"
                 placeholder="Confirm new password"
-                required
+                {...register("confirmNewPassword")}
               />
+              {errors.confirmNewPassword && (
+                <small className="text-red-600">
+                  {errors.confirmNewPassword.message}
+                </small>
+              )}
             </div>
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex-col gap-2">
-        <Button type="submit" className="w-full">
-          Change Password
-        </Button>
-      </CardFooter>
+        </CardContent>
+        <CardFooter className="flex-col gap-2">
+          <Button type="submit" className="w-full">
+            Change Password
+          </Button>
+        </CardFooter>
+      </form>
     </Card>
   );
 }

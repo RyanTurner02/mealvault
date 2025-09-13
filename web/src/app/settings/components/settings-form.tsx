@@ -3,23 +3,20 @@
 import { UpdateEmailCard } from "@/app/settings/components/cards/update-email-card";
 import { UpdatePasswordCard } from "@/app/settings/components/cards/update-password-card";
 import { UpdateProfileCard } from "@/app/settings/components/cards/update-profile-card";
-import { User } from "@/app/types/user";
+import { UserContextType } from "@/app/types/user-context-type";
 
 interface SettingsFormProps {
-  user: User;
+  userContext: UserContextType;
 }
 
-export const SettingsForm = ({ user }: SettingsFormProps) => {
-  const name = user?.name || "";
-  const email = user?.email || "";
-
+export const SettingsForm = ({ userContext }: SettingsFormProps) => {
   return (
     <>
       <div className="mb-5">
-        <UpdateProfileCard displayName={name} />
+        <UpdateProfileCard userContext={userContext} />
       </div>
       <div className="mb-5">
-        <UpdateEmailCard email={email} />
+        <UpdateEmailCard userContext={userContext} />
       </div>
       <div className="mb-5">
         <UpdatePasswordCard />

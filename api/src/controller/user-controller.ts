@@ -19,6 +19,9 @@ export interface IUserController {
     loginUser(req: Request, res: Response): Promise<void>;
     logoutUser(req: Request, res: Response): void;
     getCurrentUser(req: UserRequest, res: Response): Promise<void>;
+    editName(req: UserRequest, res: Response): Promise<void>;
+    editEmail(req: UserRequest, res: Response): Promise<void>;
+    editPassword(req: UserRequest, res: Response): Promise<void>;
     getUserById(req: Request<{ userId: number }>, res: Response): Promise<void>;
 };
 
@@ -123,6 +126,69 @@ export const createUserController = ({
         res.status(200).json({ user: user });
     }
 
+    const editName = async (req: UserRequest, res: Response): Promise<void> => {
+        if (!req.user) {
+            res.status(401).send("Unauthorized");
+            return;
+        }
+
+        if (!req.body.name) {
+            res.status(400).send("Missing name");
+            return;
+        }
+
+        const result = await userService.editName(req.user.id, req.body.name);
+
+        if (!result) {
+            res.status(500).send("Unable to change name");
+            return;
+        }
+
+        res.status(200).send("Updated name");
+    }
+
+    const editEmail = async (req: UserRequest, res: Response): Promise<void> => {
+        if (!req.user) {
+            res.status(401).send("Unauthorized");
+            return;
+        }
+
+        if (!req.body.email) {
+            res.status(400).send("Missing email");
+            return;
+        }
+
+        const result: boolean = await userService.editEmail(req.user.id, req.body.email);
+
+        if (!result) {
+            res.status(500).send("Unable to change email");
+            return;
+        }
+
+        res.status(200).send("Updated email");
+    }
+
+    const editPassword = async (req: UserRequest, res: Response): Promise<void> => {
+        if (!req.user) {
+            res.status(401).send("Unauthorized");
+            return;
+        }
+
+        if (!req.body.oldPassword || !req.body.newPassword) {
+            res.status(400).send("Missing old password or new password");
+            return;
+        }
+
+        const result: boolean = await userService.editPassword(req.user.id, req.body.oldPassword, req.body.newPassword);
+
+        if (!result) {
+            res.status(500).send("Unable to change password");
+            return;
+        }
+
+        res.status(200).send("Updated password");
+    }
+
     const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<void> => {
         res.json(await userService.getUser(req.params.userId));
     }
@@ -132,6 +198,9 @@ export const createUserController = ({
         loginUser,
         logoutUser,
         getCurrentUser,
-        getUserById
+        editName,
+        editEmail,
+        editPassword,
+        getUserById,
     };
 }

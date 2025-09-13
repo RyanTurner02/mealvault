@@ -1,7 +1,7 @@
 import { UserDto } from "@dtos/user-dto";
 import User from "@model/user";
 import { user } from "@db/schema";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { MySql2Database } from "drizzle-orm/mysql2";
 
 interface UserRepositoryDependencies {
@@ -12,6 +12,9 @@ export interface IUserRepository {
     getUserByEmail(email: string): Promise<User | null>;
     createUser(userDto: UserDto): Promise<number | null>;
     getUser(userId: number): Promise<User | null>;
+    editName(userId: number, name: String): Promise<boolean>;
+    editEmail(userId: number, email: string): Promise<boolean>;
+    editPassword(userId: number, password: string): Promise<boolean>;
 };
 
 export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserRepository => {
@@ -66,9 +69,51 @@ export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserR
         );
     }
 
+    const editName = async (userId: number, name: string): Promise<boolean> => {
+        const result = await db
+            .update(user)
+            .set({
+                userName: name
+            })
+            .where(
+                eq(user.userId, userId)
+            );
+
+        return result[0].affectedRows === 1;
+    }
+
+    const editEmail = async (userId: number, email: string): Promise<boolean> => {
+        const result = await db
+            .update(user)
+            .set({
+                userEmail: email
+            })
+            .where(
+                eq(user.userId, userId)
+            );
+
+        return result[0].affectedRows === 1;
+    }
+
+    const editPassword = async (userId: number, password: string): Promise<boolean> => {
+        const result = await db
+            .update(user)
+            .set({
+                userPassword: password
+            })
+            .where(
+                eq(user.userId, userId),
+            );
+
+        return result[0].affectedRows === 1;
+    }
+
     return {
         getUserByEmail,
         createUser,
-        getUser
+        getUser,
+        editName,
+        editEmail,
+        editPassword,
     };
 }

@@ -94,7 +94,7 @@ describe("UserRepository", () => {
 
     it("does not get a user by email", async () => {
       const actual: User | null = await userRepository.getUserByEmail("");
-      
+
       expect(actual).toBeNull();
     });
   });
@@ -115,6 +115,42 @@ describe("UserRepository", () => {
       const actual: User | null = await userRepository.getUser(-1);
 
       expect(actual).toBeNull();
+    });
+  });
+
+  describe("editName", () => {
+    it("edits the user's name", async () => {
+      const name: string = faker.internet.displayName();
+
+      const actual: boolean = await userRepository.editName(sampleUser.getId(), name);
+
+      const user: User = await userRepository.getUser(sampleUser.getId());
+      expect(actual).toBe(true);
+      expect(user.getName()).toBe(name);
+    });
+  });
+
+  describe("editEmail", () => {
+    it("edits the user's email", async () => {
+      const email: string = faker.internet.exampleEmail();
+
+      const actual: boolean = await userRepository.editEmail(sampleUser.getId(), email);
+
+      const user: User = await userRepository.getUser(sampleUser.getId());
+      expect(actual).toBe(true);
+      expect(user.getEmail()).toBe(email);
+    });
+  });
+
+  describe("editPassword", () => {
+    it("edits the user's password", async () => {
+      const password: string = faker.internet.password();
+
+      const actual: boolean = await userRepository.editPassword(sampleUser.getId(), password);
+
+      const user: User = await userRepository.getUser(sampleUser.getId());
+      expect(actual).toBe(true);
+      expect(user.getPassword()).toBe(password);
     });
   });
 });

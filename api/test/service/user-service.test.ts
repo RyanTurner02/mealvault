@@ -4,11 +4,21 @@ import { faker } from "@faker-js/faker";
 import User from "@model/user";
 import * as bcrypt from "bcrypt";
 import { UserDto } from "@dtos/user-dto";
+import { IUserValidationService } from "@service/user-validation-service";
+
+const mockUserValidationService: jest.Mocked<IUserValidationService> = {
+    validateName: jest.fn(),
+    validateEmail: jest.fn(),
+    validatePassword: jest.fn(),
+};
 
 const mockUserRepository: jest.Mocked<IUserRepository> = {
     getUserByEmail: jest.fn(),
     createUser: jest.fn(),
     getUser: jest.fn(),
+    editName: jest.fn(),
+    editEmail: jest.fn(),
+    editPassword: jest.fn(),
 };
 
 const hashedPassword = faker.internet.password();
@@ -23,6 +33,7 @@ describe("UserService", () => {
 
     beforeAll(async () => {
         userService = createUserService({
+            userValidationService: mockUserValidationService,
             userRepository: mockUserRepository
         });
     });
@@ -138,6 +149,76 @@ describe("UserService", () => {
             expect(actual).not.toBeNull();
             expect(mockUserRepository.getUser).toHaveBeenCalledWith(expected.getId());
             expect(actual).toEqual(expected);
+        });
+    });
+
+    describe("editName", () => {
+        it("updates the user's name", async () => {
+            const userId: number = 1;
+            const name: string = faker.internet.displayName();
+
+            mockUserValidationService.validateName.mockReturnValue(true);
+            mockUserRepository.editName.mockResolvedValue(true);
+
+            const actual: boolean = await userService.editName(userId, name);
+
+            expect(actual).toBe(true);
+
+            expect(mockUserValidationService.validateName).toHaveBeenCalledTimes(1);
+            expect(mockUserValidationService.validateName).toHaveBeenCalledWith(name);
+
+            expect(mockUserRepository.editName).toHaveBeenCalledTimes(1);
+            expect(mockUserRepository.editName).toHaveBeenCalledWith(userId, name);
+        });
+    });
+
+    describe("editEmail", () => {
+        it("updates the user's email", async () => {
+            const userId: number = 1;
+            const email: string = faker.internet.exampleEmail();
+
+            mockUserValidationService.validateEmail.mockReturnValue(true);
+            mockUserRepository.editEmail.mockResolvedValue(true);
+
+            const actual: boolean = await userService.editEmail(userId, email);
+
+            expect(actual).toBe(true);
+
+            expect(mockUserValidationService.validateEmail).toHaveBeenCalledTimes(1);
+            expect(mockUserValidationService.validateEmail).toHaveBeenCalledWith(email);
+
+            expect(mockUserRepository.editEmail).toHaveBeenCalledTimes(1);
+            expect(mockUserRepository.editEmail).toHaveBeenCalledWith(userId, email);
+        });
+    });
+
+    describe("editPassword", () => {
+        it("updates the user's password", async () => {
+            const userId: number = 1;
+            const oldPassword: string = faker.internet.password();
+            const newPassword: string = faker.internet.password();
+            const user: User = new User(
+                userId,
+                faker.internet.displayName(),
+                oldPassword,
+                faker.internet.exampleEmail());
+
+            mockUserRepository.getUser.mockResolvedValue(user);
+            mockUserValidationService.validatePassword.mockReturnValue(true);
+            mockUserRepository.editPassword.mockResolvedValue(true);
+
+            const actual: boolean = await userService.editPassword(userId, oldPassword, newPassword);
+
+            expect(actual).toBe(true);
+
+            expect(mockUserRepository.getUser).toHaveBeenCalledTimes(1);
+            expect(mockUserRepository.getUser).toHaveBeenCalledWith(userId);
+
+            expect(mockUserValidationService.validatePassword).toHaveBeenCalledTimes(1);
+            expect(mockUserValidationService.validatePassword).toHaveBeenCalledWith(newPassword);
+
+            expect(mockUserRepository.editPassword).toHaveBeenCalledTimes(1);
+            expect(mockUserRepository.editPassword).toHaveBeenCalledWith(userId, hashedPassword);
         });
     });
 });
