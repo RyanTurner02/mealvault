@@ -1,189 +1,9 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "e3bb833d-5064-42eb-8d9f-815740b49007",
+  "id": "20a76fc5-b2ca-4af6-90d6-a875a943d220",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "custom_field": {
-      "name": "custom_field",
-      "columns": {
-        "field_id": {
-          "name": "field_id",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "recipe_id": {
-          "name": "recipe_id",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "field_name": {
-          "name": "field_name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "field_type": {
-          "name": "field_type",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "field_text": {
-          "name": "field_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "date_created": {
-          "name": "date_created",
-          "type": "datetime",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        },
-        "date_updated": {
-          "name": "date_updated",
-          "type": "datetime",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        },
-        "date_deleted": {
-          "name": "date_deleted",
-          "type": "datetime",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "recipe_id": {
-          "name": "recipe_id",
-          "columns": [
-            "recipe_id"
-          ],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "custom_field_recipe_id_recipe_recipe_id_fk": {
-          "name": "custom_field_recipe_id_recipe_recipe_id_fk",
-          "tableFrom": "custom_field",
-          "tableTo": "recipe",
-          "columnsFrom": [
-            "recipe_id"
-          ],
-          "columnsTo": [
-            "recipe_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "custom_field_field_id": {
-          "name": "custom_field_field_id",
-          "columns": [
-            "field_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "checkConstraint": {}
-    },
-    "instruction": {
-      "name": "instruction",
-      "columns": {
-        "instruction_id": {
-          "name": "instruction_id",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "recipe_id": {
-          "name": "recipe_id",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "instruction_text": {
-          "name": "instruction_text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "date_created": {
-          "name": "date_created",
-          "type": "datetime",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        },
-        "date_updated": {
-          "name": "date_updated",
-          "type": "datetime",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
-        },
-        "date_deleted": {
-          "name": "date_deleted",
-          "type": "datetime",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "recipe_id": {
-          "name": "recipe_id",
-          "columns": [
-            "recipe_id"
-          ],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "instruction_recipe_id_recipe_recipe_id_fk": {
-          "name": "instruction_recipe_id_recipe_recipe_id_fk",
-          "tableFrom": "instruction",
-          "tableTo": "recipe",
-          "columnsFrom": [
-            "recipe_id"
-          ],
-          "columnsTo": [
-            "recipe_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "instruction_instruction_id": {
-          "name": "instruction_instruction_id",
-          "columns": [
-            "instruction_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "checkConstraint": {}
-    },
     "recipe": {
       "name": "recipe",
       "columns": {
@@ -206,6 +26,48 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "prep_time": {
+          "name": "prep_time",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "cook_time": {
+          "name": "cook_time",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "servings": {
+          "name": "servings",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ingredients": {
+          "name": "ingredients",
+          "type": "varchar(2000)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "instructions": {
+          "name": "instructions",
+          "type": "varchar(2000)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "external_link": {
+          "name": "external_link",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "date_created": {
