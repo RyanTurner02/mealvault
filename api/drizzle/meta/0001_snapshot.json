@@ -1,8 +1,8 @@
 {
+  "id": "05a0ee35-cf94-4aa2-845c-4911763d7f13",
+  "prevId": "20a76fc5-b2ca-4af6-90d6-a875a943d220",
   "version": "5",
   "dialect": "mysql",
-  "id": "aa5ab165-8d7f-4b54-9f03-842e7388445d",
-  "prevId": "e3bb833d-5064-42eb-8d9f-815740b49007",
   "tables": {
     "recipe": {
       "name": "recipe",
@@ -26,6 +26,48 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "prep_time": {
+          "name": "prep_time",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "cook_time": {
+          "name": "cook_time",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "servings": {
+          "name": "servings",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ingredients": {
+          "name": "ingredients",
+          "type": "varchar(2000)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "instructions": {
+          "name": "instructions",
+          "type": "varchar(2000)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "external_link": {
+          "name": "external_link",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "date_created": {
@@ -65,15 +107,15 @@
         "recipe_user_id_user_user_id_fk": {
           "name": "recipe_user_id_user_user_id_fk",
           "tableFrom": "recipe",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "user_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -166,9 +208,9 @@
   },
   "views": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
+    "tables": {}
   },
   "internal": {
     "tables": {},
