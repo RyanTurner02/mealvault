@@ -1,8 +1,7 @@
 services:
   db:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: mysql:9.6.0
+    restart: always
     env_file:
       - .env
     ports:

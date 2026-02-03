@@ -1,5 +1,4 @@
 import express, { Express, Router } from "express";
-import cors, { CorsOptions } from "cors";
 import cookieParser from "cookie-parser";
 import { createUserRoute } from "@route/user-route";
 import { createTokenRoute } from "@route/token-route";
@@ -20,13 +19,6 @@ import { createUserValidationService, IUserValidationService } from "@service/us
 export const setupApp = (): Express => {
     const app: Express = express();
 
-    const corsOptions: CorsOptions = {
-        origin: `${process.env.FRONTEND_URL}:${process.env.FRONTEND_PORT}`,
-        credentials: true,
-        optionsSuccessStatus: 200,
-    };
-
-    app.use(cors(corsOptions));
     app.use(cookieParser());
     app.use(express.json());
 
