@@ -1,7 +1,7 @@
 import { UserDto } from "@dtos/user-dto";
 import User from "@model/user";
 import { user } from "@db/schema";
-import { and, eq, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { MySql2Database } from "drizzle-orm/mysql2";
 
 interface UserRepositoryDependencies {
