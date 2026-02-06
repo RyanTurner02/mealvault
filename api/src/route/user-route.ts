@@ -20,6 +20,7 @@ export const createUserRoute = ({
     router.patch("/edit-name", authMiddleware.authenticateToken, userController.editName);
     router.patch("/edit-email", authMiddleware.authenticateToken, userController.editEmail);
     router.patch("/edit-password", authMiddleware.authenticateToken, userController.editPassword);
+    router.delete("/delete", authMiddleware.authenticateToken, userController.deleteUser);
     router.get("/:userId", userController.getUserById);
 
     return router;

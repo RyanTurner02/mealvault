@@ -22,6 +22,7 @@ export interface IUserController {
     editName(req: UserRequest, res: Response): Promise<void>;
     editEmail(req: UserRequest, res: Response): Promise<void>;
     editPassword(req: UserRequest, res: Response): Promise<void>;
+    deleteUser(req: UserRequest, res: Response): Promise<void>;
     getUserById(req: Request<{ userId: number }>, res: Response): Promise<void>;
 };
 
@@ -189,6 +190,28 @@ export const createUserController = ({
         res.status(200).send("Updated password");
     }
 
+    const deleteUser = async (req: UserRequest, res: Response) : Promise<void> => {
+        if (!req.user) {
+            res.status(401).send("Unauthorized");
+            return;
+        }
+
+        const result: boolean = await userService.deleteUser(req.user.id);
+
+        if (result) {
+            res.status(200).json({
+                "code": "Success",
+                "message": "User and recipes successfully deleted"
+            });
+            return;
+        }
+
+        res.status(500).json({
+            "code": "Error",
+            "message": "Unable to delete user or recipes"
+        })
+    }
+
     const getUserById = async (req: Request<{ userId: number }>, res: Response): Promise<void> => {
         res.json(await userService.getUser(req.params.userId));
     }
@@ -201,6 +224,7 @@ export const createUserController = ({
         editName,
         editEmail,
         editPassword,
+        deleteUser,
         getUserById,
     };
 }

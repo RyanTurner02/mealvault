@@ -19,6 +19,7 @@ const mockUserRepository: jest.Mocked<IUserRepository> = {
     editName: jest.fn(),
     editEmail: jest.fn(),
     editPassword: jest.fn(),
+    deleteUser: jest.fn()
 };
 
 const hashedPassword = faker.internet.password();

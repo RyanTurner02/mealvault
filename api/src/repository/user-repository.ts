@@ -1,6 +1,6 @@
 import { UserDto } from "@dtos/user-dto";
 import User from "@model/user";
-import { user } from "@db/schema";
+import { recipe, user } from "@db/schema";
 import { eq, sql } from "drizzle-orm";
 import { MySql2Database } from "drizzle-orm/mysql2";
 
@@ -15,6 +15,7 @@ export interface IUserRepository {
     editName(userId: number, name: String): Promise<boolean>;
     editEmail(userId: number, email: string): Promise<boolean>;
     editPassword(userId: number, password: string): Promise<boolean>;
+    deleteUser(userId: number): Promise<boolean>;
 };
 
 export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserRepository => {
@@ -108,6 +109,20 @@ export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserR
         return result[0].affectedRows === 1;
     }
 
+    const deleteUser = async (userId: number): Promise<boolean> => {
+        const recipeResult =
+            await db
+            .delete(recipe)
+            .where(eq(recipe.userId, userId));
+        
+        const userResult =
+            await db
+            .delete(user)
+            .where(eq(user.userId, userId));
+
+        return recipeResult[0].affectedRows >= 0 && userResult[0].affectedRows >= 1;
+    }
+
     return {
         getUserByEmail,
         createUser,
@@ -115,5 +130,6 @@ export const createUserRepository = ({ db }: UserRepositoryDependencies): IUserR
         editName,
         editEmail,
         editPassword,
+        deleteUser
     };
 }
