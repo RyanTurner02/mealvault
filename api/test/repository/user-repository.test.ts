@@ -13,6 +13,8 @@ import { count } from "drizzle-orm";
 import { RecipeDto } from "@dtos/recipe-dto";
 import { IUserRepository } from "@repository/user-repository";
 import { IRecipeRepository } from "@repository/recipe-repository";
+import * as schema from "@db/schema";
+import { reset } from "drizzle-seed";
 
 describe("UserRepository", () => {
   jest.setTimeout(30000);
@@ -46,14 +48,6 @@ describe("UserRepository", () => {
     });
 
     db = drizzle(pool);
-    await migrate(db, { migrationsFolder: "drizzle" });
-
-    const seedResult = await db.insert(user).values({
-      userName: sampleUser.getName(),
-      userPassword: sampleUser.getPassword(),
-      userEmail: sampleUser.getEmail(),
-    });
-
     userRepository = UserRepository.createUserRepository({ db });
     recipeRepository = RecipeRepository.createRecipeRepository({ db });
   });
@@ -66,6 +60,20 @@ describe("UserRepository", () => {
     if (container) {
       await container.stop();
     }
+  });
+
+  beforeEach(async () => {
+    await migrate(db, { migrationsFolder: "drizzle" });
+
+    await db.insert(user).values({
+      userName: sampleUser.getName(),
+      userPassword: sampleUser.getPassword(),
+      userEmail: sampleUser.getEmail(),
+    });
+  });
+
+  afterEach(async () => {
+    await reset(db, schema);
   });
 
   describe("createUser", () => {
