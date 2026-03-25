@@ -222,4 +222,14 @@ describe("UserService", () => {
             expect(mockUserRepository.editPassword).toHaveBeenCalledWith(userId, hashedPassword);
         });
     });
+
+    describe("deleteUser", () => {
+        it("deletes user by id", async () => {
+            mockUserRepository.deleteUser.mockResolvedValue(true);
+
+            const actual: boolean = await userService.deleteUser(faker.number.int());
+
+            expect(actual).toBe(true);
+        });
+    });
 });
