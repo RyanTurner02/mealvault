@@ -572,4 +572,63 @@ describe("UserController", () => {
             expect(response._getData()).toBe("Updated password");
         });
     });
+
+    describe("deleteUser", () => {
+        it("does not have a user", async () => {
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "DELETE",
+                url: "/api/user/delete",
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            await userController.deleteUser(request, response);
+
+            expect(response.statusCode).toBe(401);
+            expect(response._getData()).toBe("Unauthorized");
+        });
+
+        it("successfully deletes a user", async () => {
+            const id: number = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "DELETE",
+                url: "/api/user/delete",
+                user: {
+                    id: id,
+                },
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            mockUserService.deleteUser.mockResolvedValue(true);
+
+            await userController.deleteUser(request, response);
+
+            expect(response.statusCode).toBe(200);
+            expect(response._getJSONData()).toStrictEqual({
+                "code": "Success",
+                "message": "User and recipes successfully deleted"
+            });
+        });
+
+        it("fails to delete a user", async () => {
+            const id: number = 1;
+            const request: MockRequest<UserRequest> = createRequest({
+                method: "DELETE",
+                url: "/api/user/delete",
+                user: {
+                    id: id,
+                },
+            });
+            const response: MockResponse<Response> = createResponse();
+
+            mockUserService.deleteUser.mockResolvedValue(false);
+
+            await userController.deleteUser(request, response);
+
+            expect(response.statusCode).toBe(500);
+            expect(response._getJSONData()).toStrictEqual({
+                "code": "Error",
+                "message": "Unable to delete user or recipes"
+            });
+        });
+    });
 });
